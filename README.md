@@ -4,3 +4,4 @@
 @OWNER:registry=https://npm.pkg.github.com
 @salut-mercado:registry=https://npm.pkg.github.com/
 ```
+test
