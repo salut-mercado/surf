@@ -10,11 +10,13 @@ export type ThemeProviderProps = {
 
 type ThemeProviderState = {
     theme: Theme;
+    currentTheme: Omit<Theme, "system">;
     setTheme: (theme: Theme) => void;
 };
 
 const initialState: ThemeProviderState = {
     theme: "system",
+    currentTheme: "dark",
     setTheme: () => null,
 };
 
