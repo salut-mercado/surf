@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../../lib/api";
-import type { GetSuppliersDetailsApiSuppliersDetailsGetRequest } from "@salut-mercado/octo-client";
+import type { GetSuppliersApiSuppliersGetRequest } from "@salut-mercado/octo-client";
 
-export const useSupplier = (params: GetSuppliersDetailsApiSuppliersDetailsGetRequest) => {
+export const useSupplier = (params: GetSuppliersApiSuppliersGetRequest) => {
     return useQuery({
         queryKey: ["supplier", JSON.stringify(params)],
-        queryFn: () => api.suppliersDetails.getSuppliersDetailsApiSuppliersDetailsGet(params),
+        queryFn: () => api.suppliers.getSuppliersApiSuppliersGet(params),
     });
 };
