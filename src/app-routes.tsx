@@ -13,7 +13,7 @@ export const AppRoutes = () => {
           <AuthPage />
         </Route>
       </Route>
-      <Route path="/addSuppliers">
+      <Route path="/example">
         <ExamplePage />
       </Route>
       <Route path="/suppliers">

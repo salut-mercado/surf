@@ -16,12 +16,11 @@ export function useSuppliers() {
         limit: 100,
       });
       
-      console.log('API Response:', response);
+      
       
       if (response.items) {
         setSuppliers(response.items);
       } else {
-        console.error('Unexpected response format:', response);
         setSuppliers([]);
       }
     } catch (error) {
@@ -47,7 +46,6 @@ export function useSuppliers() {
       await fetchSuppliers();
       return response.data;
     } catch (error) {
-      console.error('Error creating supplier:', error);
       setError('Failed to create supplier');
       throw error;
     } finally {

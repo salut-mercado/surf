@@ -18,7 +18,7 @@ import type { SuppliersSchema } from "@salut-mercado/octo-client";
 export default function SuppliersPage() {
   const [open, setOpen] = useState(false);
   const { suppliers, fetchSuppliers, createSupplier, toggleAnalytics, toggleBlocked } = useSuppliers();
-  console.log('SuppliersPage suppliers state:', suppliers);
+
 
   const [newSupplier, setNewSupplier] = useState<Partial<SuppliersSchema>>({
     agent: "",
