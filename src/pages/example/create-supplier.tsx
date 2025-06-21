@@ -29,8 +29,8 @@ export const CreateSupplier = () => {
                 suppliersSchema: {
                     ...value,
                     agent: value.agent || randomString(),
-                    supplierCode: value.supplierCode || randomString(),
-                    supplierName: value.supplierName || randomString(),
+                    code: value.supplierCode || randomString(),
+                    name: value.supplierName || randomString(),
                     phone: value.phone || randomString(),
                     taxID: value.taxID || randomString(),
                 },
