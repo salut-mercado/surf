@@ -45,8 +45,8 @@ const data = {
             icon: IconDashboard,
         },
         {
-            title: "Lifecycle",
-            url: "#",
+            title: "Producers",
+            url: "/producers",
             icon: IconListDetails,
         },
         {

@@ -27,3 +27,4 @@ openapi.json
 .npmrc
 
 .generated
+openapitools.json
