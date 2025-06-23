@@ -6,8 +6,8 @@ import {
     TableHeader,
     TableRow,
 } from "~/components/ui/table";
-import { Button } from "~/components/ui/button";
-import type { FirmsProducerSchema } from "~/lib/.generated/client";
+import {Button} from "~/components/ui/button";
+import type {FirmsProducerSchema} from "~/lib/.generated/client";
 import {
     getCoreRowModel,
     getPaginationRowModel,
@@ -19,19 +19,19 @@ interface ProducersTableProps {
 }
 
 
-export function ProducersTable({ producers }: ProducersTableProps) {
+export function ProducersTable({producers}: ProducersTableProps) {
     const table = useReactTable({
         data: producers,
         columns: [
-            { accessorKey: "name", header: "Name" },
-            { accessorKey: "taxID", header: "Tax ID" },
-            { accessorKey: "minimumStock", header: "Minimum Stock" },
+            {accessorKey: "name", header: "Name"},
+            {accessorKey: "taxID", header: "Tax ID"},
+            {accessorKey: "minimumStock", header: "Minimum Stock"},
         ],
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         initialState: {
             pagination: {
-                pageSize: 2,
+                pageSize: 5,
             },
         },
     });
