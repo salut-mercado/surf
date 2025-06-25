@@ -7,6 +7,7 @@ import {
 } from "@salut-mercado/octo-client";
 
 import {
+    CategoriesApi,
     Configuration as LocalConfiguration,
     FirmsProducerApi,
 } from "~/lib/.generated/client";
@@ -22,4 +23,5 @@ export const api = {
     suppliersGroups: new SuppliersGroupsApi(octoConfig),
     suppliersBankInfo: new SuppliersBankInfoApi(octoConfig),
     producers: new FirmsProducerApi(localConfig),
+    categories : new CategoriesApi(localConfig),
 };

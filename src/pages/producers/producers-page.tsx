@@ -68,6 +68,7 @@ export default function ProducersPage() {
                 }
             };
 
+            console.log(requestData);
             await updateMutation.mutateAsync(requestData);
             refetch();
             setOpenEdit(false);
