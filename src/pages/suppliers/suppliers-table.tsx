@@ -8,6 +8,13 @@ import {
 } from "~/components/ui/table";
 import { Button } from "~/components/ui/button";
 import { Switch } from "~/components/ui/switch";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { MoreHorizontal, Edit, /*Trash2*/ } from "lucide-react";
 import type { SuppliersSchema } from "@salut-mercado/octo-client";
 import {
   getCoreRowModel,
@@ -17,11 +24,13 @@ import {
 
 interface SuppliersTableProps {
   suppliers: SuppliersSchema[];
-  onToggleAnalytics: (supplierCode: string, checked: boolean) => void;
-  onToggleBlocked: (supplierCode: string, checked: boolean) => void;
+  onToggleAnalytics: (code: string, checked: boolean) => void;
+  onToggleBlocked: (code: string, checked: boolean) => void;
+  onEdit?: (supplier: SuppliersSchema) => void;
+  onDelete?: (code: string) => void;
 }
 
-export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked }: SuppliersTableProps) {
+export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, onEdit, /*onDelete*/ }: SuppliersTableProps) {
   const table = useReactTable({
     data: suppliers,
     columns: [
@@ -34,6 +43,33 @@ export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked }
       { accessorKey: "analytics", header: "Analytics" },
       { accessorKey: "blocked", header: "Blocked" },
       { accessorKey: "comments", header: "Comments" },
+      { 
+        id: "actions", 
+        header: "Actions",
+        cell: ({ row }) => (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => onEdit?.(row.original)}>
+                <Edit className="mr-2 h-4 w-4" />
+                Edit
+              </DropdownMenuItem>
+              {/* <DropdownMenuItem 
+                onClick={() => onDelete?.(row.original.code)}
+                className="text-red-600"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete
+              </DropdownMenuItem> */}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      },
     ],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -59,6 +95,7 @@ export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked }
               <TableHead>Analytics</TableHead>
               <TableHead>Blocked</TableHead>
               <TableHead>Comments</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -83,6 +120,29 @@ export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked }
                   />
                 </TableCell>
                 <TableCell>{row.original.comments}</TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => onEdit?.(row.original)}>
+                        <Edit className="mr-2 h-4 w-4" />
+                        Edit
+                      </DropdownMenuItem>
+                      {/* <DropdownMenuItem 
+                        onClick={() => onDelete?.(row.original.code)}
+                        className="text-red-600"
+                      >
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Delete
+                      </DropdownMenuItem> */}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

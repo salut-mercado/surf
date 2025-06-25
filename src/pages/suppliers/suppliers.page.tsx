@@ -13,49 +13,48 @@ import {
 import { CreateSupplierForm } from "~/pages/suppliers/create-supplier-form";
 import { SuppliersTable } from "~/pages/suppliers/suppliers-table";
 import { useSuppliers } from "~/pages/suppliers/use-suppliers";
-import type { SuppliersSchema } from "@salut-mercado/octo-client";
+// import { useCreateSupplier } from "~/pages/suppliers/use-create-supplier";
+// import type { SuppliersSchema, CreateSppliersApiSuppliersPostRequest } from "@salut-mercado/octo-client";
+import { CreateSupplier } from "./use-create-supplier";
+import type { Suppliers } from "./use-create-supplier";
+
+
+
 
 export default function SuppliersPage() {
   const [open, setOpen] = useState(false);
-  const { suppliers, fetchSuppliers, createSupplier, toggleAnalytics, toggleBlocked } = useSuppliers();
-
-
-  const [newSupplier, setNewSupplier] = useState<Partial<SuppliersSchema>>({
-    agent: "",
-    code: "",
-    name: "",
-    phone: "",
-    delayDays: 1,
-    analytics: true,
-    blocked: false,
-    comments: "",
-    taxID: "",
-  });
+  const { suppliers, fetchSuppliers, toggleAnalytics, toggleBlocked } = useSuppliers();
+  // const { mutateAsync: createSupplier } = useCreateSupplier();
 
   useEffect(() => {
-    console.log('Component mounted, fetching suppliers...');
     fetchSuppliers();
   }, [fetchSuppliers]);
 
-  const handleCreateSupplier = async () => {
+  const handleCreateSupplier = async (data: { code: string; name: string; agent: string; phone: string; delayDays: number; taxID: string; blocked: boolean; analytics: boolean; comments: string }) => {
     try {
-      await createSupplier(newSupplier);
+      await CreateSupplier(data)
+      console.log("Поставщик создан")
+      // await createSupplier(requestData);
       setOpen(false);
-      setNewSupplier({
-        agent: "",
-        code: "",
-        name: "",
-        phone: "",
-        delayDays: 1,
-        analytics: true,
-        blocked: false,
-        comments: "",
-        taxID: "",
-      });
+      await fetchSuppliers();
     } catch (err) {
       console.error('Error:', err);
     }
   };
+
+  const handleEditSupplier = (supplier: Suppliers) => {
+    console.log('Редактировать поставщика:', supplier);
+    // Здесь можно открыть модальное окно для редактирования
+  };
+
+  // const handleDeleteSupplier = async (code: string) => {
+  //   if (confirm('Вы уверены, что хотите удалить этого поставщика?')) {
+  //     console.log('Удалить поставщика с кодом:', code);
+  //     // Здесь можно добавить API вызов для удаления
+  //     // await deleteSupplier(code);
+  //     // await fetchSuppliers();
+  //   }
+  // };
 
   return (
     <div className="container mx-auto p-6">
@@ -80,11 +79,7 @@ export default function SuppliersPage() {
                     Fill in the supplier information. All fields are required.
                   </DialogDescription>
                 </DialogHeader>
-                <CreateSupplierForm
-                  newSupplier={newSupplier}
-                  setNewSupplier={setNewSupplier}
-                  onSubmit={handleCreateSupplier}
-                />
+                <CreateSupplierForm onSubmit={handleCreateSupplier} />
               </DialogContent>
             </Dialog>
           </div>
@@ -94,6 +89,8 @@ export default function SuppliersPage() {
             suppliers={suppliers}
             onToggleAnalytics={toggleAnalytics}
             onToggleBlocked={toggleBlocked}
+            onEdit={handleEditSupplier}
+            // onDelete={handleDeleteSupplier}
           />
         </CardContent>
       </Card>
