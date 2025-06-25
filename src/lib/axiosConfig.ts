@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-export const api = axios.create({
+export const apiAxios = axios.create({
     baseURL: '/api',
     timeout: 5000,
     headers: {
