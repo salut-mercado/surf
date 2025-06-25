@@ -4,7 +4,7 @@ import type {GetCategoriesHandlerApiCategoriesGetRequest} from "~/lib/.generated
 
 export const useCategories = (params: GetCategoriesHandlerApiCategoriesGetRequest) => {
     return useQuery({
-        queryKey: ["category", JSON.stringify(params)],
+        queryKey: ["categories", JSON.stringify(params)],
         queryFn: () => api.categories.getCategoriesHandlerApiCategoriesGet(params)
     });
 };
