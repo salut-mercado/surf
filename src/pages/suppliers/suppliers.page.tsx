@@ -15,8 +15,11 @@ import { SuppliersTable } from "~/pages/suppliers/suppliers-table";
 import { useSuppliers } from "~/pages/suppliers/use-suppliers";
 // import { useCreateSupplier } from "~/pages/suppliers/use-create-supplier";
 // import type { SuppliersSchema, CreateSppliersApiSuppliersPostRequest } from "@salut-mercado/octo-client";
-import { CreateSupplier } from "./use-create-supplier";
-import type { Suppliers } from "./use-create-supplier";
+import { CreateSupplier, PutSupplier } from "./use-create-supplier";
+import type { Suppliers, UpdateSuppliers } from "./use-create-supplier";
+// import type { SuppliersSchema } from "@salut-mercado/octo-client";
+import type { SuppliersTableData } from "./suppliers-table";
+
 
 
 
@@ -24,15 +27,17 @@ import type { Suppliers } from "./use-create-supplier";
 export default function SuppliersPage() {
   const [open, setOpen] = useState(false);
   const { suppliers, fetchSuppliers, toggleAnalytics, toggleBlocked } = useSuppliers();
+  const [selectedSupplier, setSelectedSupplier] = useState<SuppliersTableData | null>(null);
+  const [editOpen, setEditOpen] = useState(false);
   // const { mutateAsync: createSupplier } = useCreateSupplier();
 
   useEffect(() => {
     fetchSuppliers();
   }, [fetchSuppliers]);
 
-  const handleCreateSupplier = async (data: { code: string; name: string; agent: string; phone: string; delayDays: number; taxID: string; blocked: boolean; analytics: boolean; comments: string }) => {
+  const handleCreateSupplier = async (data: Suppliers | UpdateSuppliers) => {
     try {
-      await CreateSupplier(data)
+      await CreateSupplier(data as Suppliers)
       console.log("Поставщик создан")
       // await createSupplier(requestData);
       setOpen(false);
@@ -42,9 +47,21 @@ export default function SuppliersPage() {
     }
   };
 
-  const handleEditSupplier = (supplier: Suppliers) => {
-    console.log('Редактировать поставщика:', supplier);
-    // Здесь можно открыть модальное окно для редактирования
+  const handleEditSupplier = (supplier: SuppliersTableData) => {
+    setSelectedSupplier(supplier);
+    setEditOpen(true);
+  };
+
+  const handleUpdateSupplier = async (data: UpdateSuppliers) => {
+    if (!selectedSupplier) return;
+    try {
+      await PutSupplier(data, selectedSupplier.id);
+      setEditOpen(false);
+      setSelectedSupplier(null);
+      await fetchSuppliers();
+    } catch (err) {
+      console.error('Error updating supplier:', err);
+    }
   };
 
   // const handleDeleteSupplier = async (code: string) => {
@@ -94,6 +111,25 @@ export default function SuppliersPage() {
           />
         </CardContent>
       </Card>
+      
+      {/* Edit Dialog */}
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Edit Supplier</DialogTitle>
+            <DialogDescription>
+              Update the supplier information.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedSupplier && (
+            <CreateSupplierForm 
+              onSubmit={handleUpdateSupplier}
+              initialValues={selectedSupplier}
+              submitLabel="Update Supplier"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 } 

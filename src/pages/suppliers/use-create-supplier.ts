@@ -11,10 +11,12 @@
 //   });
 // } 
 
-import { api } from '~/lib/axiosConfig'
+import { apiAxios } from '~/lib/axiosConfig'
+
 
 
 export interface Suppliers {
+  id: string,
   code: string,
   name: string,
   agent: string,
@@ -26,10 +28,31 @@ export interface Suppliers {
   comments: string
 }
 
+export interface UpdateSuppliers {
+  code?: string,
+  name?: string,
+  agent?: string,
+  phone?: string,
+  delayDays?: number,
+  taxID?: string,
+  blocked?: boolean,
+  analytics?: boolean,
+  comments?: string
+}
+
 export function CreateSupplier(data: Suppliers){
-  return api.post('/suppliers/', data)
-  .then(response => response.data)
-  .catch(error => {
-      console.log("Ошибка создания поставщика" , error.response.data)
-  })
+  return apiAxios.post('/suppliers/', data)
+    .then(response => response.data)
+    .catch(error => {
+      console.log("Ошибка создания поставщика", error?.response?.data || error);
+    });
+}
+
+
+export function PutSupplier(data: UpdateSuppliers, id: string){
+  return apiAxios.put(`/suppliers/${id}`, data)
+    .then(response => response.data)
+    .catch(error => {
+      console.log("Ошибка обновления поставщика", error?.response?.data || error);
+    });
 }
