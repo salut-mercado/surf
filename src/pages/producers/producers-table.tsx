@@ -16,10 +16,10 @@ import {
 
 interface ProducersTableProps {
     producers: FirmsProducerSchema[];
+    onRowClick?: (producer: FirmsProducerSchema) => void;
 }
 
-
-export function ProducersTable({producers}: ProducersTableProps) {
+export function ProducersTable({ producers, onRowClick }: ProducersTableProps) {
     const table = useReactTable({
         data: producers,
         columns: [
@@ -49,7 +49,11 @@ export function ProducersTable({producers}: ProducersTableProps) {
                     </TableHeader>
                     <TableBody>
                         {table.getRowModel().rows.map((row) => (
-                            <TableRow key={row.original.name}>
+                            <TableRow
+                                key={row.original.taxID}
+                                className="cursor-pointer hover:bg-gray-50"
+                                onClick={() => onRowClick && onRowClick(row.original)}
+                            >
                                 <TableCell>{row.original.name}</TableCell>
                                 <TableCell>{row.original.taxID}</TableCell>
                                 <TableCell>{row.original.minimumStock}</TableCell>

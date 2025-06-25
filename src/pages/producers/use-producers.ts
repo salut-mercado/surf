@@ -1,4 +1,3 @@
-
 import {useQuery} from "@tanstack/react-query";
 import {api} from "~/lib/api.ts";
 import type {GetFirmsProducerHandlerApiFirmsProducerGetRequest} from "~/lib/.generated/client";

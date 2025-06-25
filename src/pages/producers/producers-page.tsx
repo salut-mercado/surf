@@ -11,7 +11,6 @@ import {useState} from "react";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -19,41 +18,62 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 
-import type {
-    FirmsProducerSchema
-} from "~/lib/.generated/client";
+import type {FirmsProducerSchema, UpdateFirmProducerHandlerApiFirmsProducerIdPutRequest} from "~/lib/.generated/client";
 import {useProducers} from "~/pages/producers/use-producers.ts";
 import {ProducersTable} from "~/pages/producers/producers-table.tsx";
 import { useCreateProducer } from "~/pages/producers/use-create-producer.ts";
+import {useUpdateProducer} from "~/pages/producers/use-update-producers.ts";
+
+
+type ProducerWithId = FirmsProducerSchema & { id: string };
 
 export default function ProducersPage() {
-    const [open, setOpen] = useState(false);
+    const [openCreate, setOpenCreate] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
+
     const {data: producers = [], refetch} = useProducers({});
     const createMutation = useCreateProducer();
+    const updateMutation = useUpdateProducer();
 
-    const [newProducer, setNewProducer] = useState<FirmsProducerSchema>({
+    const [newProducer, setNewProducer] = useState({
         name: "",
         taxID: "",
         minimumStock: 0,
     });
 
+
+    const [selectedProducer, setSelectedProducer] = useState<ProducerWithId | null>(null);
+
     const handleCreateProducer = async () => {
         try {
-            const requestData = {
-                firmsProducerSchema: newProducer
-            };
-
+            const requestData = {firmsProducerSchema: newProducer};
             await createMutation.mutateAsync(requestData);
-
             refetch();
-            setOpen(false);
-            setNewProducer({
-                name: "",
-                taxID: "",
-                minimumStock: 0,
-            });
+            setOpenCreate(false);
+            setNewProducer({name: "", taxID: "", minimumStock: 0});
         } catch (err) {
             console.error("Error creating producer:", err);
+        }
+    };
+
+    const handleEditProducer = async () => {
+        if (!selectedProducer) return;
+
+        try {
+            const requestData: UpdateFirmProducerHandlerApiFirmsProducerIdPutRequest = {
+                id: selectedProducer.id,
+                firmsProducerUpdateSchema: {
+                    name: selectedProducer.name,
+                    minimumStock: selectedProducer.minimumStock
+                }
+            };
+
+            await updateMutation.mutateAsync(requestData);
+            refetch();
+            setOpenEdit(false);
+            setSelectedProducer(null);
+        } catch (err) {
+            console.error("Error updating producer:", err);
         }
     };
 
@@ -66,7 +86,7 @@ export default function ProducersPage() {
                             <CardTitle>Producers</CardTitle>
                             <CardDescription>Manage producer data and inventory requirements</CardDescription>
                         </div>
-                        <Dialog open={open} onOpenChange={setOpen}>
+                        <Dialog open={openCreate} onOpenChange={setOpenCreate}>
                             <DialogTrigger asChild>
                                 <Button>
                                     <Plus className="h-4 w-4 mr-2"/>
@@ -76,44 +96,31 @@ export default function ProducersPage() {
                             <DialogContent className="sm:max-w-[425px]">
                                 <DialogHeader>
                                     <DialogTitle>Add New Producer</DialogTitle>
-                                    <DialogDescription>
-                                        Fill in the producer information.
-                                    </DialogDescription>
                                 </DialogHeader>
                                 <div className="space-y-4 py-4">
                                     <div className="space-y-2">
-                                        <Label htmlFor="name">Name</Label>
+                                        <Label>Name</Label>
                                         <Input
-                                            id="name"
-                                            placeholder="Producer name"
                                             value={newProducer.name}
                                             onChange={(e) => setNewProducer({...newProducer, name: e.target.value})}
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="taxID">Tax ID</Label>
+                                        <Label>Tax ID</Label>
                                         <Input
-                                            id="taxID"
-                                            placeholder="Tax identification number"
                                             value={newProducer.taxID}
                                             onChange={(e) => setNewProducer({...newProducer, taxID: e.target.value})}
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="minimumStock">Minimum Stock</Label>
+                                        <Label>Minimum Stock</Label>
                                         <Input
-                                            id="minimumStock"
                                             type="number"
                                             min={0}
                                             value={newProducer.minimumStock}
                                             onChange={(e) => {
-                                                const value = Number(e.target.value);
-                                                if (value >= 0) {
-                                                    setNewProducer({
-                                                        ...newProducer,
-                                                        minimumStock: value,
-                                                    });
-                                                }
+                                                const val = Number(e.target.value);
+                                                if (val >= 0) setNewProducer({...newProducer, minimumStock: val});
                                             }}
                                         />
                                     </div>
@@ -121,7 +128,7 @@ export default function ProducersPage() {
                                         onClick={handleCreateProducer}
                                         disabled={createMutation.isPending}
                                     >
-                                        {createMutation.isPending ? "Creating..." : "Create Producer"}
+                                        {createMutation.isPending ? "Creating..." : "Create"}
                                     </Button>
 
                                     {createMutation.isError && (
@@ -134,10 +141,79 @@ export default function ProducersPage() {
                         </Dialog>
                     </div>
                 </CardHeader>
+
                 <CardContent>
-                    <ProducersTable producers={producers}/>
+                    <ProducersTable
+                        producers={producers}
+                        onRowClick={(producer) => {
+                            setSelectedProducer(producer as ProducerWithId);
+                            setOpenEdit(true);
+                        }}
+                    />
                 </CardContent>
             </Card>
+
+
+            <Dialog open={openEdit} onOpenChange={(open) => {
+                if (!open) setSelectedProducer(null);
+                setOpenEdit(open);
+            }}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Edit Producer</DialogTitle>
+                    </DialogHeader>
+                    {selectedProducer && (
+                        <div className="space-y-4 py-4">
+                            <div className="space-y-2">
+                                <Label>Name</Label>
+                                <Input
+                                    value={selectedProducer.name}
+                                    onChange={(e) => setSelectedProducer({
+                                        ...selectedProducer,
+                                        name: e.target.value
+                                    })}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Tax ID</Label>
+                                <Input
+                                    value={selectedProducer.taxID}
+                                    disabled
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Minimum Stock</Label>
+                                <Input
+                                    type="number"
+                                    min={0}
+                                    value={selectedProducer.minimumStock}
+                                    onChange={(e) => {
+                                        const val = Number(e.target.value);
+                                        if (val >= 0) {
+                                            setSelectedProducer({
+                                                ...selectedProducer,
+                                                minimumStock: val
+                                            });
+                                        }
+                                    }}
+                                />
+                            </div>
+                            <Button
+                                onClick={handleEditProducer}
+                                disabled={updateMutation.isPending}
+                            >
+                                {updateMutation.isPending ? "Saving..." : "Save"}
+                            </Button>
+
+                            {updateMutation.isError && (
+                                <div className="text-red-500 text-sm">
+                                    Error: {updateMutation.error.message}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
