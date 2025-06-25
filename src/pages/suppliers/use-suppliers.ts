@@ -1,9 +1,10 @@
 import { useState, useCallback } from "react";
-import type { SuppliersSchema } from "@salut-mercado/octo-client";
+// import type { SuppliersSchema } from "@salut-mercado/octo-client";
 import { api } from "~/lib/api";
+import type { SuppliersTableData } from "./suppliers-table";
 
 export function useSuppliers() {
-  const [suppliers, setSuppliers] = useState<SuppliersSchema[]>([]);
+  const [suppliers, setSuppliers] = useState<SuppliersTableData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,12 +31,12 @@ export function useSuppliers() {
     }
   }, []);
 
-  const toggleAnalytics = async (supplierCode: string, checked: boolean) => {
+  const toggleAnalytics = async (supplierId: string, checked: boolean) => {
     setLoading(true);
     setError(null);
     try {
       setSuppliers(prev => prev.map(supplier => 
-        supplier.code === supplierCode 
+        supplier.id === supplierId 
           ? { ...supplier, analytics: checked }
           : supplier
       ));
@@ -47,12 +48,12 @@ export function useSuppliers() {
     }
   };
 
-  const toggleBlocked = async (supplierCode: string, checked: boolean) => {
+  const toggleBlocked = async (supplierId: string, checked: boolean) => {
     setLoading(true);
     setError(null);
     try {
       setSuppliers(prev => prev.map(supplier => 
-        supplier.code === supplierCode 
+        supplier.id === supplierId 
           ? { ...supplier, blocked: checked }
           : supplier
       ));

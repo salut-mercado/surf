@@ -15,19 +15,31 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { MoreHorizontal, Edit, /*Trash2*/ } from "lucide-react";
-import type { SuppliersSchema } from "@salut-mercado/octo-client";
 import {
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
+export type SuppliersTableData = {
+  id: string,
+  code: string,
+  name: string,
+  agent: string,
+  phone: string,
+  taxID: string,
+  delayDays: number,
+  analytics: boolean,
+  comments: string,
+  blocked: boolean,
+}
+
 interface SuppliersTableProps {
-  suppliers: SuppliersSchema[];
-  onToggleAnalytics: (code: string, checked: boolean) => void;
-  onToggleBlocked: (code: string, checked: boolean) => void;
-  onEdit?: (supplier: SuppliersSchema) => void;
-  onDelete?: (code: string) => void;
+  suppliers: SuppliersTableData[];
+  onToggleAnalytics: (id: string, checked: boolean) => void;
+  onToggleBlocked: (id: string, checked: boolean) => void;
+  onEdit?: (supplier: SuppliersTableData) => void;
+  onDelete?: (id: string) => void;
 }
 
 export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, onEdit, /*onDelete*/ }: SuppliersTableProps) {
@@ -100,7 +112,7 @@ export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, 
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.original.code}>
+              <TableRow key={row.original.id}>
                 <TableCell>{row.original.code}</TableCell>
                 <TableCell>{row.original.name}</TableCell>
                 <TableCell>{row.original.agent}</TableCell>
@@ -110,13 +122,13 @@ export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, 
                 <TableCell>
                   <Switch
                     checked={row.original.analytics}
-                    onCheckedChange={(checked) => onToggleAnalytics(row.original.code, checked)}
+                    onCheckedChange={(checked) => onToggleAnalytics(row.original.id, checked)}
                   />
                 </TableCell>
                 <TableCell>
                   <Switch
                     checked={row.original.blocked}
-                    onCheckedChange={(checked) => onToggleBlocked(row.original.code, checked)}
+                    onCheckedChange={(checked) => onToggleBlocked(row.original.id, checked)}
                   />
                 </TableCell>
                 <TableCell>{row.original.comments}</TableCell>

@@ -3,19 +3,23 @@ import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { Checkbox } from "~/components/ui/checkbox";
 import { useForm } from "@tanstack/react-form";
-import type { SuppliersSchema } from "@salut-mercado/octo-client";
+// import type { SuppliersSchema } from "@salut-mercado/octo-client";
+import type { UpdateSuppliers } from "./use-create-supplier";
+import type { SuppliersTableData } from "./suppliers-table";
 
 interface CreateSupplierFormProps {
-  onSubmit: (data: SuppliersSchema) => void;
+  onSubmit: (data: SuppliersTableData | UpdateSuppliers) => void;
+  initialValues?: SuppliersTableData;
+  submitLabel?: string;
 }
 
 // const randomString = () => {
 //   return Math.random().toString(36).substring(2, 15);
 // };
 
-export function CreateSupplierForm({ onSubmit }: CreateSupplierFormProps) {
+export function CreateSupplierForm({ onSubmit, initialValues, submitLabel = "Create Supplier" }: CreateSupplierFormProps) {
   const form = useForm({
-    defaultValues: {
+    defaultValues: initialValues || {
       code: "",
       name: "",
       agent: "",
@@ -204,7 +208,7 @@ export function CreateSupplierForm({ onSubmit }: CreateSupplierFormProps) {
         selector={(state) => state.canSubmit}
         children={(canSubmit) => (
           <Button type="submit" className="w-full" disabled={!canSubmit}>
-            Create Supplier
+            {submitLabel}
           </Button>
         )}
       />
