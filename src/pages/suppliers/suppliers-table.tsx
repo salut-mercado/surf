@@ -20,6 +20,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useState, useMemo } from "react";
 
 export type SuppliersTableData = {
   id: string,
@@ -43,8 +44,18 @@ interface SuppliersTableProps {
 }
 
 export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, onEdit, /*onDelete*/ }: SuppliersTableProps) {
+  const [filterField, setFilterField] = useState<keyof SuppliersTableData>("code");
+  const [filterValue, setFilterValue] = useState("");
+
+  const filteredSuppliers = useMemo(() => {
+    if (!filterValue) return suppliers;
+    return suppliers.filter(supplier =>
+      String(supplier[filterField]).toLowerCase().includes(filterValue.toLowerCase())
+    );
+  }, [suppliers, filterField, filterValue]);
+
   const table = useReactTable({
-    data: suppliers,
+    data: filteredSuppliers,
     columns: [
       { accessorKey: "code", header: "Code" },
       { accessorKey: "name", header: "Name" },
@@ -94,6 +105,28 @@ export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, 
 
   return (
     <div>
+      <div className="flex items-center gap-2 mb-4">
+        <select
+          value={filterField}
+          onChange={e => setFilterField(e.target.value as keyof SuppliersTableData)}
+          className="border rounded px-2 py-1"
+        >
+          <option value="code">Code</option>
+          <option value="name">Name</option>
+          <option value="agent">Agent</option>
+          <option value="phone">Phone</option>
+          <option value="taxID">Tax ID</option>
+          <option value="delayDays">Delay Days</option>
+          <option value="comments">Comments</option>
+        </select>
+        <input
+          type="text"
+          value={filterValue}
+          onChange={e => setFilterValue(e.target.value)}
+          placeholder="Введите значение для поиска"
+          className="border rounded px-2 py-1"
+        />
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
