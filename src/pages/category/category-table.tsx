@@ -16,13 +16,10 @@ import {
     DropdownMenuTrigger
 } from "@radix-ui/react-dropdown-menu";
 import {useState} from "react";
+import type {CategorySchema} from "@salut-mercado/octo-client";
 
-export type CategoryWithId = {
-    id: string;
-    categoryName: string;
-    level: number;
-    parentCategoryId?: string | null;
-};
+export type CategoryWithId = CategorySchema & { id: string };
+
 
 interface CategoriesTableProps {
     categories: CategoryWithId[];
@@ -45,7 +42,7 @@ export function CategoriesTable({ categories, onRowClick }: CategoriesTableProps
     const getParentName = (parentId?: string | null) => {
         if (!parentId) return "-";
         const parent = categories.find((cat) => cat.id === parentId);
-        return parent?.categoryName || "-";
+        return parent?.categoryName;
     };
 
     const buildTree = (parentId: string | null = null, level = 0): CategoryWithId[] => {

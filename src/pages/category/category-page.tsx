@@ -15,8 +15,8 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "~/components/ui/dialog";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
+import {Input} from "~/components/ui/input";
+import {Label} from "~/components/ui/label";
 import {
     Select,
     SelectContent,
@@ -25,19 +25,23 @@ import {
     SelectValue,
 } from "~/components/ui/select";
 
-import { useCategories } from "~/pages/category/use-category.ts";
-import { CategoriesTable } from "~/pages/category/category-table";
-import { useCreateCategories } from "~/pages/category/use-create-category";
-import { useUpdateCategories } from "~/pages/category/use-update-category";
-import type {CategorySchema, UpdateCategoryHandlerApiCategoriesCategoriesIdPutRequest} from "@salut-mercado/octo-client";
+import {useCategories} from "~/pages/category/use-category.ts";
+import {CategoriesTable} from "~/pages/category/category-table";
+import {useCreateCategories} from "~/pages/category/use-create-category";
+import {useUpdateCategories} from "~/pages/category/use-update-category";
+import type {
+    CategorySchema,
+    UpdateCategoryHandlerApiCategoriesCategoriesIdPutRequest
+} from "@salut-mercado/octo-client";
 
 export type CategoryWithId = CategorySchema & { id: string };
 
 export default function CategoriesPage() {
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const { data: categories = [], refetch } = useCategories({});
+    const {data: categories = [], refetch} = useCategories({});
     const createMutation = useCreateCategories();
     const updateMutation = useUpdateCategories();
 
@@ -68,10 +72,17 @@ export default function CategoriesPage() {
                 }
             };
 
+            const nameExists = categories.some((cat : CategoryWithId)  => cat.categoryName.toLowerCase() === newCategory.categoryName.trim().toLowerCase());
+
+            if (nameExists) {
+                setError("Category name already exists");
+                return;
+            }
+
             await createMutation.mutateAsync(requestData);
             refetch();
             setOpenCreate(false);
-            setNewCategory({ categoryName: "", parentCategoryId: null });
+            setNewCategory({categoryName: "", parentCategoryId: null});
         } catch (err) {
             console.error("Error creating category:", err);
         }
@@ -87,6 +98,13 @@ export default function CategoriesPage() {
                     categoryName: selectedCategory.categoryName
                 }
             };
+
+            const nameExists = categories.some((cat : CategoryWithId)  => cat.categoryName.toLowerCase() === selectedCategory.categoryName.trim().toLowerCase());
+
+            if (nameExists) {
+                setError("Category name already exists");
+                return;
+            }
 
             await updateMutation.mutateAsync(requestData);
             refetch();
@@ -122,7 +140,13 @@ export default function CategoriesPage() {
                                         <Label>Category Name</Label>
                                         <Input
                                             value={newCategory.categoryName}
-                                            onChange={(e) => setNewCategory({...newCategory, categoryName: e.target.value})}
+                                            onChange={(e) => {
+                                                setNewCategory({
+                                                    ...newCategory,
+                                                    categoryName: e.target.value
+                                                });
+                                                if (error) setError(null);
+                                            }}
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -137,7 +161,7 @@ export default function CategoriesPage() {
                                             }
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Select parent category" />
+                                                <SelectValue placeholder="Select parent category"/>
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="root">Root Category (Level 0)</SelectItem>
@@ -155,7 +179,11 @@ export default function CategoriesPage() {
                                     >
                                         {createMutation.isPending ? "Creating..." : "Create"}
                                     </Button>
-
+                                    {error && (
+                                        <div className="text-red-500 text-sm mt-2">
+                                            {error}
+                                        </div>
+                                    )}
                                     {createMutation.isError && (
                                         <div className="text-red-500 text-sm">
                                             Error: {createMutation.error.message}
@@ -193,10 +221,13 @@ export default function CategoriesPage() {
                                 <Label>Category Name</Label>
                                 <Input
                                     value={selectedCategory.categoryName}
-                                    onChange={(e) => setSelectedCategory({
-                                        ...selectedCategory,
-                                        categoryName: e.target.value
-                                    })}
+                                    onChange={(e) => {
+                                        setSelectedCategory({
+                                            ...selectedCategory,
+                                            categoryName: e.target.value,
+                                        });
+                                        if (error) setError(null);
+                                    }}
                                 />
                             </div>
                             <Button
@@ -205,7 +236,11 @@ export default function CategoriesPage() {
                             >
                                 {updateMutation.isPending ? "Saving..." : "Save"}
                             </Button>
-
+                            {error && (
+                                <div className="text-red-500 text-sm mt-2">
+                                    {error}
+                                </div>
+                            )}
                             {updateMutation.isError && (
                                 <div className="text-red-500 text-sm">
                                     Error: {updateMutation.error.message}
