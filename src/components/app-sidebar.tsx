@@ -51,7 +51,7 @@ const data = {
         },
         {
             title: "Categories",
-            url: "#",
+            url: "/categories",
             icon: IconChartBar,
         },
         {
