@@ -109,7 +109,7 @@ export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, 
         <select
           value={filterField}
           onChange={e => setFilterField(e.target.value as keyof SuppliersTableData)}
-          className="border rounded px-2 py-1"
+          className="border rounded px-2 py-1 bg-white text-black dark:bg-zinc-900 dark:text-white focus:outline-none"
         >
           <option value="code">Code</option>
           <option value="name">Name</option>
@@ -123,8 +123,8 @@ export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, 
           type="text"
           value={filterValue}
           onChange={e => setFilterValue(e.target.value)}
-          placeholder="Введите значение для поиска"
-          className="border rounded px-2 py-1"
+          placeholder="Search"
+          className="border rounded px-2 py-1 bg-white text-black dark:bg-zinc-900 dark:text-white focus:outline-none"
         />
       </div>
       <div className="rounded-md border">
@@ -164,7 +164,9 @@ export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, 
                     onCheckedChange={(checked) => onToggleBlocked(row.original.id, checked)}
                   />
                 </TableCell>
-                <TableCell>{row.original.comments}</TableCell>
+                <TableCell className="max-w-[180px] truncate whitespace-nowrap overflow-hidden">
+                  {row.original.comments}
+                </TableCell>
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
