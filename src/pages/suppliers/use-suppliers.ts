@@ -12,7 +12,7 @@ export function useSuppliers() {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.suppliers.getSuppliersApiSuppliersGet({
+      const response = await api.suppliers.getSupplierHandlerApiSuppliersGet({
         skip: 0,
         limit: 100,
       });

@@ -1,5 +1,6 @@
 // import { useMutation } from "@tanstack/react-query";
-// import { api } from "~/lib/api";
+import { api } from "~/lib/api";
+import type { SupplierSchema, SupplierUpdateSchema } from "@salut-mercado/octo-client";
 // import type { CreateSppliersApiSuppliersPostRequest } from "@salut-mercado/octo-client";
 
 // export function useCreateSupplier() {
@@ -10,10 +11,6 @@
 //     },
 //   });
 // } 
-
-import { apiAxios } from '~/lib/axiosConfig'
-
-
 
 export interface Suppliers {
   id: string,
@@ -40,19 +37,16 @@ export interface UpdateSuppliers {
   comments?: string
 }
 
-export function CreateSupplier(data: Suppliers){
-  return apiAxios.post('/suppliers/', data)
-    .then(response => response.data)
+export function CreateSupplier(data: SupplierSchema) {
+  return api.suppliers.addSupplierHandlerApiSuppliersPost({ supplierSchema: data })
     .catch(error => {
-      console.log("Ошибка создания поставщика", error?.response?.data || error);
+      console.log("Ошибка создания поставщика", error);
     });
 }
 
-
-export function PutSupplier(data: UpdateSuppliers, id: string){
-  return apiAxios.put(`/suppliers/${id}`, data)
-    .then(response => response.data)
+export function PutSupplier(data: SupplierUpdateSchema, id: string) {
+  return api.suppliers.updateSupplerHandlerApiSuppliersIdPut({ id, supplierUpdateSchema: data })
     .catch(error => {
-      console.log("Ошибка обновления поставщика", error?.response?.data || error);
+      console.log("Ошибка обновления поставщика", error);
     });
 }
