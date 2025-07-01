@@ -1,7 +1,8 @@
 
 import {api} from "~/lib/api.ts";
-import type {CreateFirmProducerHandlerApiFirmsProducerPostRequest} from "~/lib/.generated/client";
+import type {CreateFirmProducerHandlerApiFirmsProducerPostRequest} from "@salut-mercado/octo-client";
 import {useMutation} from "@tanstack/react-query";
+
 
 export const useCreateProducer = () => {
     return useMutation({

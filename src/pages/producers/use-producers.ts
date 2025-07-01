@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import {api} from "~/lib/api.ts";
-import type {GetFirmsProducerHandlerApiFirmsProducerGetRequest} from "~/lib/.generated/client";
+import type {GetFirmsProducerHandlerApiFirmsProducerGetRequest} from "@salut-mercado/octo-client";
 
 export const useProducers = (params: GetFirmsProducerHandlerApiFirmsProducerGetRequest) => {
     return useQuery({
