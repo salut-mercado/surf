@@ -35,7 +35,7 @@ export default function ChatWindow({messages, setMessages} : ChatWindowProps) {
     setTimeout(() => {
       setMessages(prev => [
         ...prev,
-        { role: "Bot", text: `Вы сказали: ${text}` }
+        { role: "Bot", text: `U said: ${text}` }
       ]);
       setIsBotTyping(false);
     }, 900);
@@ -69,7 +69,7 @@ export default function ChatWindow({messages, setMessages} : ChatWindowProps) {
       }}>
         {messages.filter(m => m.role !== 'System').length === 0 && (
           <div style={{ color: '#888', fontSize: 14, textAlign: 'center', marginTop: 40 }}>
-            Нет сообщений
+            There are no messages
           </div>
         )}
         {messages.map((msg, idx) => (
@@ -126,7 +126,7 @@ export default function ChatWindow({messages, setMessages} : ChatWindowProps) {
       <div style={{ display: 'flex', gap: 8 }}>
         <input
           type="text"
-          placeholder="Введите сообщение..."
+          placeholder="Enter something..."
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -147,7 +147,7 @@ export default function ChatWindow({messages, setMessages} : ChatWindowProps) {
             fontSize: 15,
             opacity: isBotTyping || !input.trim() ? 0.7 : 1
           }}
-        >Отправить</button>
+        >Send</button>
       </div>
     </div>
   );

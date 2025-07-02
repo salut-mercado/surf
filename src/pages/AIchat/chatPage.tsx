@@ -7,7 +7,7 @@ import ChatWindow, { type Message } from "./ChatWindow";
 
 export function Chat() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([{ role: "System", text: "Привет! Я AI-бот. Задай мне вопрос." }]);
+  const [messages, setMessages] = useState<Message[]>([{ role: "System", text: "Hi! I'm SalutAI. Ask me a question." }]);
 
   return (
     <>
