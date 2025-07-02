@@ -17,17 +17,19 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import {useState} from "react";
 import type {CategorySchema} from "@salut-mercado/octo-client";
+import { Input } from "~/components/ui/input";
 
 export type CategoryWithId = CategorySchema & { id: string };
+
 
 
 interface CategoriesTableProps {
     categories: CategoryWithId[];
     onRowClick?: (category: CategoryWithId) => void;
 }
-
 export function CategoriesTable({ categories, onRowClick }: CategoriesTableProps) {
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+    const [search, setSearch] = useState("");
 
     const toggleExpand = (id: string) => {
         const newSet = new Set(expandedIds);
@@ -45,8 +47,12 @@ export function CategoriesTable({ categories, onRowClick }: CategoriesTableProps
         return parent?.categoryName;
     };
 
+    const filteredCategories = categories.filter(cat =>
+        cat.categoryName.toLowerCase().includes(search.toLowerCase())
+    );
+
     const buildTree = (parentId: string | null = null, level = 0): CategoryWithId[] => {
-        return categories
+        return filteredCategories
             .filter(cat => (cat.parentCategoryId || null) === parentId)
             .sort((a, b) => a.categoryName.localeCompare(b.categoryName))
             .flatMap(cat => {
@@ -61,6 +67,14 @@ export function CategoriesTable({ categories, onRowClick }: CategoriesTableProps
 
     return (
         <div>
+            <div className="p-2">
+                <Input
+                    className="w-80 text-sm"
+                    placeholder="Search category by name..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+            </div>
             <div className="rounded-md border">
                 <Table>
                     <TableHeader>
