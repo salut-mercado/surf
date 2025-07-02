@@ -1,11 +1,20 @@
 import { useState, useRef, useEffect } from "react";
 
-const initialMessages = [
-  { role: "system", text: "Привет! Я AI-бот. Задай мне вопрос." }
-];
 
-export default function ChatWindow() {
-  const [messages, setMessages] = useState(initialMessages);
+
+// const initialMessages = [
+//   { role: "system", text: "Привет! Я AI-бот. Задай мне вопрос." }
+// ];
+export interface Message {
+  role : "System" | "User" | "Bot",
+  text : string
+}
+interface ChatWindowProps {
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+}
+
+export default function ChatWindow({messages, setMessages} : ChatWindowProps) {
   const [input, setInput] = useState("");
   const [isBotTyping, setIsBotTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -19,14 +28,14 @@ export default function ChatWindow() {
     if (!text) return;
     setMessages(prev => [
       ...prev,
-      { role: "user", text }
+      { role: "User", text }
     ]);
     setInput("");
     setIsBotTyping(true);
     setTimeout(() => {
       setMessages(prev => [
         ...prev,
-        { role: "bot", text: `Вы сказали: ${text}` }
+        { role: "Bot", text: `Вы сказали: ${text}` }
       ]);
       setIsBotTyping(false);
     }, 900);
@@ -58,34 +67,34 @@ export default function ChatWindow() {
         flexDirection: 'column',
         gap: 8
       }}>
-        {messages.filter(m => m.role !== 'system').length === 0 && (
+        {messages.filter(m => m.role !== 'System').length === 0 && (
           <div style={{ color: '#888', fontSize: 14, textAlign: 'center', marginTop: 40 }}>
             Нет сообщений
           </div>
         )}
         {messages.map((msg, idx) => (
-          msg.role === 'system' ? (
+          msg.role === 'System' ? (
             <div key={idx} style={{ color: '#888', fontSize: 14, textAlign: 'center', margin: '8px 0' }}>{msg.text}</div>
           ) : (
             <div
               key={idx}
               style={{
                 display: 'flex',
-                justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
+                justifyContent: msg.role === 'User' ? 'flex-end' : 'flex-start',
               }}
             >
               <div
                 style={{
-                  background: msg.role === 'user'
+                  background: msg.role === 'User'
                     ? 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)'
                     : '#e5e7eb',
-                  color: msg.role === 'user' ? '#fff' : '#222',
+                  color: msg.role === 'User' ? '#fff' : '#222',
                   borderRadius: 16,
                   padding: '8px 14px',
                   maxWidth: '70%',
                   fontSize: 15,
-                  margin: msg.role === 'user' ? '2px 0 2px 40px' : '2px 40px 2px 0',
-                  boxShadow: msg.role === 'user'
+                  margin: msg.role === 'User' ? '2px 0 2px 40px' : '2px 40px 2px 0',
+                  boxShadow: msg.role === 'User'
                     ? '0 2px 8px rgba(106,17,203,0.08)'
                     : '0 2px 8px rgba(0,0,0,0.04)',
                   wordBreak: 'break-word',
