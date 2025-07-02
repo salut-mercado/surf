@@ -67,12 +67,12 @@ export function CategoriesTable({ categories, onRowClick }: CategoriesTableProps
 
     return (
         <div>
-            <div className="p-2">
+            <div className="py-2">
                 <Input
-                    className="w-80 text-sm"
-                    placeholder="Search category by name..."
+                    placeholder="Search by name..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
+                    className="w-64 h-8 text-sm"
                 />
             </div>
             <div className="rounded-md border">

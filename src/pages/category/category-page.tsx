@@ -165,11 +165,13 @@ export default function CategoriesPage() {
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="root">Root Category (Level 0)</SelectItem>
-                                                {categories.map((category: CategoryWithId) => (
-                                                    <SelectItem key={category.id} value={category.id}>
-                                                        {category.categoryName} (Level {category.level})
-                                                    </SelectItem>
-                                                ))}
+                                                {[...categories]
+                                                    .sort((a, b) => a.level - b.level)
+                                                    .map((category: CategoryWithId) => (
+                                                        <SelectItem key={category.id} value={category.id}>
+                                                            {category.categoryName} (Level {category.level})
+                                                        </SelectItem>
+                                                    ))}
                                             </SelectContent>
                                         </Select>
                                     </div>
