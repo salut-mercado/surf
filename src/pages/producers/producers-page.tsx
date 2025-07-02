@@ -30,6 +30,7 @@ type ProducerWithId = FirmsProducerSchema & { id: string };
 export default function ProducersPage() {
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [search, setSearch] = useState("");
 
     const {data: producers = [], refetch} = useProducers({});
     const createMutation = useCreateProducer();
@@ -57,6 +58,7 @@ export default function ProducersPage() {
             console.error("Error creating producer:", err);
         }
     };
+
 
     const handleEditProducer = async () => {
         if (!selectedProducer) return;
@@ -147,11 +149,21 @@ export default function ProducersPage() {
                             </DialogContent>
                         </Dialog>
                     </div>
+                    <div className="mt-2">
+                        <Input
+                            placeholder="Search by name..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="w-64 h-8 text-sm"
+                        />
+                    </div>
                 </CardHeader>
 
                 <CardContent>
                     <ProducersTable
-                        producers={producers}
+                        producers={producers.filter((p : ProducerWithId) =>
+                            p.name.toLowerCase().includes(search.toLowerCase())
+                        )}
                         onRowClick={(producer) => {
                             setSelectedProducer(producer as ProducerWithId);
                             setOpenEdit(true);
