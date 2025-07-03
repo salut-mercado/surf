@@ -47,9 +47,46 @@ export function CategoriesTable({ categories, onRowClick }: CategoriesTableProps
         return parent?.categoryName;
     };
 
-    const filteredCategories = categories.filter(cat =>
-        cat.categoryName.toLowerCase().includes(search.toLowerCase())
+    const getAncestors = (id: string, categories: CategoryWithId[], result = new Set<CategoryWithId>()) => {
+        const cat = categories.find(c => c.id === id);
+        if (cat && cat.parentCategoryId) {
+            const parent = categories.find(c => c.id === cat.parentCategoryId);
+            if (parent && !result.has(parent)) {
+                result.add(parent);
+                getAncestors(parent.id, categories, result);
+            }
+        }
+        return result;
+    };
+
+    const getDescendants = (id: string, categories: CategoryWithId[], result = new Set<CategoryWithId>()) => {
+        categories
+            .filter(c => c.parentCategoryId === id)
+            .forEach(child => {
+                if (!result.has(child)) {
+                    result.add(child);
+                    getDescendants(child.id, categories, result);
+                }
+            });
+        return result;
+    };
+
+    const lowerSearch = search.toLowerCase();
+
+    const matched = categories.filter(cat =>
+        cat.categoryName.toLowerCase().includes(lowerSearch)
     );
+
+    const enriched = new Set<CategoryWithId>();
+
+    matched.forEach(cat => {
+        enriched.add(cat);
+        getAncestors(cat.id, categories, enriched);
+        getDescendants(cat.id, categories, enriched);
+    });
+
+    const filteredCategories = categories.filter(cat => enriched.has(cat));
+
 
     const buildTree = (parentId: string | null = null, level = 0): CategoryWithId[] => {
         return filteredCategories
@@ -62,6 +99,8 @@ export function CategoriesTable({ categories, onRowClick }: CategoriesTableProps
                 return [{ ...cat, level }, ...children];
             });
     };
+
+
 
     const treeData = buildTree();
 
