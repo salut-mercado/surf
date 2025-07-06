@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import axios from "axios"
 
 
 
@@ -8,6 +9,19 @@ import { useState, useRef, useEffect } from "react";
 export interface Message {
   role : "System" | "User" | "Bot",
   text : string
+}
+
+interface SupplierItem {
+  id: string;
+  code: string;
+  name: string;
+  agent: string;
+  phone: string;
+  delayDays: number;
+  taxID: string;
+  blocked: boolean;
+  analytics: boolean;
+  comments: string;
 }
 interface ChatWindowProps {
   messages: Message[];
@@ -32,13 +46,94 @@ export default function ChatWindow({messages, setMessages} : ChatWindowProps) {
     ]);
     setInput("");
     setIsBotTyping(true);
-    setTimeout(() => {
+    try {
+      axios.get("http://localhost:8001/api/detect-service/", {
+        params: {
+          text: text
+        },
+        headers: {
+          'accept': 'application/json'
+        }
+      })
+        .then(response => {
+          console.log("Response:", response.data);
+          
+          let botResponse = "";
+                    
+          if (response.data.items && Array.isArray(response.data.items)) {
+              const items = response.data.items;
+              const total = response.data.total || items.length;
+              
+              if (items.length === 0) {
+                botResponse = "Suppliers not found";
+              } else {
+                botResponse = `Found suppliers: ${total}<br><br>`;
+                
+                items.forEach((item: SupplierItem, index: number) => {
+                  const status = item.blocked ? "🚫 blocked: true" : "✅ blocked: false";
+                  const analytics = item.analytics ? "📊 analytics: true" : "📊 analytics: false";
+                  
+                  botResponse += `${index + 1}. <strong>${item.name}</strong> (code: ${item.code})<br>`;
+                  botResponse += `agent: ${item.agent}<br>`;
+                  botResponse += `phone: ${item.phone}<br>`;
+                  botResponse += `taxID: ${item.taxID}<br>`;
+                  botResponse += `blocked: ${status}<br>`;
+                  botResponse += `${analytics}<br>`;
+                  if (item.comments) {
+                    botResponse += `comments: ${item.comments}<br>`;
+                  }
+                  botResponse += `delayDays: ${item.delayDays}<br><br>`;
+                });
+              }
+                        } else if (response.data.created || response.data.id) {
+              
+              botResponse = "✅ Supplier created successfully!<br><br>";
+              
+              if (response.data.id) {
+                botResponse += `<strong>New supplier details:</strong><br>`;
+                botResponse += `id: ${response.data.id}<br>`;
+                if (response.data.name) botResponse += `name: ${response.data.name}<br>`;
+                if (response.data.code) botResponse += `code: ${response.data.code}<br>`;
+                if (response.data.agent) botResponse += `agent: ${response.data.agent}<br>`;
+                if (response.data.phone) botResponse += `phone: ${response.data.phone}<br>`;
+                if (response.data.taxID) botResponse += `taxID: ${response.data.taxID}<br>`;
+                if (response.data.comments) botResponse += `comments: ${response.data.comments}<br>`;
+                if (response.data.delayDays !== undefined) botResponse += `delayDays: ${response.data.delayDays}<br>`;
+                if (response.data.blocked !== undefined) {
+                  const status = response.data.blocked ? "🚫 blocked: true" : "✅ blocked: false";
+                  botResponse += `blocked: ${status}<br>`;
+                }
+                if (response.data.analytics !== undefined) {
+                  const analytics = response.data.analytics ? "📊 analytics: true" : "📊 analytics: false";
+                  botResponse += `${analytics}<br>`;
+                }
+              }
+                      } else {
+              botResponse = "Received response from server but format not recognized";
+            }
+          
+          setMessages(prev => [
+            ...prev,
+            { role: "Bot", text: botResponse }
+          ]);
+          setIsBotTyping(false);
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          setMessages(prev => [
+            ...prev,
+            { role: "Bot", text: "Извините, произошла ошибка при обработке запроса." }
+          ]);
+          setIsBotTyping(false);
+        });
+    } catch (error) {
+      console.error("Error:", error);
       setMessages(prev => [
         ...prev,
-        { role: "Bot", text: `U said: ${text}` }
+        { role: "Bot", text: "Извините, произошла ошибка при отправке запроса." }
       ]);
       setIsBotTyping(false);
-    }, 900);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -100,7 +195,7 @@ export default function ChatWindow({messages, setMessages} : ChatWindowProps) {
                   wordBreak: 'break-word',
                 }}
               >
-                {msg.text}
+                <div dangerouslySetInnerHTML={{ __html: msg.text }} />
               </div>
             </div>
           )
