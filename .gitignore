@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 
 .npmrc
+
+.generated
+openapi.json
+package-lock.json
+openapitools.json

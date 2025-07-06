@@ -45,13 +45,13 @@ const data = {
             icon: IconDashboard,
         },
         {
-            title: "Lifecycle",
-            url: "#",
+            title: "Producers",
+            url: "/producers",
             icon: IconListDetails,
         },
         {
-            title: "Analytics",
-            url: "#",
+            title: "Categories",
+            url: "/categories",
             icon: IconChartBar,
         },
         {
