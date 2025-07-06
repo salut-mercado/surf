@@ -16,29 +16,28 @@ import {
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@radix-ui/react-dropdown-menu";
 import {Edit, MoreHorizontal} from "lucide-react";
 
+
 interface ProducersTableProps {
     producers: FirmsProducerSchema[];
     onRowClick?: (producer: FirmsProducerSchema) => void;
 }
 
-export function ProducersTable({producers, onRowClick}: ProducersTableProps) {
+export function ProducersTable({ producers, onRowClick }: ProducersTableProps) {
     const table = useReactTable({
-            data: [...producers].sort((a, b) => a.taxID.localeCompare(b.taxID)),
-            columns: [
-                {accessorKey: "name", header: "Name"},
-                {accessorKey: "taxID", header: "Tax ID"},
-                {accessorKey: "minimumStock", header: "Minimum Stock"},
-            ],
-
-            getCoreRowModel: getCoreRowModel(),
-            getPaginationRowModel: getPaginationRowModel(),
-            initialState: {
-                pagination: {
-                    pageSize: 5,
-                },
+        data: producers,
+        columns: [
+            {accessorKey: "name", header: "Name"},
+            {accessorKey: "taxID", header: "Tax ID"},
+            {accessorKey: "minimumStock", header: "Minimum Stock"},
+        ],
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        initialState: {
+            pagination: {
+                pageSize: 5,
             },
-        }
-    );
+        },
+    });
 
     return (
         <div>
