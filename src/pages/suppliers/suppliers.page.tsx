@@ -13,49 +13,65 @@ import {
 import { CreateSupplierForm } from "~/pages/suppliers/create-supplier-form";
 import { SuppliersTable } from "~/pages/suppliers/suppliers-table";
 import { useSuppliers } from "~/pages/suppliers/use-suppliers";
-import type { SuppliersSchema } from "@salut-mercado/octo-client";
+// import { useCreateSupplier } from "~/pages/suppliers/use-create-supplier";
+// import type { SuppliersSchema, CreateSppliersApiSuppliersPostRequest } from "@salut-mercado/octo-client";
+import { CreateSupplier, PutSupplier } from "./use-create-supplier";
+import type { Suppliers, UpdateSuppliers } from "./use-create-supplier";
+// import type { SuppliersSchema } from "@salut-mercado/octo-client";
+import type { SuppliersTableData } from "./suppliers-table";
+
+
+
+
 
 export default function SuppliersPage() {
   const [open, setOpen] = useState(false);
-  const { suppliers, fetchSuppliers, createSupplier, toggleAnalytics, toggleBlocked } = useSuppliers();
-
-
-  const [newSupplier, setNewSupplier] = useState<Partial<SuppliersSchema>>({
-    agent: "",
-    code: "",
-    name: "",
-    phone: "",
-    delayDays: 1,
-    analytics: true,
-    blocked: false,
-    comments: "",
-    taxID: "",
-  });
+  const { suppliers, fetchSuppliers, toggleAnalytics, toggleBlocked } = useSuppliers();
+  const [selectedSupplier, setSelectedSupplier] = useState<SuppliersTableData | null>(null);
+  const [editOpen, setEditOpen] = useState(false);
+  // const { mutateAsync: createSupplier } = useCreateSupplier();
 
   useEffect(() => {
-    console.log('Component mounted, fetching suppliers...');
     fetchSuppliers();
   }, [fetchSuppliers]);
 
-  const handleCreateSupplier = async () => {
+  const handleCreateSupplier = async (data: Suppliers | UpdateSuppliers) => {
     try {
-      await createSupplier(newSupplier);
+      await CreateSupplier(data as Suppliers)
+      console.log("Поставщик создан")
+      // await createSupplier(requestData);
       setOpen(false);
-      setNewSupplier({
-        agent: "",
-        code: "",
-        name: "",
-        phone: "",
-        delayDays: 1,
-        analytics: true,
-        blocked: false,
-        comments: "",
-        taxID: "",
-      });
+      await fetchSuppliers();
     } catch (err) {
       console.error('Error:', err);
     }
   };
+
+  const handleEditSupplier = (supplier: SuppliersTableData) => {
+    setSelectedSupplier(supplier);
+    setEditOpen(true);
+  };
+
+  const handleUpdateSupplier = async (data: UpdateSuppliers) => {
+    if (!selectedSupplier) return;
+    try {
+      await PutSupplier(data, selectedSupplier.id);
+      setEditOpen(false);
+      setSelectedSupplier(null);
+      await fetchSuppliers();
+    } catch (err) {
+      console.error('Error updating supplier:', err);
+    }
+  };
+
+  // const handleDeleteSupplier = async (code: string) => {
+  //   if (confirm('Вы уверены, что хотите удалить этого поставщика?')) {
+  //     console.log('Удалить поставщика с кодом:', code);
+  //     // Здесь можно добавить API вызов для удаления
+  //     // await deleteSupplier(code);
+  //     // await fetchSuppliers();
+  //   }
+  // };
 
   return (
     <div className="container mx-auto p-6">
@@ -80,11 +96,7 @@ export default function SuppliersPage() {
                     Fill in the supplier information. All fields are required.
                   </DialogDescription>
                 </DialogHeader>
-                <CreateSupplierForm
-                  newSupplier={newSupplier}
-                  setNewSupplier={setNewSupplier}
-                  onSubmit={handleCreateSupplier}
-                />
+                <CreateSupplierForm onSubmit={handleCreateSupplier} />
               </DialogContent>
             </Dialog>
           </div>
@@ -94,9 +106,30 @@ export default function SuppliersPage() {
             suppliers={suppliers}
             onToggleAnalytics={toggleAnalytics}
             onToggleBlocked={toggleBlocked}
+            onEdit={handleEditSupplier}
+            // onDelete={handleDeleteSupplier}
           />
         </CardContent>
       </Card>
+      
+      {/* Edit Dialog */}
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Edit Supplier</DialogTitle>
+            <DialogDescription>
+              Update the supplier information.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedSupplier && (
+            <CreateSupplierForm 
+              onSubmit={handleUpdateSupplier}
+              initialValues={selectedSupplier}
+              submitLabel="Update Supplier"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 } 
