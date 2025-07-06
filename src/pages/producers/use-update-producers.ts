@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "~/lib/api.ts";
 import type {
     UpdateFirmProducerHandlerApiFirmsProducerIdPutRequest,
-} from "~/lib/.generated/client";
+} from "@salut-mercado/octo-client";
 
 export const useUpdateProducer = () => {
     const queryClient = useQueryClient();

@@ -7,12 +7,15 @@ import {
     TableRow,
 } from "~/components/ui/table";
 import {Button} from "~/components/ui/button";
-import type {FirmsProducerSchema} from "~/lib/.generated/client";
+import type {FirmsProducerSchema} from "@salut-mercado/octo-client";
 import {
     getCoreRowModel,
     getPaginationRowModel,
     useReactTable,
 } from "@tanstack/react-table";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@radix-ui/react-dropdown-menu";
+import {Edit, MoreHorizontal} from "lucide-react";
+
 
 interface ProducersTableProps {
     producers: FirmsProducerSchema[];
@@ -45,18 +48,49 @@ export function ProducersTable({ producers, onRowClick }: ProducersTableProps) {
                             <TableHead>Name</TableHead>
                             <TableHead>Tax ID</TableHead>
                             <TableHead>Minimum Stock</TableHead>
+                            <TableHead/>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.original.taxID}
-                                className="cursor-pointer hover:bg-gray-50"
-                                onClick={() => onRowClick && onRowClick(row.original)}
+                                className="cursor-pointer hover:bg-muted/10"
                             >
-                                <TableCell>{row.original.name}</TableCell>
+                                <TableCell className="pl-2 ">
+                                    <div className="flex items-center">
+                                        <span className=" h-4 inline-block"/>
+                                        <span>{row.original.name}</span>
+                                    </div>
+                                </TableCell>
                                 <TableCell>{row.original.taxID}</TableCell>
                                 <TableCell>{row.original.minimumStock}</TableCell>
+                                <TableCell className="text-right">
+                                    <div className="inline-block mr-3">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    className="h-8 w-8 text-muted-foreground hover:bg-muted/20 transition-colors"
+                                                >
+                                                    <MoreHorizontal className="h-4 w-4"/>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent
+                                                align="end"
+                                                className="w-32 rounded-md border border-border bg-popover text-popover-foreground shadow-lg"
+                                            >
+                                                <DropdownMenuItem
+                                                    onClick={() => onRowClick?.(row.original)}
+                                                    className="cursor-pointer px-2 py-1 text-sm hover:bg-muted/20 hover:text-primary flex items-center gap-2"
+                                                >
+                                                    <Edit className="h-4 w-4"/>
+                                                    Edit
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

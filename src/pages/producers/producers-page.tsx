@@ -18,7 +18,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 
-import type {FirmsProducerSchema, UpdateFirmProducerHandlerApiFirmsProducerIdPutRequest} from "~/lib/.generated/client";
+import type {FirmsProducerSchema, UpdateFirmProducerHandlerApiFirmsProducerIdPutRequest} from "@salut-mercado/octo-client";
 import {useProducers} from "~/pages/producers/use-producers.ts";
 import {ProducersTable} from "~/pages/producers/producers-table.tsx";
 import { useCreateProducer } from "~/pages/producers/use-create-producer.ts";
@@ -30,6 +30,7 @@ type ProducerWithId = FirmsProducerSchema & { id: string };
 export default function ProducersPage() {
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [search, setSearch] = useState("");
 
     const {data: producers = [], refetch} = useProducers({});
     const createMutation = useCreateProducer();
@@ -47,6 +48,8 @@ export default function ProducersPage() {
     const handleCreateProducer = async () => {
         try {
             const requestData = {firmsProducerSchema: newProducer};
+
+
             await createMutation.mutateAsync(requestData);
             refetch();
             setOpenCreate(false);
@@ -56,6 +59,7 @@ export default function ProducersPage() {
         }
     };
 
+
     const handleEditProducer = async () => {
         if (!selectedProducer) return;
 
@@ -64,6 +68,7 @@ export default function ProducersPage() {
                 id: selectedProducer.id,
                 firmsProducerUpdateSchema: {
                     name: selectedProducer.name,
+                    taxID: selectedProducer.taxID,
                     minimumStock: selectedProducer.minimumStock
                 }
             };
@@ -110,7 +115,11 @@ export default function ProducersPage() {
                                         <Label>Tax ID</Label>
                                         <Input
                                             value={newProducer.taxID}
-                                            onChange={(e) => setNewProducer({...newProducer, taxID: e.target.value})}
+                                            onChange={(e) => {
+                                                if (createMutation.isError) createMutation.reset();
+                                                setNewProducer({ ...newProducer, taxID: e.target.value })
+
+                                            }}
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -131,7 +140,6 @@ export default function ProducersPage() {
                                     >
                                         {createMutation.isPending ? "Creating..." : "Create"}
                                     </Button>
-
                                     {createMutation.isError && (
                                         <div className="text-red-500 text-sm">
                                             Error: {createMutation.error.message}
@@ -141,11 +149,21 @@ export default function ProducersPage() {
                             </DialogContent>
                         </Dialog>
                     </div>
+                    <div className="mt-2">
+                        <Input
+                            placeholder="Search by name..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="w-64 h-8 text-sm"
+                        />
+                    </div>
                 </CardHeader>
 
                 <CardContent>
                     <ProducersTable
-                        producers={producers}
+                        producers={producers.filter((p : ProducerWithId) =>
+                            p.name.toLowerCase().includes(search.toLowerCase())
+                        )}
                         onRowClick={(producer) => {
                             setSelectedProducer(producer as ProducerWithId);
                             setOpenEdit(true);
@@ -179,7 +197,13 @@ export default function ProducersPage() {
                                 <Label>Tax ID</Label>
                                 <Input
                                     value={selectedProducer.taxID}
-                                    disabled
+                                    onChange={(e) => {
+                                        if (updateMutation.isError) updateMutation.reset();
+                                        setSelectedProducer({
+                                            ...selectedProducer,
+                                            taxID: e.target.value,
+                                        });
+                                    }}
                                 />
                             </div>
                             <div className="space-y-2">

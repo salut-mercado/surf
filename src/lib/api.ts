@@ -3,7 +3,6 @@ import {
     SuppliersApi,
     SuppliersGroupsApi,
     SuppliersBankInfoApi,
-    CategoriesApi,
     FirmsProducerApi, Configuration
 } from "@salut-mercado/octo-client";
 
@@ -19,5 +18,6 @@ export const api = {
     suppliersGroups: new SuppliersGroupsApi(config),
     suppliersBankInfo: new SuppliersBankInfoApi(config),
     producers: new FirmsProducerApi(config),
-    categories : new CategoriesApi(config),
+
 };
+
