@@ -18,4 +18,6 @@ export const api = {
     suppliersGroups: new SuppliersGroupsApi(config),
     suppliersBankInfo: new SuppliersBankInfoApi(config),
     producers: new FirmsProducerApi(config),
+
 };
+

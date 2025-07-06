@@ -17,7 +17,6 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .DS_Store
-openapi.json
 *.suo
 *.ntvs*
 *.njsproj
@@ -27,4 +26,6 @@ openapi.json
 .npmrc
 
 .generated
+openapi.json
+package-lock.json
 openapitools.json
