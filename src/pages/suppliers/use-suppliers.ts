@@ -1,9 +1,10 @@
 import { useState, useCallback } from "react";
-import type { SuppliersSchema, SupplierUpdateSchema } from "@salut-mercado/octo-client";
+// import type { SuppliersSchema } from "@salut-mercado/octo-client";
 import { api } from "~/lib/api";
+import type { SuppliersTableData } from "./suppliers-table";
 
 export function useSuppliers() {
-  const [suppliers, setSuppliers] = useState<SuppliersSchema[]>([]);
+  const [suppliers, setSuppliers] = useState<SuppliersTableData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -11,12 +12,10 @@ export function useSuppliers() {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.suppliers.getSuppliersApiSuppliersGet({
+      const response = await api.suppliers.getSupplierHandlerApiSuppliersGet({
         skip: 0,
         limit: 100,
       });
-      
-      
       
       if (response.items) {
         setSuppliers(response.items);
@@ -32,38 +31,15 @@ export function useSuppliers() {
     }
   }, []);
 
-  const createSupplier = async (supplierData: Partial<SuppliersSchema>) => {
+  const toggleAnalytics = async (supplierId: string, checked: boolean) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.suppliers.createSppliersApiSuppliersPost({
-        suppliersSchema: {
-          ...supplierData,
-          analytics: true,
-          blocked: false,
-        } as SuppliersSchema,
-      });
-      await fetchSuppliers();
-      return response.data;
-    } catch (error) {
-      setError('Failed to create supplier');
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const toggleAnalytics = async (supplierCode: string, checked: boolean) => {
-    setLoading(true);
-    setError(null);
-    try {
-      await api.suppliers.updateSupplerApiSuppliersIdPut({
-        id: supplierCode,
-        supplierUpdateSchema: {
-          analytics: checked,
-        } as SupplierUpdateSchema,
-      });
-      await fetchSuppliers();
+      setSuppliers(prev => prev.map(supplier => 
+        supplier.id === supplierId 
+          ? { ...supplier, analytics: checked }
+          : supplier
+      ));
     } catch (error) {
       console.error('Error toggling analytics:', error);
       setError('Failed to update supplier analytics');
@@ -72,17 +48,15 @@ export function useSuppliers() {
     }
   };
 
-  const toggleBlocked = async (supplierCode: string, checked: boolean) => {
+  const toggleBlocked = async (supplierId: string, checked: boolean) => {
     setLoading(true);
     setError(null);
     try {
-      await api.suppliers.updateSupplerApiSuppliersIdPut({
-        id: supplierCode,
-        supplierUpdateSchema: {
-          blocked: checked,
-        } as SupplierUpdateSchema,
-      });
-      await fetchSuppliers();
+      setSuppliers(prev => prev.map(supplier => 
+        supplier.id === supplierId 
+          ? { ...supplier, blocked: checked }
+          : supplier
+      ));
     } catch (error) {
       console.error('Error toggling blocked status:', error);
       setError('Failed to update supplier blocked status');
@@ -96,7 +70,6 @@ export function useSuppliers() {
     loading,
     error,
     fetchSuppliers,
-    createSupplier,
     toggleAnalytics,
     toggleBlocked,
   };
