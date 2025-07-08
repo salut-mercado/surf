@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Plus } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -26,14 +26,11 @@ import type { SuppliersTableData } from "./suppliers-table";
 
 export default function SuppliersPage() {
   const [open, setOpen] = useState(false);
-  const { suppliers, fetchSuppliers, toggleAnalytics, toggleBlocked } = useSuppliers();
+  const { data, isLoading, error } = useSuppliers({});
   const [selectedSupplier, setSelectedSupplier] = useState<SuppliersTableData | null>(null);
   const [editOpen, setEditOpen] = useState(false);
   // const { mutateAsync: createSupplier } = useCreateSupplier();
 
-  useEffect(() => {
-    fetchSuppliers();
-  }, [fetchSuppliers]);
 
   const handleCreateSupplier = async (data: Suppliers | UpdateSuppliers) => {
     try {
@@ -41,7 +38,7 @@ export default function SuppliersPage() {
       console.log("Поставщик создан")
       // await createSupplier(requestData);
       setOpen(false);
-      await fetchSuppliers();
+      // await fetchSuppliers();
     } catch (err) {
       console.error('Error:', err);
     }
@@ -58,7 +55,7 @@ export default function SuppliersPage() {
       await PutSupplier(data, selectedSupplier.id);
       setEditOpen(false);
       setSelectedSupplier(null);
-      await fetchSuppliers();
+      // await fetchSuppliers();
     } catch (err) {
       console.error('Error updating supplier:', err);
     }
@@ -102,13 +99,16 @@ export default function SuppliersPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <SuppliersTable
-            suppliers={suppliers}
-            onToggleAnalytics={toggleAnalytics}
-            onToggleBlocked={toggleBlocked}
-            onEdit={handleEditSupplier}
-            // onDelete={handleDeleteSupplier}
-          />
+          {isLoading && <div>Загрузка...</div>}
+          {error && <div>Ошибка: {error.message}</div>}
+          {!isLoading && !error && (
+            <SuppliersTable
+              suppliers={data?.items || []}
+              // onToggleAnalytics={toggleAnalytics}
+              // onToggleBlocked={toggleBlocked}
+              onEdit={handleEditSupplier}
+            />
+          )}
         </CardContent>
       </Card>
       

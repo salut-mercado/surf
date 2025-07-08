@@ -37,13 +37,13 @@ export type SuppliersTableData = {
 
 interface SuppliersTableProps {
   suppliers: SuppliersTableData[];
-  onToggleAnalytics: (id: string, checked: boolean) => void;
-  onToggleBlocked: (id: string, checked: boolean) => void;
+  // onToggleAnalytics: (id: string, checked: boolean) => void;
+  // onToggleBlocked: (id: string, checked: boolean) => void;
   onEdit?: (supplier: SuppliersTableData) => void;
   onDelete?: (id: string) => void;
 }
 
-export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, onEdit, /*onDelete*/ }: SuppliersTableProps) {
+export function SuppliersTable({ suppliers, /*onToggleAnalytics, onToggleBlocked,*/ onEdit, /*onDelete*/ }: SuppliersTableProps) {
   const [filterField, setFilterField] = useState<keyof SuppliersTableData>("code");
   const [filterValue, setFilterValue] = useState("");
 
@@ -106,7 +106,11 @@ export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, 
   return (
     <div>
       <div className="flex items-center gap-2 mb-4">
+        <label htmlFor="filterField" className="sr-only">
+          Filter by field
+        </label>
         <select
+          id="filterField"
           value={filterField}
           onChange={e => setFilterField(e.target.value as keyof SuppliersTableData)}
           className="border rounded px-2 py-1 bg-white text-black dark:bg-zinc-900 dark:text-white focus:outline-none"
@@ -154,14 +158,20 @@ export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, 
                 <TableCell>{row.original.delayDays}</TableCell>
                 <TableCell>
                   <Switch
+                    id="analytics"
                     checked={row.original.analytics}
-                    onCheckedChange={(checked) => onToggleAnalytics(row.original.id, checked)}
+                    aria-label="Enable analytics" 
+                    disabled={true}
+                    // onCheckedChange={(checked) => onToggleAnalytics(row.original.id, checked)}
                   />
                 </TableCell>
                 <TableCell>
                   <Switch
+                    id="blocked"
                     checked={row.original.blocked}
-                    onCheckedChange={(checked) => onToggleBlocked(row.original.id, checked)}
+                    disabled={true}
+                    aria-label="Enable blocked"
+                    // onCheckedChange={(checked) => onToggleBlocked(row.original.id, checked)}
                   />
                 </TableCell>
                 <TableCell className="max-w-[180px] truncate whitespace-nowrap overflow-hidden">
