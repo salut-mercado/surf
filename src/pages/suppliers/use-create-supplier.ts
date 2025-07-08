@@ -1,42 +1,6 @@
-// import { useMutation } from "@tanstack/react-query";
 import { api } from "~/lib/api";
 import type { AddSupplierHandlerApiSuppliersPostRequest, /*SupplierUpdateSchema*/ } from "@salut-mercado/octo-client";
 import { useMutation } from "@tanstack/react-query";
-// import type { CreateSppliersApiSuppliersPostRequest } from "@salut-mercado/octo-client";
-
-// export function useCreateSupplier() {
-//   return useMutation({
-//     mutationFn: async (data: CreateSppliersApiSuppliersPostRequest) => {
-//       console.log('Sending data:', data);
-//       return api.suppliers.createSppliersApiSuppliersPost(data);
-//     },
-//   });
-// } 
-
-// export interface Suppliers {
-//   id: string,
-//   code: string,
-//   name: string,
-//   agent: string,
-//   phone: string,
-//   delayDays: number,
-//   taxID: string,
-//   blocked: boolean,
-//   analytics: boolean,
-//   comments: string
-// }
-
-// export interface UpdateSuppliers {
-//   code?: string,
-//   name?: string,
-//   agent?: string,
-//   phone?: string,
-//   delayDays?: number,
-//   taxID?: string,
-//   blocked?: boolean,
-//   analytics?: boolean,
-//   comments?: string
-// }
 
 export function CreateSupplier() {
   return useMutation({ 
@@ -44,10 +8,3 @@ export function CreateSupplier() {
      api.suppliers.addSupplierHandlerApiSuppliersPost(data),
 }); 
 };
-
-// export function PutSupplier(data: SupplierUpdateSchema, id: string) {
-//   return api.suppliers.updateSupplerHandlerApiSuppliersIdPut({ id, supplierUpdateSchema: data })
-//     .catch(error => {
-//       console.log("Ошибка обновления поставщика", error);
-//     });
-// }
