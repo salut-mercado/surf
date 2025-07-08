@@ -15,10 +15,12 @@ import { SuppliersTable } from "~/pages/suppliers/suppliers-table";
 import { useSuppliers } from "~/pages/suppliers/use-suppliers";
 // import { useCreateSupplier } from "~/pages/suppliers/use-create-supplier";
 // import type { SuppliersSchema, CreateSppliersApiSuppliersPostRequest } from "@salut-mercado/octo-client";
-import { CreateSupplier, PutSupplier } from "./use-create-supplier";
-import type { Suppliers, UpdateSuppliers } from "./use-create-supplier";
-// import type { SuppliersSchema } from "@salut-mercado/octo-client";
-import type { SuppliersTableData } from "./suppliers-table";
+import { CreateSupplier, /*PutSupplier*/ } from "./use-create-supplier";
+// import type { UpdateSuppliers } from "./use-create-supplier";
+import type { SupplierSchema } from "@salut-mercado/octo-client";
+// import type { SuppliersTableData } from "./suppliers-table";
+import { useQueryClient } from "@tanstack/react-query";
+
 
 
 
@@ -27,39 +29,48 @@ import type { SuppliersTableData } from "./suppliers-table";
 export default function SuppliersPage() {
   const [open, setOpen] = useState(false);
   const { data, isLoading, error } = useSuppliers({});
-  const [selectedSupplier, setSelectedSupplier] = useState<SuppliersTableData | null>(null);
-  const [editOpen, setEditOpen] = useState(false);
+  // const [selectedSupplier, setSelectedSupplier] = useState<SuppliersTableData | null>(null);
+  // const [editOpen, setEditOpen] = useState(false);
+  const createSupplierMutation = CreateSupplier();
+  const queryClient = useQueryClient();
   // const { mutateAsync: createSupplier } = useCreateSupplier();
 
 
-  const handleCreateSupplier = async (data: Suppliers | UpdateSuppliers) => {
+  const handleCreateSupplier = async (formData: SupplierSchema) => {
     try {
-      await CreateSupplier(data as Suppliers)
-      console.log("Поставщик создан")
-      // await createSupplier(requestData);
-      setOpen(false);
-      // await fetchSuppliers();
+      await createSupplierMutation.mutateAsync(
+        { supplierSchema: formData },
+        {
+          onSuccess: () => {
+            setOpen(false);
+            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
+          },
+          onError: (error) => {
+            console.error("Ошибка при создании поставщика:", error);
+          }
+        }
+      );
     } catch (err) {
-      console.error('Error:', err);
+      console.error("Ошибка при выполнении мутации:", err);
     }
   };
 
-  const handleEditSupplier = (supplier: SuppliersTableData) => {
-    setSelectedSupplier(supplier);
-    setEditOpen(true);
-  };
+  // const handleEditSupplier = (supplier: SuppliersTableData) => {
+  //   setSelectedSupplier(supplier);
+  //   setEditOpen(true);
+  // };
 
-  const handleUpdateSupplier = async (data: UpdateSuppliers) => {
-    if (!selectedSupplier) return;
-    try {
-      await PutSupplier(data, selectedSupplier.id);
-      setEditOpen(false);
-      setSelectedSupplier(null);
-      // await fetchSuppliers();
-    } catch (err) {
-      console.error('Error updating supplier:', err);
-    }
-  };
+  // const handleUpdateSupplier = async (data: UpdateSuppliers) => {
+  //   if (!selectedSupplier) return;
+  //   try {
+  //     await PutSupplier(data, selectedSupplier.id);
+  //     setEditOpen(false);
+  //     setSelectedSupplier(null);
+  //     // await fetchSuppliers();
+  //   } catch (err) {
+  //     console.error('Error updating supplier:', err);
+  //   }
+  // };
 
   // const handleDeleteSupplier = async (code: string) => {
   //   if (confirm('Вы уверены, что хотите удалить этого поставщика?')) {
@@ -93,7 +104,7 @@ export default function SuppliersPage() {
                     Fill in the supplier information. All fields are required.
                   </DialogDescription>
                 </DialogHeader>
-                <CreateSupplierForm onSubmit={handleCreateSupplier} />
+                <CreateSupplierForm onSubmit={(data) => { void handleCreateSupplier(data); }} />
               </DialogContent>
             </Dialog>
           </div>
@@ -106,13 +117,13 @@ export default function SuppliersPage() {
               suppliers={data?.items || []}
               // onToggleAnalytics={toggleAnalytics}
               // onToggleBlocked={toggleBlocked}
-              onEdit={handleEditSupplier}
+              // onEdit={handleEditSupplier}
             />
           )}
         </CardContent>
       </Card>
       
-      {/* Edit Dialog */}
+      {/* Edit Dialog
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -129,7 +140,7 @@ export default function SuppliersPage() {
             />
           )}
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 } 
