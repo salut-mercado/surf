@@ -6,6 +6,8 @@ const ExamplePage = lazy(() => import("./pages/example/example.page"))
 const SuppliersPage = lazy(() => import("./pages/suppliers/suppliers.page"))
 const ProducersPage = lazy(() => import("./pages/producers/producers-page"));
 const CategoriesPage = lazy(() => import('./pages/category/category-page'));
+const SkuPage = lazy(() => import('./pages/sku/sku-page'));
+
 
 export const AppRoutes = () => {
     return (
@@ -26,6 +28,9 @@ export const AppRoutes = () => {
             </Route>
             <Route path="/categories">
                 <CategoriesPage/>
+            </Route>
+            <Route path="/sku">
+                <SkuPage/>
             </Route>
             <Route path="*">404 Page</Route>
         </Switch>
