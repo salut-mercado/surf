@@ -13,27 +13,32 @@ import {
 import { CreateSupplierForm } from "~/pages/suppliers/create-supplier-form";
 import { SuppliersTable } from "~/pages/suppliers/suppliers-table";
 import { useSuppliers } from "~/pages/suppliers/use-suppliers";
-// import { useCreateSupplier } from "~/pages/suppliers/use-create-supplier";
-// import type { SuppliersSchema, CreateSppliersApiSuppliersPostRequest } from "@salut-mercado/octo-client";
 import { CreateSupplier, /*PutSupplier*/ } from "./use-create-supplier";
-// import type { UpdateSuppliers } from "./use-create-supplier";
-import type { SupplierSchema } from "@salut-mercado/octo-client";
-// import type { SuppliersTableData } from "./suppliers-table";
+import type { SupplierSchema, SupplierUpdateSchema } from "@salut-mercado/octo-client";
 import { useQueryClient } from "@tanstack/react-query";
+import { useUpdateSupplier } from "./use-update-suppliers";
 
-
-
-
-
+interface tempUpdateTableData {
+  id: string;
+  code: string;
+    name: string;
+    agent: string;
+    phone: string;
+    delayDays: number;
+    taxID: string;
+    blocked: boolean;
+    analytics: boolean;
+    comments: string;
+}
 
 export default function SuppliersPage() {
   const [open, setOpen] = useState(false);
   const { data, isLoading, error } = useSuppliers({});
-  // const [selectedSupplier, setSelectedSupplier] = useState<SuppliersTableData | null>(null);
-  // const [editOpen, setEditOpen] = useState(false);
+  const [selectedSupplier, setSelectedSupplier] = useState<tempUpdateTableData | null>(null);
+  const [editOpen, setEditOpen] = useState(false);
   const createSupplierMutation = CreateSupplier();
+  const updateSupplierMutation = useUpdateSupplier();
   const queryClient = useQueryClient();
-  // const { mutateAsync: createSupplier } = useCreateSupplier();
 
 
   const handleCreateSupplier = async (formData: SupplierSchema) => {
@@ -55,22 +60,35 @@ export default function SuppliersPage() {
     }
   };
 
-  // const handleEditSupplier = (supplier: SuppliersTableData) => {
-  //   setSelectedSupplier(supplier);
-  //   setEditOpen(true);
-  // };
+  const handleEditSupplier = (supplier: tempUpdateTableData) => {
+    setSelectedSupplier(supplier);
+    setEditOpen(true);
+  };
 
-  // const handleUpdateSupplier = async (data: UpdateSuppliers) => {
-  //   if (!selectedSupplier) return;
-  //   try {
-  //     await PutSupplier(data, selectedSupplier.id);
-  //     setEditOpen(false);
-  //     setSelectedSupplier(null);
-  //     // await fetchSuppliers();
-  //   } catch (err) {
-  //     console.error('Error updating supplier:', err);
-  //   }
-  // };
+  const handleUpdateSupplier = async (formData: SupplierUpdateSchema) => {
+    if (!selectedSupplier) return;
+    
+    try {
+      await updateSupplierMutation.mutateAsync(
+        {
+          id: selectedSupplier.id,
+          supplierUpdateSchema: formData,
+        },
+        {
+          onSuccess: () => {
+            setEditOpen(false);
+            setSelectedSupplier(null);
+            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
+          },
+          onError: (error) => {
+            console.error('Ошибка при обновлении поставщика:', error);
+          }
+        }
+      );
+    } catch (err) {
+      console.error('Ошибка при выполнении мутации:', err);
+    }
+  };
 
   // const handleDeleteSupplier = async (code: string) => {
   //   if (confirm('Вы уверены, что хотите удалить этого поставщика?')) {
@@ -115,15 +133,13 @@ export default function SuppliersPage() {
           {!isLoading && !error && (
             <SuppliersTable
               suppliers={data?.items || []}
-              // onToggleAnalytics={toggleAnalytics}
-              // onToggleBlocked={toggleBlocked}
-              // onEdit={handleEditSupplier}
+              onEdit={handleEditSupplier}
             />
           )}
         </CardContent>
       </Card>
       
-      {/* Edit Dialog
+      Edit Dialog
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -140,7 +156,7 @@ export default function SuppliersPage() {
             />
           )}
         </DialogContent>
-      </Dialog> */}
+      </Dialog>
     </div>
   );
 } 
