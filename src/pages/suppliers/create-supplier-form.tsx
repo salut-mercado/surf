@@ -4,11 +4,11 @@ import { Label } from "~/components/ui/label";
 import { Checkbox } from "~/components/ui/checkbox";
 import { useForm } from "@tanstack/react-form";
 // import type { SuppliersSchema } from "@salut-mercado/octo-client";
-import type { UpdateSuppliers } from "./use-create-supplier";
+import type { tempTableUpdateData } from "./suppliersData";
 import type { SuppliersTableData } from "./suppliers-table";
 
 interface CreateSupplierFormProps {
-  onSubmit: (data: SuppliersTableData | UpdateSuppliers) => void;
+  onSubmit: (data: SuppliersTableData | tempTableUpdateData) => void;
   initialValues?: SuppliersTableData;
   submitLabel?: string;
 }

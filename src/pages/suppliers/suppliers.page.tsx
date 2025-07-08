@@ -17,24 +17,14 @@ import { CreateSupplier, /*PutSupplier*/ } from "./use-create-supplier";
 import type { SupplierSchema, SupplierUpdateSchema } from "@salut-mercado/octo-client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUpdateSupplier } from "./use-update-suppliers";
+import type { tempSuppliersTableData } from "./suppliersData";
 
-interface tempUpdateTableData {
-  id: string;
-  code: string;
-    name: string;
-    agent: string;
-    phone: string;
-    delayDays: number;
-    taxID: string;
-    blocked: boolean;
-    analytics: boolean;
-    comments: string;
-}
+
 
 export default function SuppliersPage() {
   const [open, setOpen] = useState(false);
   const { data, isLoading, error } = useSuppliers({});
-  const [selectedSupplier, setSelectedSupplier] = useState<tempUpdateTableData | null>(null);
+  const [selectedSupplier, setSelectedSupplier] = useState<tempSuppliersTableData | null>(null);
   const [editOpen, setEditOpen] = useState(false);
   const createSupplierMutation = CreateSupplier();
   const updateSupplierMutation = useUpdateSupplier();
@@ -60,7 +50,7 @@ export default function SuppliersPage() {
     }
   };
 
-  const handleEditSupplier = (supplier: tempUpdateTableData) => {
+  const handleEditSupplier = (supplier: tempSuppliersTableData) => {
     setSelectedSupplier(supplier);
     setEditOpen(true);
   };
@@ -139,7 +129,7 @@ export default function SuppliersPage() {
         </CardContent>
       </Card>
       
-      Edit Dialog
+      
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
