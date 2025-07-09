@@ -15,13 +15,9 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@radix-ui/react-dropdown-menu";
-import {useState} from "react";
-import type {CategorySchema} from "@salut-mercado/octo-client";
+import {useMemo, useState} from "react";
 import { Input } from "~/components/ui/input";
-
-export type CategoryWithId = CategorySchema & { id: string };
-
-
+import type { CategoryWithId } from "~/pages/category/category-page.tsx";
 
 interface CategoriesTableProps {
     categories: CategoryWithId[];
@@ -73,9 +69,12 @@ export function CategoriesTable({ categories, onRowClick }: CategoriesTableProps
 
     const lowerSearch = search.toLowerCase();
 
-    const matched = categories.filter(cat =>
-        cat.categoryName.toLowerCase().includes(lowerSearch)
-    );
+
+    const matched = useMemo(() => {
+        return categories.filter(cat =>
+            cat.categoryName.toLowerCase().includes(lowerSearch)
+        );
+    }, [categories, lowerSearch]);
 
     const enriched = new Set<CategoryWithId>();
 
@@ -106,7 +105,7 @@ export function CategoriesTable({ categories, onRowClick }: CategoriesTableProps
 
     return (
         <div>
-            <div className="py-2">
+            <div className="mb-4">
                 <Input
                     placeholder="Search by name..."
                     value={search}

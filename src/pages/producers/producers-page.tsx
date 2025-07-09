@@ -25,12 +25,11 @@ import { useCreateProducer } from "~/pages/producers/use-create-producer.ts";
 import {useUpdateProducer} from "~/pages/producers/use-update-producers.ts";
 
 
-type ProducerWithId = FirmsProducerSchema & { id: string };
+export type ProducerWithId = FirmsProducerSchema & { id: string };
 
 export default function ProducersPage() {
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
-    const [search, setSearch] = useState("");
 
     const {data: producers = [], refetch} = useProducers({});
     const createMutation = useCreateProducer();
@@ -149,21 +148,12 @@ export default function ProducersPage() {
                             </DialogContent>
                         </Dialog>
                     </div>
-                    <div className="mt-2">
-                        <Input
-                            placeholder="Search by name..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            className="w-64 h-8 text-sm"
-                        />
-                    </div>
+
                 </CardHeader>
 
                 <CardContent>
                     <ProducersTable
-                        producers={producers.filter((p : ProducerWithId) =>
-                            p.name.toLowerCase().includes(search.toLowerCase())
-                        )}
+                        producers={producers}
                         onRowClick={(producer) => {
                             setSelectedProducer(producer as ProducerWithId);
                             setOpenEdit(true);
