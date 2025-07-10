@@ -21,11 +21,12 @@ import type {SkuWithId} from "~/pages/sku/sku-page.tsx";
 
 interface SkusTableProps {
     skus: SkuWithId[];
-    onMoreClick?: (producer: SkuWithId) => void;
+    onRowClick?: (sku: SkuWithId) => void;
+    onMoreClick?: (sku: SkuWithId) => void;
 
 }
 
-export function SkusTable({ skus, onMoreClick }: SkusTableProps) {
+export function SkusTable({ skus, onMoreClick, onRowClick }: SkusTableProps) {
     const [search, setSearch] = useState("");
 
     const filteredSkus = useMemo(() => {
@@ -102,7 +103,7 @@ export function SkusTable({ skus, onMoreClick }: SkusTableProps) {
                                                 className="w-32 rounded-md border border-border bg-popover text-popover-foreground shadow-lg"
                                             >
                                                 <DropdownMenuItem
-                                                    // onClick={() => onRowClick?.(row)}
+                                                    onClick={() => onRowClick?.(row.original)}
                                                     className="cursor-pointer px-2 py-1 text-sm hover:bg-muted/20 hover:text-primary flex items-center gap-2"
                                                 >
                                                     <Edit className="h-4 w-4" />

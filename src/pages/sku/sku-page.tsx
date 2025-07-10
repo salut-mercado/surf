@@ -12,7 +12,7 @@ import {Label} from "~/components/ui/label";
 import {Plus} from "lucide-react";
 import {
     UnitMeasurementEnum,
-    type SKUSchema,
+    type SKUSchema, type UpdateSkuApiSkuSkuIdPutRequest,
 } from "@salut-mercado/octo-client";
 import type {CreateSkuApiSkuPostRequest} from "@salut-mercado/octo-client";
 import {SkusTable} from "~/pages/sku/sku-table";
@@ -34,6 +34,7 @@ import {useProducers} from "~/pages/producers/use-producers";
 import {useCategories} from "~/pages/category/use-category";
 import {Select, SelectItem, SelectTrigger, SelectValue} from "~/components/ui/select";
 import {SelectContent} from "~/components/ui/select.tsx";
+import {useUpdateSku} from "~/pages/sku/use-update-sku.ts";
 
 export type SkuWithId = SKUSchema & { id: string };
 
@@ -47,9 +48,11 @@ export default function SkusPage() {
     const [openCreate, setOpenCreate] = useState(false);
     const [openMoreDialog, setOpenMoreDialog] = useState(false);
     const [selectedSku, setSelectedSku] = useState<SkuWithId | null>(null);
+    const [openEdit, setOpenEdit] = useState(false);
 
     const {data: skus = [], refetch} = useSku({});
     const createMutation = useCreateSku();
+    const updateMutation = useUpdateSku();
 
     const {data: suppliersResponse} = useSuppliers({});
     const suppliers: SupplierWithId[] = suppliersResponse?.items || [];
@@ -99,6 +102,39 @@ export default function SkusPage() {
             console.error("Error creating SKU:", err);
         }
     };
+
+    const handleEditSku = async () => {
+        if (!selectedSku) return;
+
+        try {
+            const requestData: UpdateSkuApiSkuSkuIdPutRequest = {
+                skuId: selectedSku.id,
+                sKUSchema: {
+                    name: selectedSku.name,
+                    supplierId: selectedSku.supplierId,
+                    producerId: selectedSku.producerId,
+                    categoryId: selectedSku.categoryId,
+                    unitMeasurement: selectedSku.unitMeasurement,
+                    shelfLifetime: selectedSku.shelfLifetime,
+                    netWeight: selectedSku.netWeight,
+                    vatPercent: selectedSku.vatPercent,
+                    alcoholPercent: selectedSku.alcoholPercent,
+                    naturalLossPercent: selectedSku.naturalLossPercent,
+                    maxOnCheckout: selectedSku.maxOnCheckout,
+                    specifications: selectedSku.specifications
+                }
+            };
+
+            console.log(requestData);
+            await updateMutation.mutateAsync(requestData);
+            refetch();
+            setOpenEdit(false);
+            setSelectedSku(null);
+        } catch (err) {
+            console.error("Error updating producer:", err);
+        }
+    };
+
 
     return (
         <div className="container mx-auto p-6">
@@ -349,12 +385,249 @@ export default function SkusPage() {
                     </div>
                 </CardHeader>
 
+                <Dialog open={openEdit} onOpenChange={setOpenEdit}>
+                    <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+                        <DialogHeader>
+                            <DialogTitle>Edit SKU</DialogTitle>
+                        </DialogHeader>
+                        {selectedSku && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+                                <div className="space-y-2">
+                                    <Label>Name*</Label>
+                                    <Input
+                                        value={selectedSku.name}
+                                        onChange={(e) =>
+                                            setSelectedSku({ ...selectedSku, name: e.target.value })
+                                        }
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>Supplier*</Label>
+                                    <Select
+                                        value={selectedSku.supplierId}
+                                        onValueChange={(value) =>
+                                            setSelectedSku({ ...selectedSku, supplierId: value })
+                                        }
+                                    >
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Select Supplier" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {suppliers.map((s) => (
+                                                <SelectItem key={s.id} value={s.id}>
+                                                    {s.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>Producer*</Label>
+                                    <Select
+                                        value={selectedSku.producerId}
+                                        onValueChange={(value) =>
+                                            setSelectedSku({ ...selectedSku, producerId: value })
+                                        }
+                                    >
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Select Producer" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {producers.map((p : ProducerWithId) => (
+                                                <SelectItem key={p.id} value={p.id}>
+                                                    {p.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>Category*</Label>
+                                    <Select
+                                        value={selectedSku.categoryId}
+                                        onValueChange={(value) =>
+                                            setSelectedSku({ ...selectedSku, categoryId: value })
+                                        }
+                                    >
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Select Category" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {categories.map((c : CategoryWithId) => (
+                                                <SelectItem key={c.id} value={c.id}>
+                                                    {c.categoryName}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>Unit*</Label>
+                                    <Select
+                                        value={selectedSku.unitMeasurement}
+                                        onValueChange={(value) =>
+                                            setSelectedSku({
+                                                ...selectedSku,
+                                                unitMeasurement: value as UnitMeasurementEnum,
+                                            })
+                                        }
+                                    >
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Select Unit" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {unitMeasurementOptions.map((unit) => (
+                                                <SelectItem key={unit.value} value={unit.value}>
+                                                    {unit.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>Shelf Lifetime (days)</Label>
+                                    <Input
+                                        type="number"
+                                        min={0}
+                                        value={selectedSku.shelfLifetime}
+                                        onChange={(e) =>
+                                            setSelectedSku({
+                                                ...selectedSku,
+                                                shelfLifetime: Number(e.target.value),
+                                            })
+                                        }
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>Net Weight</Label>
+                                    <Input
+                                        type="number"
+                                        min={0}
+                                        step="0.01"
+                                        value={selectedSku.netWeight}
+                                        onChange={(e) =>
+                                            setSelectedSku({
+                                                ...selectedSku,
+                                                netWeight: Number(e.target.value),
+                                            })
+                                        }
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>VAT (%)</Label>
+                                    <Input
+                                        type="number"
+                                        min={0}
+                                        max={100}
+                                        step="0.1"
+                                        value={selectedSku.vatPercent}
+                                        onChange={(e) =>
+                                            setSelectedSku({
+                                                ...selectedSku,
+                                                vatPercent: Number(e.target.value),
+                                            })
+                                        }
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>Alcohol (%)</Label>
+                                    <Input
+                                        type="number"
+                                        min={0}
+                                        max={100}
+                                        step="0.1"
+                                        value={selectedSku.alcoholPercent}
+                                        onChange={(e) =>
+                                            setSelectedSku({
+                                                ...selectedSku,
+                                                alcoholPercent: Number(e.target.value),
+                                            })
+                                        }
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>Natural Loss (%)</Label>
+                                    <Input
+                                        type="number"
+                                        min={0}
+                                        max={100}
+                                        step="0.1"
+                                        value={selectedSku.naturalLossPercent}
+                                        onChange={(e) =>
+                                            setSelectedSku({
+                                                ...selectedSku,
+                                                naturalLossPercent: Number(e.target.value),
+                                            })
+                                        }
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label>Max on Checkout</Label>
+                                    <Input
+                                        type="number"
+                                        min={0}
+                                        value={selectedSku.maxOnCheckout}
+                                        onChange={(e) =>
+                                            setSelectedSku({
+                                                ...selectedSku,
+                                                maxOnCheckout: Number(e.target.value),
+                                            })
+                                        }
+                                    />
+                                </div>
+
+                                <div className="md:col-span-2 space-y-2">
+                                    <Label>Specifications</Label>
+                                    <textarea
+                                        value={selectedSku.specifications}
+                                        onChange={(e) =>
+                                            setSelectedSku({
+                                                ...selectedSku,
+                                                specifications: e.target.value,
+                                            })
+                                        }
+                                        className="w-full px-3 py-2 border rounded-md min-h-[100px]"
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="flex justify-end mt-4">
+                            <Button onClick={handleEditSku} disabled={updateMutation.isPending}>
+                                {updateMutation.isPending ? "Saving..." : "Save Changes"}
+                            </Button>
+                        </div>
+
+                        {updateMutation.isError && (
+                            <div className="text-red-500 text-sm mt-2">
+                                Error: {updateMutation.error?.message}
+                            </div>
+                        )}
+                    </DialogContent>
+                </Dialog>
+
                 <CardContent>
                     <SkusTable skus={skus}
                                onMoreClick={(sku) => {
                                    setSelectedSku(sku as SkuWithId);
                                    setOpenMoreDialog(true);
                                }}
+
+                               onRowClick={(sku) => {
+                                   setSelectedSku(sku as SkuWithId);
+                                   setOpenEdit(true);
+                               }}
+
                     />
                 </CardContent>
             </Card>
