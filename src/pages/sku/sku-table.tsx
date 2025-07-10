@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import {useState, useMemo, useEffect} from "react";
 import {
     Table,
     TableBody,
@@ -53,6 +53,10 @@ export function SkusTable({ skus, onMoreClick, onRowClick }: SkusTableProps) {
         },
         autoResetPageIndex: false,
     });
+
+    useEffect(() => {
+        table.setPageIndex(0);
+    }, [search]);
 
     return (
         <div>

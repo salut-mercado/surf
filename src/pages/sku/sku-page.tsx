@@ -50,6 +50,15 @@ export default function SkusPage() {
     const [selectedSku, setSelectedSku] = useState<SkuWithId | null>(null);
     const [openEdit, setOpenEdit] = useState(false);
 
+    const getSupplierName = (id: string) =>
+        suppliers.find((s) => s.id === id)?.name || id;
+
+    const getProducerName = (id: string) =>
+        producers?.find((p : ProducerWithId) => p.id === id)?.name || id;
+
+    const getCategoryName = (id: string) =>
+        categories?.find((c : CategoryWithId) => c.id === id)?.categoryName || id;
+
     const {data: skus = [], refetch} = useSku({});
     const createMutation = useCreateSku();
     const updateMutation = useUpdateSku();
@@ -641,9 +650,9 @@ export default function SkusPage() {
                     {selectedSku && (
                         <div className="space-y-2 text-sm">
                             <p><strong>Name:</strong> {selectedSku.name}</p>
-                            <p><strong>Supplier:</strong> {selectedSku.supplierId}</p>
-                            <p><strong>Producer:</strong> {selectedSku.producerId}</p>
-                            <p><strong>Category:</strong> {selectedSku.categoryId}</p>
+                            <p><strong>Supplier:</strong> {getSupplierName(selectedSku.supplierId)}</p>
+                            <p><strong>Producer:</strong> {getProducerName(selectedSku.producerId)}</p>
+                            <p><strong>Category:</strong> {getCategoryName(selectedSku.categoryId)}</p>
                             <p><strong>Unit:</strong> {selectedSku.unitMeasurement}</p>
                             <p><strong>Shelf Life:</strong> {selectedSku.shelfLifetime}</p>
                             <p><strong>Net Weight:</strong> {selectedSku.netWeight}</p>
