@@ -14,16 +14,18 @@ import {
     useReactTable,
     type ColumnDef,
 } from "@tanstack/react-table";
-import type { SKUSchema } from "@salut-mercado/octo-client";
 import { Button } from "~/components/ui/button";
-
-type SkuWithId = SKUSchema & { id: string };
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "~/components/ui/dropdown-menu";
+import {Edit, MoreHorizontal} from "lucide-react";
+import type {SkuWithId} from "~/pages/sku/sku-page.tsx";
 
 interface SkusTableProps {
     skus: SkuWithId[];
+    onMoreClick?: (producer: SkuWithId) => void;
+
 }
 
-export function SkusTable({ skus }: SkusTableProps) {
+export function SkusTable({ skus, onMoreClick }: SkusTableProps) {
     const [search, setSearch] = useState("");
 
     const filteredSkus = useMemo(() => {
@@ -76,13 +78,47 @@ export function SkusTable({ skus }: SkusTableProps) {
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows.map(row => (
+                        {table.getRowModel().rows.map((row) => (
                             <TableRow key={row.id} className="hover:bg-muted/10">
-                                {row.getVisibleCells().map(cell => (
+                                {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id} className="pl-2">
                                         {cell.renderValue() as React.ReactNode}
                                     </TableCell>
                                 ))}
+
+                                <TableCell className="text-right">
+                                    <div className="inline-block mr-3">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    className="h-8 w-8 text-muted-foreground hover:bg-muted/20 transition-colors"
+                                                >
+                                                    <MoreHorizontal className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent
+                                                align="end"
+                                                className="w-32 rounded-md border border-border bg-popover text-popover-foreground shadow-lg"
+                                            >
+                                                <DropdownMenuItem
+                                                    // onClick={() => onRowClick?.(row)}
+                                                    className="cursor-pointer px-2 py-1 text-sm hover:bg-muted/20 hover:text-primary flex items-center gap-2"
+                                                >
+                                                    <Edit className="h-4 w-4" />
+                                                    Edit
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    onClick={() => onMoreClick?.(row.original)}
+                                                    className="cursor-pointer px-2 py-1 text-sm hover:bg-muted/20 hover:text-primary flex items-center gap-2"
+                                                >
+                                                    <MoreHorizontal className="h-4 w-4" />
+                                                    More
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

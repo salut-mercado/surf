@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Button } from "~/components/ui/button";
+import {useState} from "react";
+import {Button} from "~/components/ui/button";
 import {
     Card,
     CardContent,
@@ -7,18 +7,17 @@ import {
     CardHeader,
     CardTitle,
 } from "~/components/ui/card";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-import { Plus } from "lucide-react";
+import {Input} from "~/components/ui/input";
+import {Label} from "~/components/ui/label";
+import {Plus} from "lucide-react";
 import {
     UnitMeasurementEnum,
     type SKUSchema,
-    type SupplierSchema,
 } from "@salut-mercado/octo-client";
-import type { CreateSkuApiSkuPostRequest } from "@salut-mercado/octo-client";
-import { SkusTable } from "~/pages/sku/sku-table";
-import { useCreateSku } from "~/pages/sku/use-create-sku.ts";
-import { useSku } from "~/pages/sku/use-sku.ts";
+import type {CreateSkuApiSkuPostRequest} from "@salut-mercado/octo-client";
+import {SkusTable} from "~/pages/sku/sku-table";
+import {useCreateSku} from "~/pages/sku/use-create-sku.ts";
+import {useSku} from "~/pages/sku/use-sku.ts";
 import {
     Dialog,
     DialogContent,
@@ -27,31 +26,36 @@ import {
     DialogTrigger,
 } from "~/components/ui/dialog";
 
-import type { ProducerWithId } from "~/pages/producers/producers-page.tsx";
-import type { CategoryWithId } from "~/pages/category/category-page.tsx";
-import { useSuppliers } from "~/pages/suppliers/use-suppliers";
-import { useProducers } from "~/pages/producers/use-producers";
-import { useCategories } from "~/pages/category/use-category";
+import type {SupplierWithId} from "~/pages/suppliers/suppliers-table.tsx";
+import type {ProducerWithId} from "~/pages/producers/producers-page.tsx";
+import type {CategoryWithId} from "~/pages/category/category-page.tsx";
+import {useSuppliers} from "~/pages/suppliers/use-suppliers";
+import {useProducers} from "~/pages/producers/use-producers";
+import {useCategories} from "~/pages/category/use-category";
 import {Select, SelectItem, SelectTrigger, SelectValue} from "~/components/ui/select";
 import {SelectContent} from "~/components/ui/select.tsx";
 
+export type SkuWithId = SKUSchema & { id: string };
+
 const unitMeasurementOptions = [
-    { value: UnitMeasurementEnum.unit, label: "Unit" },
-    { value: UnitMeasurementEnum.kg, label: "Kg" },
-    { value: UnitMeasurementEnum.liter, label: "Liter" },
+    {value: UnitMeasurementEnum.unit, label: "Unit"},
+    {value: UnitMeasurementEnum.kg, label: "Kg"},
+    {value: UnitMeasurementEnum.liter, label: "Liter"},
 ];
 
 export default function SkusPage() {
     const [openCreate, setOpenCreate] = useState(false);
+    const [openMoreDialog, setOpenMoreDialog] = useState(false);
+    const [selectedSku, setSelectedSku] = useState<SkuWithId | null>(null);
 
-    const { data: skus = [], refetch } = useSku({});
+    const {data: skus = [], refetch} = useSku({});
     const createMutation = useCreateSku();
 
-    const { data: suppliersResponse } = useSuppliers({});
-    const suppliers: SupplierSchema[] = suppliersResponse?.items || [];
+    const {data: suppliersResponse} = useSuppliers({});
+    const suppliers: SupplierWithId[] = suppliersResponse?.items || [];
 
-    const { data: producers } = useProducers({});
-    const { data: categories } = useCategories({});
+    const {data: producers} = useProducers({});
+    const {data: categories} = useCategories({});
 
     const [newSku, setNewSku] = useState<SKUSchema>({
         name: "",
@@ -108,7 +112,7 @@ export default function SkusPage() {
                         <Dialog open={openCreate} onOpenChange={setOpenCreate}>
                             <DialogTrigger asChild>
                                 <Button>
-                                    <Plus className="h-4 w-4 mr-2" />
+                                    <Plus className="h-4 w-4 mr-2"/>
                                     Add SKU
                                 </Button>
                             </DialogTrigger>
@@ -122,7 +126,7 @@ export default function SkusPage() {
                                         <Input
                                             value={newSku.name}
                                             onChange={(e) =>
-                                                setNewSku({ ...newSku, name: e.target.value })
+                                                setNewSku({...newSku, name: e.target.value})
                                             }
                                         />
                                     </div>
@@ -132,18 +136,18 @@ export default function SkusPage() {
                                         <Select
                                             value={newSku.supplierId}
                                             onValueChange={(value) =>
-                                                setNewSku({ ...newSku, supplierId: value })
+                                                setNewSku({...newSku, supplierId: value})
                                             }
                                         >
                                             <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select Supplier" />
+                                                <SelectValue placeholder="Select Supplier"/>
                                             </SelectTrigger>
                                             <SelectContent>
-                                            {suppliers.map((s: SupplierSchema) => (
-                                                <SelectItem key={s.id} value={s.id}>
-                                                    {s.name}
-                                                </SelectItem>
-                                            ))}
+                                                {suppliers && suppliers.map((s: SupplierWithId) => (
+                                                    <SelectItem key={s.id} value={s.id}>
+                                                        {s.name}
+                                                    </SelectItem>
+                                                ))}
                                             </SelectContent>
                                         </Select>
                                     </div>
@@ -153,18 +157,18 @@ export default function SkusPage() {
                                         <Select
                                             value={newSku.producerId}
                                             onValueChange={(value) =>
-                                                setNewSku({ ...newSku, producerId: value })
+                                                setNewSku({...newSku, producerId: value})
                                             }
                                         >
                                             <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select Producer" />
+                                                <SelectValue placeholder="Select Producer"/>
                                             </SelectTrigger>
                                             <SelectContent>
-                                            {producers && producers.map((p: ProducerWithId) => (
-                                                <SelectItem key={p.id} value={p.id}>
-                                                    {p.name}
-                                                </SelectItem>
-                                            ))}
+                                                {producers && producers.map((p: ProducerWithId) => (
+                                                    <SelectItem key={p.id} value={p.id}>
+                                                        {p.name}
+                                                    </SelectItem>
+                                                ))}
                                             </SelectContent>
                                         </Select>
                                     </div>
@@ -174,18 +178,18 @@ export default function SkusPage() {
                                         <Select
                                             value={newSku.categoryId}
                                             onValueChange={(value) =>
-                                                setNewSku({ ...newSku, categoryId: value })
+                                                setNewSku({...newSku, categoryId: value})
                                             }
                                         >
                                             <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select Category" />
+                                                <SelectValue placeholder="Select Category"/>
                                             </SelectTrigger>
                                             <SelectContent>
-                                            {categories && categories.map((c: CategoryWithId) => (
-                                                <SelectItem key={c.id} value={c.id}>
-                                                    {c.categoryName}
-                                                </SelectItem>
-                                            ))}
+                                                {categories && categories.map((c: CategoryWithId) => (
+                                                    <SelectItem key={c.id} value={c.id}>
+                                                        {c.categoryName}
+                                                    </SelectItem>
+                                                ))}
                                             </SelectContent>
                                         </Select>
                                     </div>
@@ -202,7 +206,7 @@ export default function SkusPage() {
                                             }
                                         >
                                             <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select Unit" />
+                                                <SelectValue placeholder="Select Unit"/>
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {unitMeasurementOptions.map((unit) => (
@@ -346,9 +350,42 @@ export default function SkusPage() {
                 </CardHeader>
 
                 <CardContent>
-                    <SkusTable skus={skus} />
+                    <SkusTable skus={skus}
+                               onMoreClick={(sku) => {
+                                   setSelectedSku(sku as SkuWithId);
+                                   setOpenMoreDialog(true);
+                               }}
+                    />
                 </CardContent>
             </Card>
+
+            <Dialog open={openMoreDialog} onOpenChange={setOpenMoreDialog}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Details of SKU</DialogTitle>
+                    </DialogHeader>
+
+                    {selectedSku && (
+                        <div className="space-y-2 text-sm">
+                            <p><strong>Name:</strong> {selectedSku.name}</p>
+                            <p><strong>Supplier:</strong> {selectedSku.supplierId}</p>
+                            <p><strong>Producer:</strong> {selectedSku.producerId}</p>
+                            <p><strong>Category:</strong> {selectedSku.categoryId}</p>
+                            <p><strong>Unit:</strong> {selectedSku.unitMeasurement}</p>
+                            <p><strong>Shelf Life:</strong> {selectedSku.shelfLifetime}</p>
+                            <p><strong>Net Weight:</strong> {selectedSku.netWeight}</p>
+                            <p><strong>VAT %:</strong> {selectedSku.vatPercent}</p>
+                            <p><strong>Alcohol %:</strong> {selectedSku.alcoholPercent}</p>
+                            <p><strong>Natural Loss %:</strong> {selectedSku.naturalLossPercent}</p>
+                            <p><strong>Max on Checkout:</strong> {selectedSku.maxOnCheckout}</p>
+                            <p className="break-words whitespace-pre-line max-w-full overflow-hidden">
+                                <strong>Specifications:</strong>{" "}
+                                <span className="break-all">{selectedSku.specifications}</span>
+                            </p>
+                        </div>
+                    )}
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
