@@ -10,21 +10,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { CreateSupplierForm } from "~/pages/suppliers/create-supplier-form";
+import { CreateSupplierForm, UpdateSupplierForm } from "~/pages/suppliers/create-supplier-form";
 import { SuppliersTable } from "~/pages/suppliers/suppliers-table";
 import { useSuppliers } from "~/pages/suppliers/use-suppliers";
 import { CreateSupplier, /*PutSupplier*/ } from "./use-create-supplier";
 import type { SupplierSchema, SupplierUpdateSchema } from "@salut-mercado/octo-client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUpdateSupplier } from "./use-update-suppliers";
-import type { tempSuppliersTableData } from "./suppliersData";
+// import type { tempSuppliersTableData } from "./suppliersData";
+import type { SupplierWithId } from "./suppliersData";
 
 
 
-export default function SuppliersPage() {
+
+ export default function SuppliersPage() {
   const [open, setOpen] = useState(false);
   const { data, isLoading, error } = useSuppliers({});
-  const [selectedSupplier, setSelectedSupplier] = useState<tempSuppliersTableData | null>(null);
+  const [selectedSupplier, setSelectedSupplier] = useState<SupplierWithId | null>(null);
   const [editOpen, setEditOpen] = useState(false);
   const createSupplierMutation = CreateSupplier();
   const updateSupplierMutation = useUpdateSupplier();
@@ -50,7 +52,7 @@ export default function SuppliersPage() {
     }
   };
 
-  const handleEditSupplier = (supplier: tempSuppliersTableData) => {
+  const handleEditSupplier = (supplier: SupplierWithId) => {
     setSelectedSupplier(supplier);
     setEditOpen(true);
   };
@@ -112,7 +114,7 @@ export default function SuppliersPage() {
                     Fill in the supplier information. All fields are required.
                   </DialogDescription>
                 </DialogHeader>
-                <CreateSupplierForm onSubmit={(data) => { void handleCreateSupplier(data); }} />
+                <CreateSupplierForm onSubmit={handleCreateSupplier} />
               </DialogContent>
             </Dialog>
           </div>
@@ -139,7 +141,7 @@ export default function SuppliersPage() {
             </DialogDescription>
           </DialogHeader>
           {selectedSupplier && (
-            <CreateSupplierForm 
+            <UpdateSupplierForm 
               onSubmit={handleUpdateSupplier}
               initialValues={selectedSupplier}
               submitLabel="Update Supplier"

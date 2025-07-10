@@ -14,37 +14,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { MoreHorizontal, Edit, /*Trash2*/ } from "lucide-react";
+import { MoreHorizontal, Edit } from "lucide-react";
 import {
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { useState, useMemo } from "react";
+import type { SupplierWithId } from "./suppliersData";
 
-export type SuppliersTableData = {
-  id: string,
-  code: string,
-  name: string,
-  agent: string,
-  phone: string,
-  taxID: string,
-  delayDays: number,
-  analytics: boolean,
-  comments: string,
-  blocked: boolean,
-}
 
 interface SuppliersTableProps {
-  suppliers: SuppliersTableData[];
-  // onToggleAnalytics: (id: string, checked: boolean) => void;
-  // onToggleBlocked: (id: string, checked: boolean) => void;
-  onEdit?: (supplier: SuppliersTableData) => void;
-  onDelete?: (id: string) => void;
+  suppliers: SupplierWithId[];
+  onEdit?: (supplier: SupplierWithId) => void;
+  // onDelete?: (id: string) => void;
 }
 
-export function SuppliersTable({ suppliers, /*onToggleAnalytics, onToggleBlocked,*/ onEdit, /*onDelete*/ }: SuppliersTableProps) {
-  const [filterField, setFilterField] = useState<keyof SuppliersTableData>("code");
+export function SuppliersTable({ suppliers, onEdit}: SuppliersTableProps) {
+  const [filterField, setFilterField] = useState<keyof SupplierWithId>("code");
   const [filterValue, setFilterValue] = useState("");
 
   const filteredSuppliers = useMemo(() => {
@@ -112,7 +99,7 @@ export function SuppliersTable({ suppliers, /*onToggleAnalytics, onToggleBlocked
         <select
           id="filterField"
           value={filterField}
-          onChange={e => setFilterField(e.target.value as keyof SuppliersTableData)}
+          onChange={e => setFilterField(e.target.value as keyof SupplierWithId)}
           className="border rounded px-2 py-1 bg-white text-black dark:bg-zinc-900 dark:text-white focus:outline-none"
         >
           <option value="code">Code</option>
