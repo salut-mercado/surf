@@ -1,10 +1,12 @@
 import {
-    Configuration,
     SuppliersDetailsApi,
     SuppliersApi,
     SuppliersGroupsApi,
     SuppliersBankInfoApi,
+    FirmsProducerApi, Configuration, CategoriesApi
 } from "@salut-mercado/octo-client";
+
+
 
 const config = new Configuration({
     basePath: import.meta.env.API_URL || "http://localhost:8000",
@@ -15,4 +17,8 @@ export const api = {
     suppliersDetails: new SuppliersDetailsApi(config),
     suppliersGroups: new SuppliersGroupsApi(config),
     suppliersBankInfo: new SuppliersBankInfoApi(config),
+    producers: new FirmsProducerApi(config),
+    categories: new CategoriesApi(config),
+
 };
+
