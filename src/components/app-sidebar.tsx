@@ -55,8 +55,8 @@ const data = {
             icon: IconChartBar,
         },
         {
-            title: "Projects",
-            url: "#",
+            title: "Sku",
+            url: "/sku",
             icon: IconFolder,
         },
         {
