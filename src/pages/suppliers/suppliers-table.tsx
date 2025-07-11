@@ -14,37 +14,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { MoreHorizontal, Edit, /*Trash2*/ } from "lucide-react";
+import { MoreHorizontal, Edit } from "lucide-react";
 import {
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { useState, useMemo } from "react";
+import type { SupplierWithId } from "./suppliersData";
 
-export type SuppliersTableData = {
-  id: string,
-  code: string,
-  name: string,
-  agent: string,
-  phone: string,
-  taxID: string,
-  delayDays: number,
-  analytics: boolean,
-  comments: string,
-  blocked: boolean,
-}
 
 interface SuppliersTableProps {
-  suppliers: SuppliersTableData[];
-  onToggleAnalytics: (id: string, checked: boolean) => void;
-  onToggleBlocked: (id: string, checked: boolean) => void;
-  onEdit?: (supplier: SuppliersTableData) => void;
-  onDelete?: (id: string) => void;
+  suppliers: SupplierWithId[];
+  onEdit?: (supplier: SupplierWithId) => void;
+  // onDelete?: (id: string) => void;
 }
 
-export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, onEdit, /*onDelete*/ }: SuppliersTableProps) {
-  const [filterField, setFilterField] = useState<keyof SuppliersTableData>("code");
+export function SuppliersTable({ suppliers, onEdit}: SuppliersTableProps) {
+  const [filterField, setFilterField] = useState<keyof SupplierWithId>("code");
   const [filterValue, setFilterValue] = useState("");
 
   const filteredSuppliers = useMemo(() => {
@@ -106,9 +93,13 @@ export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, 
   return (
     <div>
       <div className="flex items-center gap-2 mb-4">
+        <label htmlFor="filterField" className="sr-only">
+          Filter by field
+        </label>
         <select
+          id="filterField"
           value={filterField}
-          onChange={e => setFilterField(e.target.value as keyof SuppliersTableData)}
+          onChange={e => setFilterField(e.target.value as keyof SupplierWithId)}
           className="border rounded px-2 py-1 bg-white text-black dark:bg-zinc-900 dark:text-white focus:outline-none"
         >
           <option value="code">Code</option>
@@ -154,14 +145,20 @@ export function SuppliersTable({ suppliers, onToggleAnalytics, onToggleBlocked, 
                 <TableCell>{row.original.delayDays}</TableCell>
                 <TableCell>
                   <Switch
+                    id="analytics"
                     checked={row.original.analytics}
-                    onCheckedChange={(checked) => onToggleAnalytics(row.original.id, checked)}
+                    aria-label="Enable analytics" 
+                    disabled={true}
+                    // onCheckedChange={(checked) => onToggleAnalytics(row.original.id, checked)}
                   />
                 </TableCell>
                 <TableCell>
                   <Switch
+                    id="blocked"
                     checked={row.original.blocked}
-                    onCheckedChange={(checked) => onToggleBlocked(row.original.id, checked)}
+                    disabled={true}
+                    aria-label="Enable blocked"
+                    // onCheckedChange={(checked) => onToggleBlocked(row.original.id, checked)}
                   />
                 </TableCell>
                 <TableCell className="max-w-[180px] truncate whitespace-nowrap overflow-hidden">

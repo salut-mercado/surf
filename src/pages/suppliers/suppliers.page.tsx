@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Plus } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,57 +10,75 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { CreateSupplierForm } from "~/pages/suppliers/create-supplier-form";
+import { CreateSupplierForm, UpdateSupplierForm } from "~/pages/suppliers/create-supplier-form";
 import { SuppliersTable } from "~/pages/suppliers/suppliers-table";
 import { useSuppliers } from "~/pages/suppliers/use-suppliers";
-// import { useCreateSupplier } from "~/pages/suppliers/use-create-supplier";
-// import type { SuppliersSchema, CreateSppliersApiSuppliersPostRequest } from "@salut-mercado/octo-client";
-import { CreateSupplier, PutSupplier } from "./use-create-supplier";
-import type { Suppliers, UpdateSuppliers } from "./use-create-supplier";
-// import type { SuppliersSchema } from "@salut-mercado/octo-client";
-import type { SuppliersTableData } from "./suppliers-table";
+import { CreateSupplier, /*PutSupplier*/ } from "./use-create-supplier";
+import type { SupplierSchema, SupplierUpdateSchema } from "@salut-mercado/octo-client";
+import { useQueryClient } from "@tanstack/react-query";
+import { useUpdateSupplier } from "./use-update-suppliers";
+// import type { tempSuppliersTableData } from "./suppliersData";
+import type { SupplierWithId } from "./suppliersData";
 
 
 
 
-
-export default function SuppliersPage() {
+ export default function SuppliersPage() {
   const [open, setOpen] = useState(false);
-  const { suppliers, fetchSuppliers, toggleAnalytics, toggleBlocked } = useSuppliers();
-  const [selectedSupplier, setSelectedSupplier] = useState<SuppliersTableData | null>(null);
+  const { data, isLoading, error } = useSuppliers({});
+  const [selectedSupplier, setSelectedSupplier] = useState<SupplierWithId | null>(null);
   const [editOpen, setEditOpen] = useState(false);
-  // const { mutateAsync: createSupplier } = useCreateSupplier();
+  const createSupplierMutation = CreateSupplier();
+  const updateSupplierMutation = useUpdateSupplier();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    fetchSuppliers();
-  }, [fetchSuppliers]);
 
-  const handleCreateSupplier = async (data: Suppliers | UpdateSuppliers) => {
+  const handleCreateSupplier = async (formData: SupplierSchema) => {
     try {
-      await CreateSupplier(data as Suppliers)
-      console.log("Поставщик создан")
-      // await createSupplier(requestData);
-      setOpen(false);
-      await fetchSuppliers();
+      await createSupplierMutation.mutateAsync(
+        { supplierSchema: formData },
+        {
+          onSuccess: () => {
+            setOpen(false);
+            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
+          },
+          onError: (error) => {
+            console.error("Ошибка при создании поставщика:", error);
+          }
+        }
+      );
     } catch (err) {
-      console.error('Error:', err);
+      console.error("Ошибка при выполнении мутации:", err);
     }
   };
 
-  const handleEditSupplier = (supplier: SuppliersTableData) => {
+  const handleEditSupplier = (supplier: SupplierWithId) => {
     setSelectedSupplier(supplier);
     setEditOpen(true);
   };
 
-  const handleUpdateSupplier = async (data: UpdateSuppliers) => {
+  const handleUpdateSupplier = async (formData: SupplierUpdateSchema) => {
     if (!selectedSupplier) return;
+    
     try {
-      await PutSupplier(data, selectedSupplier.id);
-      setEditOpen(false);
-      setSelectedSupplier(null);
-      await fetchSuppliers();
+      await updateSupplierMutation.mutateAsync(
+        {
+          id: selectedSupplier.id,
+          supplierUpdateSchema: formData,
+        },
+        {
+          onSuccess: () => {
+            setEditOpen(false);
+            setSelectedSupplier(null);
+            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
+          },
+          onError: (error) => {
+            console.error('Ошибка при обновлении поставщика:', error);
+          }
+        }
+      );
     } catch (err) {
-      console.error('Error updating supplier:', err);
+      console.error('Ошибка при выполнении мутации:', err);
     }
   };
 
@@ -102,17 +120,18 @@ export default function SuppliersPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <SuppliersTable
-            suppliers={suppliers}
-            onToggleAnalytics={toggleAnalytics}
-            onToggleBlocked={toggleBlocked}
-            onEdit={handleEditSupplier}
-            // onDelete={handleDeleteSupplier}
-          />
+          {isLoading && <div>Загрузка...</div>}
+          {error && <div>Ошибка: {error.message}</div>}
+          {!isLoading && !error && (
+            <SuppliersTable
+              suppliers={data?.items || []}
+              onEdit={handleEditSupplier}
+            />
+          )}
         </CardContent>
       </Card>
       
-      {/* Edit Dialog */}
+      
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -122,7 +141,7 @@ export default function SuppliersPage() {
             </DialogDescription>
           </DialogHeader>
           {selectedSupplier && (
-            <CreateSupplierForm 
+            <UpdateSupplierForm 
               onSubmit={handleUpdateSupplier}
               initialValues={selectedSupplier}
               submitLabel="Update Supplier"
