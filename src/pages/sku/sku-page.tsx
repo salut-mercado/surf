@@ -26,7 +26,7 @@ import {
     DialogTrigger,
 } from "~/components/ui/dialog";
 
-import type {SupplierWithId} from "~/pages/suppliers/suppliers-table.tsx";
+import type {SupplierWithId} from "~/pages/suppliers/suppliersData.ts";
 import type {ProducerWithId} from "~/pages/producers/producers-page.tsx";
 import type {CategoryWithId} from "~/pages/category/category-page.tsx";
 import {useSuppliers} from "~/pages/suppliers/use-suppliers";
