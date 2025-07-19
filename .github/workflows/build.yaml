@@ -1,0 +1,55 @@
+name: Build Static Site
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://npm.pkg.github.com/"
+          scope: "@salut-mercado"
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10.6.3
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.pnpm-store
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - name: Create .npmrc
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > .npmrc
+          echo "@OWNER:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "@salut-mercado:registry=https://npm.pkg.github.com" >> .npmrc
+
+      - name: Install dependencies
+        run: pnpm install --ignore-scripts --store=node_modules/.pnpm-store
+
+      - name: Build
+        run: pnpm build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: www
