@@ -36,13 +36,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Create .npmrc
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.AUTH_TOKEN }}" > .npmrc
-          echo "@salut-mercado:registry=https://npm.pkg.github.com" >> .npmrc
-
       - name: Install dependencies
         run: pnpm install --ignore-scripts --store=node_modules/.pnpm-store
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
         run: pnpm build
