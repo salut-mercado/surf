@@ -26,7 +26,7 @@ export const CreateSupplier = () => {
         },
         onSubmit: async ({ value }) => {
             await mutateAsync({
-                suppliersSchema: {
+                supplierSchema: {
                     ...value,
                     agent: value.agent || randomString(),
                     code: value.supplierCode || randomString(),
