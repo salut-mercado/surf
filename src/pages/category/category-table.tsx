@@ -15,17 +15,20 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@radix-ui/react-dropdown-menu";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import { Input } from "~/components/ui/input";
 import type { CategoryWithId } from "~/pages/category/category-page.tsx";
+import {useLocation} from "wouter";
 
 interface CategoriesTableProps {
     categories: CategoryWithId[];
+    initialSearch?: string;
     onRowClick?: (category: CategoryWithId) => void;
 }
-export function CategoriesTable({ categories, onRowClick }: CategoriesTableProps) {
+export function CategoriesTable({ categories, onRowClick, initialSearch = "" }: CategoriesTableProps) {
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState(initialSearch);
+    const [, setLocation] = useLocation();
 
     const toggleExpand = (id: string) => {
         const newSet = new Set(expandedIds);
@@ -99,6 +102,9 @@ export function CategoriesTable({ categories, onRowClick }: CategoriesTableProps
             });
     };
 
+    useEffect(() => {
+        setLocation(`/categories/${encodeURIComponent(search)}`);
+    }, [search]);
 
 
     const treeData = buildTree();

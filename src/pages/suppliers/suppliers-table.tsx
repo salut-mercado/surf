@@ -20,19 +20,22 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState, useMemo } from "react";
+import {useState, useMemo, useEffect} from "react";
 import type { SupplierWithId } from "./suppliersData";
+import {useLocation} from "wouter";
 
 
 interface SuppliersTableProps {
   suppliers: SupplierWithId[];
+  initialSearch?: string;
   onEdit?: (supplier: SupplierWithId) => void;
   // onDelete?: (id: string) => void;
 }
 
-export function SuppliersTable({ suppliers, onEdit}: SuppliersTableProps) {
+export function SuppliersTable({ suppliers, onEdit, initialSearch = ""}: SuppliersTableProps) {
   const [filterField, setFilterField] = useState<keyof SupplierWithId>("code");
-  const [filterValue, setFilterValue] = useState("");
+  const [filterValue, setFilterValue] = useState(initialSearch);
+  const [, setLocation] = useLocation();
 
   const filteredSuppliers = useMemo(() => {
     if (!filterValue) return suppliers;
@@ -89,6 +92,11 @@ export function SuppliersTable({ suppliers, onEdit}: SuppliersTableProps) {
       },
     },
   });
+
+  useEffect(() => {
+    setLocation(`/suppliers/${encodeURIComponent(filterValue)}`);
+  }, [filterValue]);
+
 
   return (
     <div>
@@ -218,4 +226,4 @@ export function SuppliersTable({ suppliers, onEdit}: SuppliersTableProps) {
       </div>
     </div>
   );
-} 
+}

@@ -16,17 +16,20 @@ import {
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@radix-ui/react-dropdown-menu";
 import {Edit, MoreHorizontal} from "lucide-react";
 import {Input} from "~/components/ui/input.tsx";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import type {ProducerWithId} from "~/pages/producers/producers-page.tsx";
+import {useLocation} from "wouter";
 
 
 interface ProducersTableProps {
     producers: ProducerWithId[];
+    initialSearch?: string;
     onRowClick?: (producer: ProducerWithId) => void;
 }
 
-export function ProducersTable({producers, onRowClick}: ProducersTableProps) {
-    const [search, setSearch] = useState("");
+export function ProducersTable({producers, onRowClick, initialSearch = ""}: ProducersTableProps) {
+    const [search, setSearch] = useState(initialSearch);
+    const [, setLocation] = useLocation();
 
     const filteredProducers = useMemo(() => {
         return producers.filter((p) =>
@@ -52,7 +55,12 @@ export function ProducersTable({producers, onRowClick}: ProducersTableProps) {
             },
         });
 
-        return (
+    useEffect(() => {
+        setLocation(`/producers/${encodeURIComponent(search)}`);
+    }, [search]);
+
+
+    return (
             <div>
                 <div className="mb-4">
                     <Input

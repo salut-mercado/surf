@@ -18,16 +18,19 @@ import { Button } from "~/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "~/components/ui/dropdown-menu";
 import {Edit, MoreHorizontal} from "lucide-react";
 import type {SkuWithId} from "~/pages/sku/sku-page.tsx";
+import {useLocation} from "wouter";
 
 interface SkusTableProps {
     skus: SkuWithId[];
     onRowClick?: (sku: SkuWithId) => void;
+    initialSearch?: string;
     onMoreClick?: (sku: SkuWithId) => void;
 
 }
 
-export function SkusTable({ skus, onMoreClick, onRowClick }: SkusTableProps) {
-    const [search, setSearch] = useState("");
+export function SkusTable({ skus, onMoreClick, onRowClick, initialSearch = "" }: SkusTableProps) {
+    const [search, setSearch] = useState(initialSearch);
+    const [, setLocation] = useLocation();
 
     const filteredSkus = useMemo(() => {
         return skus.filter(sku =>
@@ -51,12 +54,14 @@ export function SkusTable({ skus, onMoreClick, onRowClick }: SkusTableProps) {
                 pageSize: 5,
             },
         },
-        autoResetPageIndex: false,
+        autoResetPageIndex: true,
     });
 
     useEffect(() => {
-        table.setPageIndex(0);
+        setLocation(`/sku/${encodeURIComponent(search)}`);
     }, [search]);
+
+
 
     return (
         <div>

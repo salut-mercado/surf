@@ -20,16 +20,16 @@ export const AppRoutes = () => {
             <Route path="/example">
                 <ExamplePage/>
             </Route>
-            <Route path="/suppliers">
+            <Route path="/suppliers/:search?">
                 <SuppliersPage/>
             </Route>
-            <Route path="/producers">
+            <Route path="/producers/:search?">
                 <ProducersPage/>
             </Route>
-            <Route path="/categories">
+            <Route path="/categories/:search?">
                 <CategoriesPage/>
             </Route>
-            <Route path="/sku">
+            <Route path="/sku/:search?">
                 <SkuPage/>
             </Route>
             <Route path="*">404 Page</Route>
