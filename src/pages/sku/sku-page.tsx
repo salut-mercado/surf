@@ -12,9 +12,9 @@ import {Label} from "~/components/ui/label";
 import {Plus} from "lucide-react";
 import {
     UnitMeasurementEnum,
-    type SKUSchema, type UpdateSkuApiSkuSkuIdPutRequest,
+    type SKUSchema, type UpdateSkuHandlerApiSkusIdPutRequest,
 } from "@salut-mercado/octo-client";
-import type {CreateSkuApiSkuPostRequest} from "@salut-mercado/octo-client";
+import type {AddSkuHandlerApiSkusPostRequest} from "@salut-mercado/octo-client";
 import {SkusTable} from "~/pages/sku/sku-table";
 import {useCreateSku} from "~/pages/sku/use-create-sku.ts";
 import {useSku} from "~/pages/sku/use-sku.ts";
@@ -59,7 +59,8 @@ export default function SkusPage() {
     const getCategoryName = (id: string) =>
         categories?.find((c : CategoryWithId) => c.id === id)?.categoryName || id;
 
-    const {data: skus = [], refetch} = useSku({});
+    const { data, refetch } = useSku({});
+    const skus: SkuWithId[] = data?.items ?? [];
     const createMutation = useCreateSku();
     const updateMutation = useUpdateSku();
 
@@ -86,7 +87,7 @@ export default function SkusPage() {
 
     const handleCreateSku = async () => {
         try {
-            const requestData: CreateSkuApiSkuPostRequest = {
+            const requestData: AddSkuHandlerApiSkusPostRequest = {
                 sKUSchema: newSku,
             };
 
@@ -116,9 +117,9 @@ export default function SkusPage() {
         if (!selectedSku) return;
 
         try {
-            const requestData: UpdateSkuApiSkuSkuIdPutRequest = {
-                skuId: selectedSku.id,
-                sKUSchema: {
+            const requestData: UpdateSkuHandlerApiSkusIdPutRequest = {
+                id: selectedSku.id,
+                sKUUpdateSchema: {
                     name: selectedSku.name,
                     supplierId: selectedSku.supplierId,
                     producerId: selectedSku.producerId,

@@ -1,10 +1,10 @@
 import {useMutation} from "@tanstack/react-query";
-import type {CreateSkuApiSkuPostRequest} from "@salut-mercado/octo-client";
+import type {AddSkuHandlerApiSkusPostRequest} from "@salut-mercado/octo-client";
 import {api} from "~/lib/api.ts";
 
 export const useCreateSku = () => {
     return useMutation({
-        mutationFn: (data: CreateSkuApiSkuPostRequest) =>
-            api.sku.createSkuApiSkuPost(data),
+        mutationFn: (data: AddSkuHandlerApiSkusPostRequest) =>
+            api.sku.addSkuHandlerApiSkusPost(data),
     });
 };
