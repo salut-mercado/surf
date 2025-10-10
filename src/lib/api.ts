@@ -6,7 +6,7 @@ import {
   FirmsProducerApi,
   Configuration,
   CategoriesApi,
-  SKUApi,
+  SKUsApi,
 } from "@salut-mercado/octo-client";
 
 const config = new Configuration({
@@ -20,5 +20,5 @@ export const api = {
   suppliersBankInfo: new SuppliersBankInfoApi(config),
   producers: new FirmsProducerApi(config),
   categories: new CategoriesApi(config),
-  sku: new SKUApi(config),
+  sku: new SKUsApi(config),
 };

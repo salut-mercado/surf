@@ -1,4 +1,21 @@
 import {
+  type ColumnDef,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { Edit, MoreHorizontal } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "wouter";
+import { Button } from "~/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { Input } from "~/components/ui/input.tsx";
+import {
   Table,
   TableBody,
   TableCell,
@@ -6,24 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { Button } from "~/components/ui/button";
-import {
-  type ColumnDef,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
-import { Edit, MoreHorizontal } from "lucide-react";
-import { Input } from "~/components/ui/input.tsx";
-import { useEffect, useMemo, useState } from "react";
 import type { ProducerWithId } from "~/pages/producers/producers-page.tsx";
-import { useLocation } from "wouter";
 
 interface ProducersTableProps {
   producers: ProducerWithId[];
@@ -48,7 +48,7 @@ export function ProducersTable({
   const columns: ColumnDef<ProducerWithId>[] = useMemo(
     () => [
       { accessorKey: "name", header: "Name" },
-      { accessorKey: "taxID", header: "Tax ID" },
+      { accessorKey: "nif", header: "Tax ID" },
       { accessorKey: "minimumStock", header: "Minimum Stock" },
     ],
     []
@@ -93,7 +93,7 @@ export function ProducersTable({
           <TableBody>
             {table.getRowModel().rows.map((row) => (
               <TableRow
-                key={row.original.taxID}
+                key={row.original.nif}
                 className="cursor-pointer hover:bg-muted/10"
               >
                 <TableCell className="pl-2 ">
@@ -102,7 +102,7 @@ export function ProducersTable({
                     <span>{row.original.name}</span>
                   </div>
                 </TableCell>
-                <TableCell>{row.original.taxID}</TableCell>
+                <TableCell>{row.original.nif}</TableCell>
                 <TableCell>{row.original.minimumStock}</TableCell>
                 <TableCell className="text-right">
                   <div className="inline-block mr-3">

@@ -1,3 +1,10 @@
+import type { AddSkuHandlerApiSkusPostRequest } from "@salut-mercado/octo-client";
+import {
+  UnitMeasurementEnum,
+  type SKUSchema,
+  type UpdateSkuHandlerApiSkusIdPutRequest,
+} from "@salut-mercado/octo-client";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import {
@@ -7,18 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-import { Plus } from "lucide-react";
-import {
-  UnitMeasurementEnum,
-  type SKUSchema,
-  type UpdateSkuHandlerApiSkusIdPutRequest,
-} from "@salut-mercado/octo-client";
-import type { AddSkuHandlerApiSkusPostRequest } from "@salut-mercado/octo-client";
-import { SkusTable } from "~/pages/sku/sku-table";
-import { useCreateSku } from "~/pages/sku/use-create-sku.ts";
-import { useSku } from "~/pages/sku/use-sku.ts";
 import {
   Dialog,
   DialogContent,
@@ -26,13 +21,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { SkusTable } from "~/pages/sku/sku-table";
+import { useCreateSku } from "~/pages/sku/use-create-sku.ts";
+import { useSku } from "~/pages/sku/use-sku.ts";
 
-import type { SupplierWithId } from "~/pages/suppliers/suppliersData.ts";
-import type { ProducerWithId } from "~/pages/producers/producers-page.tsx";
-import type { CategoryWithId } from "~/pages/category/category-page.tsx";
-import { useSuppliers } from "~/pages/suppliers/use-suppliers";
-import { useProducers } from "~/pages/producers/use-producers";
-import { useCategories } from "~/pages/category/use-category";
 import {
   Select,
   SelectItem,
@@ -40,7 +34,13 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { SelectContent } from "~/components/ui/select.tsx";
+import type { CategoryWithId } from "~/pages/category/category-page.tsx";
+import { useCategories } from "~/pages/category/use-category";
+import type { ProducerWithId } from "~/pages/producers/producers-page.tsx";
+import { useProducers } from "~/pages/producers/use-producers";
 import { useUpdateSku } from "~/pages/sku/use-update-sku.ts";
+import type { SupplierWithId } from "~/pages/suppliers/suppliersData.ts";
+import { useSuppliers } from "~/pages/suppliers/use-suppliers";
 
 export type SkuWithId = SKUSchema & { id: string };
 
@@ -89,6 +89,8 @@ export default function SkusPage() {
     naturalLossPercent: 0,
     maxOnCheckout: 0,
     specifications: "",
+    barcode: "",
+    wholesalePrice: 0,
   });
 
   const handleCreateSku = async () => {
@@ -113,6 +115,8 @@ export default function SkusPage() {
         naturalLossPercent: 0,
         maxOnCheckout: 0,
         specifications: "",
+        barcode: "",
+        wholesalePrice: 0,
       });
     } catch (err) {
       console.error("Error creating SKU:", err);
@@ -432,7 +436,7 @@ export default function SkusPage() {
                       <SelectValue placeholder="Select Supplier" />
                     </SelectTrigger>
                     <SelectContent>
-                      {suppliers.map((s) => (
+                      {suppliers?.map((s) => (
                         <SelectItem key={s.id} value={s.id}>
                           {s.name}
                         </SelectItem>
@@ -453,7 +457,7 @@ export default function SkusPage() {
                       <SelectValue placeholder="Select Producer" />
                     </SelectTrigger>
                     <SelectContent>
-                      {producers.map((p: ProducerWithId) => (
+                      {producers?.map((p: ProducerWithId) => (
                         <SelectItem key={p.id} value={p.id}>
                           {p.name}
                         </SelectItem>
@@ -474,7 +478,7 @@ export default function SkusPage() {
                       <SelectValue placeholder="Select Category" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categories.map((c: CategoryWithId) => (
+                      {categories?.map((c: CategoryWithId) => (
                         <SelectItem key={c.id} value={c.id}>
                           {c.categoryName}
                         </SelectItem>

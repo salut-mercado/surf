@@ -56,7 +56,7 @@ export function SuppliersTable({
       { accessorKey: "name", header: "Name" },
       { accessorKey: "agent", header: "Agent" },
       { accessorKey: "phone", header: "Phone" },
-      { accessorKey: "taxID", header: "Tax ID" },
+      { accessorKey: "nif", header: "Tax ID" },
       { accessorKey: "delayDays", header: "Delay Days" },
       { accessorKey: "analytics", header: "Analytics" },
       { accessorKey: "blocked", header: "Blocked" },
@@ -120,7 +120,7 @@ export function SuppliersTable({
           <option value="name">Name</option>
           <option value="agent">Agent</option>
           <option value="phone">Phone</option>
-          <option value="taxID">Tax ID</option>
+          <option value="nif">Tax ID</option>
           <option value="delayDays">Delay Days</option>
           <option value="comments">Comments</option>
         </select>
@@ -155,12 +155,12 @@ export function SuppliersTable({
                 <TableCell>{row.original.name}</TableCell>
                 <TableCell>{row.original.agent}</TableCell>
                 <TableCell>{row.original.phone}</TableCell>
-                <TableCell>{row.original.taxID}</TableCell>
+                <TableCell>{row.original.nif}</TableCell>
                 <TableCell>{row.original.delayDays}</TableCell>
                 <TableCell>
                   <Switch
                     id="analytics"
-                    checked={row.original.analytics}
+                    checked={false}
                     aria-label="Enable analytics"
                     disabled={true}
                     // onCheckedChange={(checked) => onToggleAnalytics(row.original.id, checked)}

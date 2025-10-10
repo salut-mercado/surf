@@ -22,7 +22,7 @@ export const CreateSupplier = () => {
       analytics: true,
       blocked: false,
       comments: "",
-      taxID: "",
+      nif: "",
     },
     onSubmit: async ({ value }) => {
       await mutateAsync({
@@ -32,7 +32,10 @@ export const CreateSupplier = () => {
           code: value.supplierCode || randomString(),
           name: value.supplierName || randomString(),
           phone: value.phone || randomString(),
-          taxID: value.taxID || randomString(),
+          nif: value.nif || randomString(),
+          blocked: value.blocked,
+          delayDays: value.delayDays || 1,
+          comments: value.comments || "",
         },
       });
     },
@@ -138,7 +141,7 @@ export const CreateSupplier = () => {
         )}
       />
       <form.Field
-        name="taxID"
+        name="nif"
         children={(field) => (
           <div className="flex flex-col gap-2">
             <Label htmlFor={field.name}>Tax ID</Label>

@@ -1,9 +1,9 @@
-import { Input } from "~/components/ui/input";
-import { Button } from "~/components/ui/button";
-import { Label } from "~/components/ui/label";
-import { Checkbox } from "~/components/ui/checkbox";
-import { useForm } from "@tanstack/react-form";
 import type { SupplierSchema } from "@salut-mercado/octo-client";
+import { useForm } from "@tanstack/react-form";
+import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 
 interface CreateSupplierFormProps {
   onSubmit: (data: SupplierSchema) => void;
@@ -21,7 +21,7 @@ export function CreateSupplierForm({
       agent: "",
       phone: "",
       delayDays: 1,
-      taxID: "",
+      nif: "",
       blocked: true,
       analytics: false,
       comments: "",
@@ -33,9 +33,8 @@ export function CreateSupplierForm({
         agent: value.agent,
         phone: value.phone,
         delayDays: value.delayDays || 1,
-        taxID: value.taxID,
+        nif: value.nif,
         blocked: value.blocked,
-        analytics: value.analytics,
         comments: value.comments || "",
       });
     },
@@ -112,7 +111,7 @@ export function CreateSupplierForm({
           )}
         />
         <form.Field
-          name="taxID"
+          name="nif"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>Tax ID</Label>
@@ -204,8 +203,8 @@ export function CreateSupplierForm({
   );
 }
 
-import type { SupplierWithId } from "./suppliersData";
 import type { SupplierUpdateSchema } from "@salut-mercado/octo-client";
+import type { SupplierWithId } from "./suppliersData";
 
 interface UpdateSupplierFormProps {
   onSubmit: (data: SupplierUpdateSchema) => void;
@@ -227,9 +226,9 @@ export function UpdateSupplierForm({
         agent: value.agent,
         phone: value.phone,
         delayDays: value.delayDays,
-        taxID: value.taxID,
+        taxID: value.nif,
         blocked: value.blocked,
-        analytics: value.analytics,
+        analytics: false,
         comments: value.comments,
       });
     },
@@ -306,7 +305,7 @@ export function UpdateSupplierForm({
           )}
         />
         <form.Field
-          name="taxID"
+          name="nif"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>Tax ID</Label>
@@ -351,14 +350,14 @@ export function UpdateSupplierForm({
             </div>
           )}
         />
-        <form.Field
+        {/* <form.Field
           name="analytics"
           children={(field) => (
             <div className="flex items-center gap-2">
               <Checkbox
                 id={field.name}
                 name={field.name}
-                checked={field.state.value}
+                checked={false}
                 onBlur={field.handleBlur}
                 onCheckedChange={(checked) =>
                   field.handleChange(Boolean(checked))
@@ -367,7 +366,7 @@ export function UpdateSupplierForm({
               <Label htmlFor={field.name}>Analytics</Label>
             </div>
           )}
-        />
+        /> */}
         <form.Field
           name="blocked"
           children={(field) => (

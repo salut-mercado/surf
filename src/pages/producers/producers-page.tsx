@@ -39,7 +39,7 @@ export default function ProducersPage() {
 
   const [newProducer, setNewProducer] = useState({
     name: "",
-    taxID: "",
+    nif: "",
     minimumStock: 0,
   });
 
@@ -53,7 +53,7 @@ export default function ProducersPage() {
       await createMutation.mutateAsync(requestData);
       refetch();
       setOpenCreate(false);
-      setNewProducer({ name: "", taxID: "", minimumStock: 0 });
+      setNewProducer({ name: "", nif: "", minimumStock: 0 });
     } catch (err) {
       console.error("Error creating producer:", err);
     }
@@ -68,7 +68,7 @@ export default function ProducersPage() {
           id: selectedProducer.id,
           firmsProducerUpdateSchema: {
             name: selectedProducer.name,
-            taxID: selectedProducer.taxID,
+            nif: selectedProducer.nif,
             minimumStock: selectedProducer.minimumStock,
           },
         };
@@ -118,12 +118,12 @@ export default function ProducersPage() {
                   <div className="space-y-2">
                     <Label>Tax ID</Label>
                     <Input
-                      value={newProducer.taxID}
+                      value={newProducer.nif}
                       onChange={(e) => {
                         if (createMutation.isError) createMutation.reset();
                         setNewProducer({
                           ...newProducer,
-                          taxID: e.target.value,
+                          nif: e.target.value,
                         });
                       }}
                     />
@@ -197,12 +197,12 @@ export default function ProducersPage() {
               <div className="space-y-2">
                 <Label>Tax ID</Label>
                 <Input
-                  value={selectedProducer.taxID}
+                  value={selectedProducer.nif}
                   onChange={(e) => {
                     if (updateMutation.isError) updateMutation.reset();
                     setSelectedProducer({
                       ...selectedProducer,
-                      taxID: e.target.value,
+                      nif: e.target.value,
                     });
                   }}
                 />
