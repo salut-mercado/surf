@@ -1,7 +1,6 @@
 import { AppSidebar } from "~/components/app-sidebar";
 import { SiteHeader } from "~/components/site-header";
 import { SidebarInset, SidebarProvider } from "~/components/ui/sidebar";
-import { Chat } from "./pages/AIchat/chatPage";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -17,7 +16,6 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col">{children}</div>
-        <Chat />
       </SidebarInset>
     </SidebarProvider>
   );

@@ -4,9 +4,6 @@ import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
 
 const apiUrl = process.env.VITE_API_URL || "http://localhost:8000";
-const aiApiUrl = process.env.VITE_AI_API_URL || "http://localhost:8001";
-
-console.log({ apiUrl, aiApiUrl });
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -19,7 +16,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:8000",
+        target: apiUrl,
         changeOrigin: true,
         secure: false,
       },
