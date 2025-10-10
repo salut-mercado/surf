@@ -22,18 +22,20 @@ const FloatingButton = ({ onClick }: FloatingButtonProps) => (
       cursor: "pointer",
       zIndex: 1001,
       transition: "transform 0.15s, box-shadow 0.15s",
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      whiteSpace: 'nowrap',
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      whiteSpace: "nowrap",
     }}
-    onMouseOver={e => {
+    onMouseOver={(e) => {
       (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.08)";
-      (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 8px 24px rgba(40,60,120,0.35)";
+      (e.currentTarget as HTMLButtonElement).style.boxShadow =
+        "0 8px 24px rgba(40,60,120,0.35)";
     }}
-    onMouseOut={e => {
+    onMouseOut={(e) => {
       (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
-      (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 16px rgba(40,60,120,0.25)";
+      (e.currentTarget as HTMLButtonElement).style.boxShadow =
+        "0 4px 16px rgba(40,60,120,0.25)";
     }}
   >
     salutAI

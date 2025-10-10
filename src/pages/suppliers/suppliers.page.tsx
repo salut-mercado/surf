@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -10,28 +16,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { CreateSupplierForm, UpdateSupplierForm } from "~/pages/suppliers/create-supplier-form";
+import {
+  CreateSupplierForm,
+  UpdateSupplierForm,
+} from "~/pages/suppliers/create-supplier-form";
 import { SuppliersTable } from "~/pages/suppliers/suppliers-table";
 import { useSuppliers } from "~/pages/suppliers/use-suppliers";
-import { CreateSupplier, /*PutSupplier*/ } from "./use-create-supplier";
-import type { SupplierSchema, SupplierUpdateSchema } from "@salut-mercado/octo-client";
+import { CreateSupplier /*PutSupplier*/ } from "./use-create-supplier";
+import type {
+  SupplierSchema,
+  SupplierUpdateSchema,
+} from "@salut-mercado/octo-client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUpdateSupplier } from "./use-update-suppliers";
 // import type { tempSuppliersTableData } from "./suppliersData";
 import type { SupplierWithId } from "./suppliersData";
 
-
-
-
- export default function SuppliersPage() {
+export default function SuppliersPage() {
   const [open, setOpen] = useState(false);
   const { data, isLoading, error } = useSuppliers({});
-  const [selectedSupplier, setSelectedSupplier] = useState<SupplierWithId | null>(null);
+  const [selectedSupplier, setSelectedSupplier] =
+    useState<SupplierWithId | null>(null);
   const [editOpen, setEditOpen] = useState(false);
   const createSupplierMutation = CreateSupplier();
   const updateSupplierMutation = useUpdateSupplier();
   const queryClient = useQueryClient();
-
 
   const handleCreateSupplier = async (formData: SupplierSchema) => {
     try {
@@ -40,11 +49,11 @@ import type { SupplierWithId } from "./suppliersData";
         {
           onSuccess: () => {
             setOpen(false);
-            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
+            queryClient.invalidateQueries({ queryKey: ["suppliers"] });
           },
           onError: (error) => {
             console.error("Ошибка при создании поставщика:", error);
-          }
+          },
         }
       );
     } catch (err) {
@@ -59,7 +68,7 @@ import type { SupplierWithId } from "./suppliersData";
 
   const handleUpdateSupplier = async (formData: SupplierUpdateSchema) => {
     if (!selectedSupplier) return;
-    
+
     try {
       await updateSupplierMutation.mutateAsync(
         {
@@ -70,15 +79,15 @@ import type { SupplierWithId } from "./suppliersData";
           onSuccess: () => {
             setEditOpen(false);
             setSelectedSupplier(null);
-            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
+            queryClient.invalidateQueries({ queryKey: ["suppliers"] });
           },
           onError: (error) => {
-            console.error('Ошибка при обновлении поставщика:', error);
-          }
+            console.error("Ошибка при обновлении поставщика:", error);
+          },
         }
       );
     } catch (err) {
-      console.error('Ошибка при выполнении мутации:', err);
+      console.error("Ошибка при выполнении мутации:", err);
     }
   };
 
@@ -98,7 +107,9 @@ import type { SupplierWithId } from "./suppliersData";
           <div className="flex items-center justify-between">
             <div>
               <CardTitle>Suppliers</CardTitle>
-              <CardDescription>Managing supplier data and settings</CardDescription>
+              <CardDescription>
+                Managing supplier data and settings
+              </CardDescription>
             </div>
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
@@ -130,8 +141,7 @@ import type { SupplierWithId } from "./suppliersData";
           )}
         </CardContent>
       </Card>
-      
-      
+
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -141,7 +151,7 @@ import type { SupplierWithId } from "./suppliersData";
             </DialogDescription>
           </DialogHeader>
           {selectedSupplier && (
-            <UpdateSupplierForm 
+            <UpdateSupplierForm
               onSubmit={handleUpdateSupplier}
               initialValues={selectedSupplier}
               submitLabel="Update Supplier"
@@ -151,4 +161,4 @@ import type { SupplierWithId } from "./suppliersData";
       </Dialog>
     </div>
   );
-} 
+}

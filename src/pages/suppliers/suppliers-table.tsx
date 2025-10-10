@@ -20,10 +20,9 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {useState, useMemo, useEffect} from "react";
+import { useState, useMemo, useEffect } from "react";
 import type { SupplierWithId } from "./suppliersData";
-import {useLocation} from "wouter";
-
+import { useLocation } from "wouter";
 
 interface SuppliersTableProps {
   suppliers: SupplierWithId[];
@@ -32,15 +31,21 @@ interface SuppliersTableProps {
   // onDelete?: (id: string) => void;
 }
 
-export function SuppliersTable({ suppliers, onEdit, initialSearch = ""}: SuppliersTableProps) {
+export function SuppliersTable({
+  suppliers,
+  onEdit,
+  initialSearch = "",
+}: SuppliersTableProps) {
   const [filterField, setFilterField] = useState<keyof SupplierWithId>("code");
   const [filterValue, setFilterValue] = useState(initialSearch);
   const [, setLocation] = useLocation();
 
   const filteredSuppliers = useMemo(() => {
     if (!filterValue) return suppliers;
-    return suppliers.filter(supplier =>
-      String(supplier[filterField]).toLowerCase().includes(filterValue.toLowerCase())
+    return suppliers.filter((supplier) =>
+      String(supplier[filterField])
+        .toLowerCase()
+        .includes(filterValue.toLowerCase())
     );
   }, [suppliers, filterField, filterValue]);
 
@@ -56,8 +61,8 @@ export function SuppliersTable({ suppliers, onEdit, initialSearch = ""}: Supplie
       { accessorKey: "analytics", header: "Analytics" },
       { accessorKey: "blocked", header: "Blocked" },
       { accessorKey: "comments", header: "Comments" },
-      { 
-        id: "actions", 
+      {
+        id: "actions",
         header: "Actions",
         cell: ({ row }) => (
           <DropdownMenu>
@@ -81,7 +86,7 @@ export function SuppliersTable({ suppliers, onEdit, initialSearch = ""}: Supplie
               </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
-        )
+        ),
       },
     ],
     getCoreRowModel: getCoreRowModel(),
@@ -97,7 +102,6 @@ export function SuppliersTable({ suppliers, onEdit, initialSearch = ""}: Supplie
     setLocation(`/suppliers/${encodeURIComponent(filterValue)}`);
   }, [filterValue]);
 
-
   return (
     <div>
       <div className="flex items-center gap-2 mb-4">
@@ -107,7 +111,9 @@ export function SuppliersTable({ suppliers, onEdit, initialSearch = ""}: Supplie
         <select
           id="filterField"
           value={filterField}
-          onChange={e => setFilterField(e.target.value as keyof SupplierWithId)}
+          onChange={(e) =>
+            setFilterField(e.target.value as keyof SupplierWithId)
+          }
           className="border rounded px-2 py-1 bg-white text-black dark:bg-zinc-900 dark:text-white focus:outline-none"
         >
           <option value="code">Code</option>
@@ -121,7 +127,7 @@ export function SuppliersTable({ suppliers, onEdit, initialSearch = ""}: Supplie
         <input
           type="text"
           value={filterValue}
-          onChange={e => setFilterValue(e.target.value)}
+          onChange={(e) => setFilterValue(e.target.value)}
           placeholder="Search"
           className="border rounded px-2 py-1 bg-white text-black dark:bg-zinc-900 dark:text-white focus:outline-none"
         />
@@ -155,7 +161,7 @@ export function SuppliersTable({ suppliers, onEdit, initialSearch = ""}: Supplie
                   <Switch
                     id="analytics"
                     checked={row.original.analytics}
-                    aria-label="Enable analytics" 
+                    aria-label="Enable analytics"
                     disabled={true}
                     // onCheckedChange={(checked) => onToggleAnalytics(row.original.id, checked)}
                   />

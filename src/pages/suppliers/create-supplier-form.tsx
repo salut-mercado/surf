@@ -10,7 +10,10 @@ interface CreateSupplierFormProps {
   submitLabel?: string;
 }
 
-export function CreateSupplierForm({ onSubmit, submitLabel = "Create Supplier" }: CreateSupplierFormProps) {
+export function CreateSupplierForm({
+  onSubmit,
+  submitLabel = "Create Supplier",
+}: CreateSupplierFormProps) {
   const form = useForm({
     defaultValues: {
       code: "",
@@ -163,7 +166,9 @@ export function CreateSupplierForm({ onSubmit, submitLabel = "Create Supplier" }
                 name={field.name}
                 checked={field.state.value}
                 onBlur={field.handleBlur}
-                onCheckedChange={(checked) => field.handleChange(Boolean(checked))}
+                onCheckedChange={(checked) =>
+                  field.handleChange(Boolean(checked))
+                }
               />
               <Label htmlFor={field.name}>Analytics</Label>
             </div>
@@ -178,7 +183,9 @@ export function CreateSupplierForm({ onSubmit, submitLabel = "Create Supplier" }
                 name={field.name}
                 checked={field.state.value}
                 onBlur={field.handleBlur}
-                onCheckedChange={(checked) => field.handleChange(Boolean(checked))}
+                onCheckedChange={(checked) =>
+                  field.handleChange(Boolean(checked))
+                }
               />
               <Label htmlFor={field.name}>Blocked</Label>
             </div>
@@ -206,7 +213,11 @@ interface UpdateSupplierFormProps {
   submitLabel?: string;
 }
 
-export function UpdateSupplierForm({ onSubmit, initialValues, submitLabel = "Update Supplier" }: UpdateSupplierFormProps) {
+export function UpdateSupplierForm({
+  onSubmit,
+  initialValues,
+  submitLabel = "Update Supplier",
+}: UpdateSupplierFormProps) {
   const form = useForm({
     defaultValues: initialValues,
     onSubmit: async ({ value }) => {
@@ -349,7 +360,9 @@ export function UpdateSupplierForm({ onSubmit, initialValues, submitLabel = "Upd
                 name={field.name}
                 checked={field.state.value}
                 onBlur={field.handleBlur}
-                onCheckedChange={(checked) => field.handleChange(Boolean(checked))}
+                onCheckedChange={(checked) =>
+                  field.handleChange(Boolean(checked))
+                }
               />
               <Label htmlFor={field.name}>Analytics</Label>
             </div>
@@ -364,7 +377,9 @@ export function UpdateSupplierForm({ onSubmit, initialValues, submitLabel = "Upd
                 name={field.name}
                 checked={field.state.value}
                 onBlur={field.handleBlur}
-                onCheckedChange={(checked) => field.handleChange(Boolean(checked))}
+                onCheckedChange={(checked) =>
+                  field.handleChange(Boolean(checked))
+                }
               />
               <Label htmlFor={field.name}>Blocked</Label>
             </div>
@@ -381,4 +396,4 @@ export function UpdateSupplierForm({ onSubmit, initialValues, submitLabel = "Upd
       />
     </form>
   );
-} 
+}
