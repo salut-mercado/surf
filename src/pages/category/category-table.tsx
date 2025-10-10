@@ -116,7 +116,7 @@ export function CategoriesTable({
 
   useEffect(() => {
     setLocation(`/categories/${encodeURIComponent(search)}`);
-  }, [search]);
+  }, [search, setLocation]);
 
   const treeData = buildTree();
 

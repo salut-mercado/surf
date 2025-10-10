@@ -77,7 +77,7 @@ export function SuppliersTable({
                 <Edit className="mr-2 h-4 w-4" />
                 Edit
               </DropdownMenuItem>
-              {/* <DropdownMenuItem 
+              {/* <DropdownMenuItem
                 onClick={() => onDelete?.(row.original.code)}
                 className="text-red-600"
               >
@@ -100,7 +100,7 @@ export function SuppliersTable({
 
   useEffect(() => {
     setLocation(`/suppliers/${encodeURIComponent(filterValue)}`);
-  }, [filterValue]);
+  }, [filterValue, setLocation]);
 
   return (
     <div>
@@ -191,7 +191,7 @@ export function SuppliersTable({
                         <Edit className="mr-2 h-4 w-4" />
                         Edit
                       </DropdownMenuItem>
-                      {/* <DropdownMenuItem 
+                      {/* <DropdownMenuItem
                         onClick={() => onDelete?.(row.original.code)}
                         className="text-red-600"
                       >

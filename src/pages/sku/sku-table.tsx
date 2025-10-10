@@ -71,7 +71,7 @@ export function SkusTable({
 
   useEffect(() => {
     setLocation(`/sku/${encodeURIComponent(search)}`);
-  }, [search]);
+  }, [search, setLocation]);
 
   return (
     <div>

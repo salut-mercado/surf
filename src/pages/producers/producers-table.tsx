@@ -68,7 +68,7 @@ export function ProducersTable({
 
   useEffect(() => {
     setLocation(`/producers/${encodeURIComponent(search)}`);
-  }, [search]);
+  }, [search, setLocation]);
 
   return (
     <div>
