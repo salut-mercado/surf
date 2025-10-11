@@ -31,7 +31,7 @@ const ViewSupplierPage = () => {
           <div className="flex items-start justify-between">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <Button asChild size="icon-sm" variant="ghost">
+                <Button asChild size="icon-sm" variant="outline">
                   <Link href="~/suppliers">
                     <ChevronLeft className="size-4" />
                   </Link>

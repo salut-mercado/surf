@@ -35,8 +35,6 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { SelectContent } from "~/components/ui/select.tsx";
-import type { CategoryWithId } from "~/pages/category/category-page.tsx";
-import { useCategories } from "~/pages/category/use-category";
 import type { FirmsProducerSchema } from "@salut-mercado/octo-client";
 import { api } from "~/hooks/api";
 import { useUpdateSku } from "~/pages/sku/use-update-sku.ts";
@@ -57,11 +55,11 @@ export default function SkusPage() {
 
   const producersResp = api.producers.useGetAll({});
   const producersList: (FirmsProducerSchema & { id: string })[] =
-    (producersResp.data as any)?.items || [];
+    producersResp.data || [];
 
   const suppliersResp = api.suppliers.useGetAll({});
   const suppliers: SupplierReturnSchema[] =
-    suppliersResp.data?.pages?.flatMap((p: any) => p.items) ?? [];
+    suppliersResp.data?.pages?.flatMap((p) => p.items) ?? [];
 
   const getSupplierName = (id: string) =>
     suppliers.find((s) => s.id === id)?.name || id;
@@ -70,14 +68,15 @@ export default function SkusPage() {
     producersList?.find((p) => p.id === id)?.name || id;
 
   const getCategoryName = (id: string) =>
-    categories?.find((c: CategoryWithId) => c.id === id)?.categoryName || id;
+    categories?.find((c) => c.id === id)?.categoryName || id;
 
   const { data, refetch } = useSku({});
   const skus: SkuWithId[] = data?.items ?? [];
   const createMutation = useCreateSku();
   const updateMutation = useUpdateSku();
 
-  const { data: categories } = useCategories({});
+  const categoriesResp = api.categories.useGetAll({});
+  const categories = categoriesResp.data;
 
   const [newSku, setNewSku] = useState<SKUSchema>({
     name: "",
@@ -246,7 +245,7 @@ export default function SkusPage() {
                       </SelectTrigger>
                       <SelectContent>
                         {categories &&
-                          categories.map((c: CategoryWithId) => (
+                          categories.map((c) => (
                             <SelectItem key={c.id} value={c.id}>
                               {c.categoryName}
                             </SelectItem>
@@ -481,7 +480,7 @@ export default function SkusPage() {
                       <SelectValue placeholder="Select Category" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categories?.map((c: CategoryWithId) => (
+                      {categories?.map((c) => (
                         <SelectItem key={c.id} value={c.id}>
                           {c.categoryName}
                         </SelectItem>

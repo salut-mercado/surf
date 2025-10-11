@@ -17,7 +17,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
       }
       className="!bg-border"
     >
-      {!isAuthPage && <AppSidebar variant="inset" />}
+      {!isAuthPage && <AppSidebar variant="sidebar" />}
       <SidebarInset>
         {!isAuthPage && <SiteHeader />}
         <div className="flex flex-1 flex-col">{children}</div>

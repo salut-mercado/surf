@@ -1,4 +1,4 @@
-import { IconUserPlus } from "@tabler/icons-react";
+import { IconFolderPlus } from "@tabler/icons-react";
 import { Link } from "wouter";
 
 import { Button } from "~/components/ui/button";
@@ -11,23 +11,23 @@ import {
   EmptyTitle,
 } from "~/components/ui/empty";
 
-export const ProducersEmptyState = () => {
+export const CategoriesEmptyState = () => {
   return (
     <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <IconUserPlus />
+          <IconFolderPlus />
         </EmptyMedia>
-        <EmptyTitle>No Producers Yet</EmptyTitle>
+        <EmptyTitle>No Categories Yet</EmptyTitle>
         <EmptyDescription>
-          You haven&apos;t created any producers yet. Get started by creating your
-          first producer.
+          You haven't created any categories yet. Get started by creating your
+          first category.
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <div className="flex gap-2">
           <Button asChild>
-            <Link href="/create">Create Producer</Link>
+            <Link href="/create">Create Category</Link>
           </Button>
         </div>
       </EmptyContent>

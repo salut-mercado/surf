@@ -12,13 +12,12 @@ export const apiAxios = axios.create({
 });
 
 apiAxios.interceptors.request.use((config) => {
-  console.log("config", config);
   const token = localStorage.getItem("token");
   if (token) {
     config.headers = config.headers ?? {};
     config.headers.Authorization = `Bearer ${token}`;
   }
-  console.log("getTenantStore", getTenantStore());
+
   const tenantId = getTenantStore().tenantId;
   if (tenantId) {
     config.headers = config.headers ?? {};
@@ -65,11 +64,6 @@ apiAxios.interceptors.response.use(
       }
       return Promise.reject(error);
     }
-
-    console.log("status", status);
-    console.log("originalRequest", originalRequest);
-    console.log("originalRequest._retry", !originalRequest._retry);
-    console.log("isAuthEndpoint", !isAuthEndpoint);
     if (
       status === 401 &&
       originalRequest &&
