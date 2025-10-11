@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getTenantStore } from "../store/tenant";
+import { api } from "./api";
 
 export const apiAxios = axios.create({
   baseURL: "/api",
@@ -65,6 +66,10 @@ apiAxios.interceptors.response.use(
       return Promise.reject(error);
     }
 
+    console.log("status", status);
+    console.log("originalRequest", originalRequest);
+    console.log("originalRequest._retry", !originalRequest._retry);
+    console.log("isAuthEndpoint", !isAuthEndpoint);
     if (
       status === 401 &&
       originalRequest &&
@@ -73,8 +78,8 @@ apiAxios.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       try {
-        const refreshRes = await apiAxios.post("/auth/refresh");
-        const newToken = refreshRes?.data?.token;
+        const refreshRes = await api.auth.refreshTokenApiAuthRefreshPost();
+        const newToken = refreshRes?.token;
         if (newToken) {
           localStorage.setItem("token", newToken);
           originalRequest.headers = originalRequest.headers ?? {};

@@ -9,8 +9,8 @@ import {
   SuppliersDetailsApi,
   SuppliersGroupsApi,
 } from "@salut-mercado/octo-client";
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { apiAxios } from "./axiosConfig";
+import axios, { AxiosError, type AxiosResponse } from "axios";
+import { apiAxios } from "./axios-config";
 
 const basePath = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
@@ -19,9 +19,9 @@ const axiosFetch: typeof fetch = async (url, init) => {
   try {
     const resp: AxiosResponse = await apiAxios.request({
       url: String(url),
-      method: (init?.method as any) || "GET",
+      method: init?.method || "GET",
       headers: Object.fromEntries(new Headers(init?.headers || {}).entries()),
-      data: (init as any)?.body,
+      data: init?.body,
       withCredentials: true,
     });
     return axiosResponseToFetchResponse(resp);
@@ -42,11 +42,17 @@ function axiosResponseToFetchResponse(resp: AxiosResponse): Response {
   const status = resp.status;
   const statusText = resp.statusText || "";
   const headers = new Headers();
-  const rawHeaders = resp.headers || {} as Record<string, string>;
-  Object.keys(rawHeaders).forEach((k) => headers.set(k, (rawHeaders as any)[k] as any));
+  const rawHeaders = resp.headers || ({} as Record<string, string>);
+  Object.keys(rawHeaders).forEach((k) => headers.set(k, rawHeaders[k]));
   const data = resp.data;
   const bodyText = typeof data === "string" ? data : JSON.stringify(data ?? "");
-  return synthesizeResponse(status, statusText, headers, bodyText, resp.config?.url || "");
+  return synthesizeResponse(
+    status,
+    statusText,
+    headers,
+    bodyText,
+    resp.config?.url || ""
+  );
 }
 
 function synthesizeResponse(
@@ -56,7 +62,7 @@ function synthesizeResponse(
   bodyText: string,
   url: string = ""
 ): Response {
-  const responseLike: any = {
+  const responseLike = {
     ok: status >= 200 && status < 300,
     status,
     statusText,
@@ -67,7 +73,7 @@ function synthesizeResponse(
       try {
         return bodyText ? JSON.parse(bodyText) : null;
       } catch {
-        return bodyText as any;
+        return bodyText;
       }
     },
     clone: () => synthesizeResponse(status, statusText, headers, bodyText, url),
