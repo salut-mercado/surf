@@ -1,47 +1,84 @@
 import {
-  SuppliersDetailsApi,
-  SuppliersApi,
-  SuppliersGroupsApi,
-  SuppliersBankInfoApi,
-  FirmsProducerApi,
-  Configuration,
-  CategoriesApi,
-  SKUsApi,
   AuthApi,
+  CategoriesApi,
+  Configuration,
+  FirmsProducerApi,
+  SKUsApi,
+  SuppliersApi,
+  SuppliersBankInfoApi,
+  SuppliersDetailsApi,
+  SuppliersGroupsApi,
 } from "@salut-mercado/octo-client";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { apiAxios } from "./axiosConfig";
 
 const basePath = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
-const authFetch: typeof fetch = async (url, init) => {
-  const headers = new Headers(init?.headers || {});
-  const token = localStorage.getItem("token");
-  if (token) headers.set("Authorization", `Bearer ${token}`);
-  const doFetch = () =>
-    fetch(url, { ...(init || {}), headers, credentials: "include" });
-  let res = await doFetch();
-  if (res.status !== 401) return res;
+// Axios-backed fetch adapter for OpenAPI client
+const axiosFetch: typeof fetch = async (url, init) => {
   try {
-    const refresh = await apiAxios.post("/auth/refresh");
-    const newToken = refresh?.data?.token;
-    if (newToken) {
-      localStorage.setItem("token", newToken);
-      headers.set("Authorization", `Bearer ${newToken}`);
-      res = await doFetch();
-      if (res.status !== 401) return res;
+    const resp: AxiosResponse = await apiAxios.request({
+      url: String(url),
+      method: (init?.method as any) || "GET",
+      headers: Object.fromEntries(new Headers(init?.headers || {}).entries()),
+      data: (init as any)?.body,
+      withCredentials: true,
+    });
+    return axiosResponseToFetchResponse(resp);
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      const e = err as AxiosError;
+      if (e.response) {
+        return axiosResponseToFetchResponse(e.response);
+      }
+      // Network error: synthesize a 0 response
+      return synthesizeResponse(0, "", {}, "");
     }
-  } catch {
-    console.error("Error refreshing token");
+    throw err;
   }
-  localStorage.removeItem("token");
-  window.location.href = "/auth/login";
-  return res;
 };
+
+function axiosResponseToFetchResponse(resp: AxiosResponse): Response {
+  const status = resp.status;
+  const statusText = resp.statusText || "";
+  const headers = new Headers();
+  const rawHeaders = resp.headers || {} as Record<string, string>;
+  Object.keys(rawHeaders).forEach((k) => headers.set(k, (rawHeaders as any)[k] as any));
+  const data = resp.data;
+  const bodyText = typeof data === "string" ? data : JSON.stringify(data ?? "");
+  return synthesizeResponse(status, statusText, headers, bodyText, resp.config?.url || "");
+}
+
+function synthesizeResponse(
+  status: number,
+  statusText: string,
+  headers: HeadersInit | Headers,
+  bodyText: string,
+  url: string = ""
+): Response {
+  const responseLike: any = {
+    ok: status >= 200 && status < 300,
+    status,
+    statusText,
+    url,
+    headers: headers instanceof Headers ? headers : new Headers(headers),
+    text: async () => bodyText,
+    json: async () => {
+      try {
+        return bodyText ? JSON.parse(bodyText) : null;
+      } catch {
+        return bodyText as any;
+      }
+    },
+    clone: () => synthesizeResponse(status, statusText, headers, bodyText, url),
+  };
+  return responseLike as Response;
+}
 
 const config = new Configuration({
   basePath,
   accessToken: () => localStorage.getItem("token") || "",
-  fetchApi: authFetch,
+  fetchApi: axiosFetch,
 });
 
 export const api = {

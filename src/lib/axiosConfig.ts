@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getTenantStore } from "../store/tenant";
 
 export const apiAxios = axios.create({
   baseURL: "/api",
@@ -10,10 +11,17 @@ export const apiAxios = axios.create({
 });
 
 apiAxios.interceptors.request.use((config) => {
+  console.log("config", config);
   const token = localStorage.getItem("token");
   if (token) {
     config.headers = config.headers ?? {};
     config.headers.Authorization = `Bearer ${token}`;
+  }
+  console.log("getTenantStore", getTenantStore());
+  const tenantId = getTenantStore().tenantId;
+  if (tenantId) {
+    config.headers = config.headers ?? {};
+    config.headers["X-Tenant-Id"] = tenantId;
   }
   return config;
 });
@@ -22,11 +30,47 @@ apiAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const status = error?.response?.status;
-    const originalRequest = error?.config as any;
+    const originalRequest = error?.config;
     const url: string = originalRequest?.url || "";
-    const isAuthEndpoint = url.includes("/auth/login") || url.includes("/auth/refresh");
+    const isAuthEndpoint =
+      url.includes("/auth/login") || url.includes("/auth/refresh");
 
-    if (status === 401 && originalRequest && !originalRequest._retry && !isAuthEndpoint) {
+    // Handle missing tenant header
+    if (
+      status === 400 &&
+      !originalRequest?._tenantRetry &&
+      error?.response?.data?.detail === "Missing X-Tenant-Id header"
+    ) {
+      originalRequest._tenantRetry = true;
+      try {
+        getTenantStore().markUnassigned(true);
+      } catch {
+        // ignore
+      }
+      return Promise.reject(error);
+    }
+
+    // Handle forbidden tenant
+    if (
+      status === 403 &&
+      !originalRequest?._tenantRetry &&
+      error?.response?.data?.detail === "Tenant not allowed"
+    ) {
+      originalRequest._tenantRetry = true;
+      try {
+        getTenantStore().markUnassigned(true);
+      } catch {
+        // ignore
+      }
+      return Promise.reject(error);
+    }
+
+    if (
+      status === 401 &&
+      originalRequest &&
+      !originalRequest._retry &&
+      !isAuthEndpoint
+    ) {
       originalRequest._retry = true;
       try {
         const refreshRes = await apiAxios.post("/auth/refresh");
@@ -37,8 +81,8 @@ apiAxios.interceptors.response.use(
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
           return apiAxios(originalRequest);
         }
-      } catch (_) {
-        // fall through to logout
+      } catch {
+        // ignore
       }
       localStorage.removeItem("token");
       window.location.href = "/auth/login";
