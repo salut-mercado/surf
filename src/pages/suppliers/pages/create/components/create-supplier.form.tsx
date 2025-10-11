@@ -1,4 +1,4 @@
-import type { SupplierSchema } from "@salut-mercado/octo-client";
+import type { SupplierReturnSchema } from "@salut-mercado/octo-client";
 import { useForm } from "@tanstack/react-form";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
@@ -6,7 +6,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 
 interface CreateSupplierFormProps {
-  onSubmit: (data: SupplierSchema) => void;
+  onSubmit: (data: SupplierReturnSchema) => void;
   submitLabel?: string;
 }
 
@@ -28,6 +28,9 @@ export function CreateSupplierForm({
     },
     onSubmit: async ({ value }) => {
       onSubmit({
+        id: "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
         code: value.code,
         name: value.name,
         agent: value.agent,
@@ -204,11 +207,10 @@ export function CreateSupplierForm({
 }
 
 import type { SupplierUpdateSchema } from "@salut-mercado/octo-client";
-import type { SupplierWithId } from "./suppliersData";
 
 interface UpdateSupplierFormProps {
   onSubmit: (data: SupplierUpdateSchema) => void;
-  initialValues: SupplierWithId;
+  initialValues: SupplierReturnSchema;
   submitLabel?: string;
 }
 
