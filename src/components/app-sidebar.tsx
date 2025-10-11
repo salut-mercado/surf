@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   IconCamera,
   IconChartBar,
@@ -16,10 +15,9 @@ import {
   IconSettings,
   IconUsers,
 } from "@tabler/icons-react";
-
-import { NavDocuments } from "~/components/nav-documents";
+import * as React from "react";
+import { Link } from "wouter";
 import { NavMain } from "~/components/nav-main";
-import { NavSecondary } from "~/components/nav-secondary";
 import { NavUser } from "~/components/nav-user";
 import {
   Sidebar,
@@ -30,7 +28,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
-import { Link } from "wouter";
 
 const data = {
   user: {
@@ -169,8 +166,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        {/* <NavDocuments items={data.documents} /> */}
+        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
