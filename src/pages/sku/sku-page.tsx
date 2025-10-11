@@ -3,6 +3,7 @@ import {
   UnitMeasurementEnum,
   type SKUSchema,
   type UpdateSkuHandlerApiSkusIdPutRequest,
+  type SupplierReturnSchema,
 } from "@salut-mercado/octo-client";
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -36,11 +37,9 @@ import {
 import { SelectContent } from "~/components/ui/select.tsx";
 import type { CategoryWithId } from "~/pages/category/category-page.tsx";
 import { useCategories } from "~/pages/category/use-category";
-import type { ProducerWithId } from "~/pages/producers/producers-page.tsx";
-import { useProducers } from "~/pages/producers/use-producers";
+import type { FirmsProducerSchema } from "@salut-mercado/octo-client";
+import { api } from "~/hooks/api";
 import { useUpdateSku } from "~/pages/sku/use-update-sku.ts";
-import type { SupplierWithId } from "~/pages/suppliers/suppliersData.ts";
-import { useSuppliers } from "~/pages/suppliers/use-suppliers";
 
 export type SkuWithId = SKUSchema & { id: string };
 
@@ -56,11 +55,19 @@ export default function SkusPage() {
   const [selectedSku, setSelectedSku] = useState<SkuWithId | null>(null);
   const [openEdit, setOpenEdit] = useState(false);
 
+  const producersResp = api.producers.useGetAll({});
+  const producersList: (FirmsProducerSchema & { id: string })[] =
+    (producersResp.data as any)?.items || [];
+
+  const suppliersResp = api.suppliers.useGetAll({});
+  const suppliers: SupplierReturnSchema[] =
+    suppliersResp.data?.pages?.flatMap((p: any) => p.items) ?? [];
+
   const getSupplierName = (id: string) =>
     suppliers.find((s) => s.id === id)?.name || id;
 
   const getProducerName = (id: string) =>
-    producers?.find((p: ProducerWithId) => p.id === id)?.name || id;
+    producersList?.find((p) => p.id === id)?.name || id;
 
   const getCategoryName = (id: string) =>
     categories?.find((c: CategoryWithId) => c.id === id)?.categoryName || id;
@@ -70,10 +77,6 @@ export default function SkusPage() {
   const createMutation = useCreateSku();
   const updateMutation = useUpdateSku();
 
-  const { data: suppliersResponse } = useSuppliers({});
-  const suppliers: SupplierWithId[] = suppliersResponse?.items || [];
-
-  const { data: producers } = useProducers({});
   const { data: categories } = useCategories({});
 
   const [newSku, setNewSku] = useState<SKUSchema>({
@@ -199,7 +202,7 @@ export default function SkusPage() {
                       </SelectTrigger>
                       <SelectContent>
                         {suppliers &&
-                          suppliers.map((s: SupplierWithId) => (
+                          suppliers.map((s) => (
                             <SelectItem key={s.id} value={s.id}>
                               {s.name}
                             </SelectItem>
@@ -220,8 +223,8 @@ export default function SkusPage() {
                         <SelectValue placeholder="Select Producer" />
                       </SelectTrigger>
                       <SelectContent>
-                        {producers &&
-                          producers.map((p: ProducerWithId) => (
+                        {producersList &&
+                          producersList.map((p) => (
                             <SelectItem key={p.id} value={p.id}>
                               {p.name}
                             </SelectItem>
@@ -457,7 +460,7 @@ export default function SkusPage() {
                       <SelectValue placeholder="Select Producer" />
                     </SelectTrigger>
                     <SelectContent>
-                      {producers?.map((p: ProducerWithId) => (
+                      {producersList?.map((p) => (
                         <SelectItem key={p.id} value={p.id}>
                           {p.name}
                         </SelectItem>

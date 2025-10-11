@@ -14,7 +14,18 @@ const EditSupplierPage = lazy(
   () => import("./pages/suppliers/pages/edit/edit-supplier.page")
 );
 const SuppliersPage = lazy(() => import("./pages/suppliers/suppliers.page"));
-const ProducersPage = lazy(() => import("./pages/producers/producers-page"));
+const ProducersListPage = lazy(
+  () => import("./pages/producers/producers.page")
+);
+const CreateProducerPage = lazy(
+  () => import("./pages/producers/pages/create/create-producer.page")
+);
+const EditProducerPage = lazy(
+  () => import("./pages/producers/pages/edit/edit-producer.page")
+);
+const ViewProducerPage = lazy(
+  () => import("./pages/producers/pages/view/view-producer.page")
+);
 const CategoriesPage = lazy(() => import("./pages/category/category-page"));
 const SkuPage = lazy(() => import("./pages/sku/sku-page"));
 
@@ -45,8 +56,21 @@ export const AppRoutes = () => {
               </Route>
             </Switch>
           </Route>
-          <Route path="/producers/:search?">
-            <ProducersPage />
+          <Route path="/producers" nest>
+            <Switch>
+              <Route path="/create">
+                <CreateProducerPage />
+              </Route>
+              <Route path="/:id/edit">
+                <EditProducerPage />
+              </Route>
+              <Route path="/:id">
+                <ViewProducerPage />
+              </Route>
+              <Route>
+                <ProducersListPage />
+              </Route>
+            </Switch>
           </Route>
           <Route path="/categories/:search?">
             <CategoriesPage />
