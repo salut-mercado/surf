@@ -27,14 +27,14 @@ type AuthContextValue = {
   loginWithPassword: ReturnType<
     typeof useMutation<
       { httpStatus: number; json: LoginSuccessLike },
-      unknown,
+      Error,
       LoginWithPasswordInput
     >
   >;
   verifyOtp: ReturnType<
     typeof useMutation<
       { httpStatus: number; json: LoginSuccessLike },
-      unknown,
+      Error,
       VerifyOtpInput
     >
   >;
