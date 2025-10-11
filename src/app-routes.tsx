@@ -1,4 +1,4 @@
-import { Route, Switch } from "wouter";
+import { Redirect, Route, Switch } from "wouter";
 import { lazy } from "react";
 
 const AuthPage = lazy(() => import("./pages/auth/auth.page"));
@@ -9,6 +9,7 @@ const CategoriesPage = lazy(() => import("./pages/category/category-page"));
 const SkuPage = lazy(() => import("./pages/sku/sku-page"));
 
 export const AppRoutes = () => {
+  const isAuthed = Boolean(localStorage.getItem("token"));
   return (
     <Switch>
       <Route path="/auth" nest>
@@ -20,16 +21,16 @@ export const AppRoutes = () => {
         <ExamplePage />
       </Route>
       <Route path="/suppliers/:search?">
-        <SuppliersPage />
+        {isAuthed ? <SuppliersPage /> : <Redirect to="/auth/login" />}
       </Route>
       <Route path="/producers/:search?">
-        <ProducersPage />
+        {isAuthed ? <ProducersPage /> : <Redirect to="/auth/login" />}
       </Route>
       <Route path="/categories/:search?">
-        <CategoriesPage />
+        {isAuthed ? <CategoriesPage /> : <Redirect to="/auth/login" />}
       </Route>
       <Route path="/sku/:search?">
-        <SkuPage />
+        {isAuthed ? <SkuPage /> : <Redirect to="/auth/login" />}
       </Route>
       <Route path="*">404 Page</Route>
     </Switch>
