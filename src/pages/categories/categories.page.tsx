@@ -6,7 +6,8 @@ import { api } from "~/hooks/api";
 import { CategoriesEmptyState } from "./categories.empty-state";
 import { CategoriesErrorState } from "./categories.error-state";
 import { CategoriesSkeleton } from "./categories.skeleton";
-import { CategoriesTreeTable } from "./components/categories.tree-table";
+import { CategoryTree } from "./components/category-tree";
+import { Card, CardContent } from "~/components/ui/card";
 
 export default function CategoriesPage() {
   const categories = api.categories.useGetAll({});
@@ -30,7 +31,11 @@ export default function CategoriesPage() {
               </Link>
             </Button>
           </div>
-          <CategoriesTreeTable categories={list} />
+          <Card>
+            <CardContent>
+              <CategoryTree categories={list} />
+            </CardContent>
+          </Card>
         </>
       )}
     </DashboardPage>
