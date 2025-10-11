@@ -32,7 +32,7 @@
     "@salut-mercado/octo-client": "0.1.36",
     "@tabler/icons-react": "^3.34.0",
     "@tailwindcss/vite": "^4.1.8",
-    "@tanstack/react-form": "^1.12.2",
+    "@tanstack/react-form": "^1.23.7",
     "@tanstack/react-table": "^8.21.3",
     "axios": "^1.10.0",
     "class-variance-authority": "^0.7.1",
@@ -48,7 +48,7 @@
     "tailwindcss": "^4.1.8",
     "vaul": "^1.1.2",
     "wouter": "^3.7.1",
-    "zod": "^3.25.57",
+    "zod": "^4.1.12",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

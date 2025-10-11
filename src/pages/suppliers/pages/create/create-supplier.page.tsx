@@ -1,10 +1,24 @@
-import { CreateSupplierForm } from "./components/create-supplier.form";
+import { api } from "~/hooks/api";
+import { SupplierForm } from "../../components/supplier.form";
 import { DashboardPage } from "~/components/dashboard-page";
+import { useLocation } from "wouter";
 
 const CreateSupplierPage = () => {
+  const createSupplier = api.suppliers.useCreate();
+  const [, setLocation] = useLocation();
   return (
     <DashboardPage>
-      <CreateSupplierForm onSubmit={() => {}} />
+      <SupplierForm
+        onSubmit={async (data) => {
+          const created = await createSupplier.mutateAsync({
+            supplierSchema: data,
+          });
+          if (created) {
+            setLocation(`~/suppliers/${created.id}`, { replace: true });
+          }
+        }}
+        isSubmitting={createSupplier.isPending}
+      />
     </DashboardPage>
   );
 };

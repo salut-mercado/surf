@@ -10,6 +10,9 @@ const CreateSupplierPage = lazy(
 const ViewSupplierPage = lazy(
   () => import("./pages/suppliers/pages/view/view-supplier.page")
 );
+const EditSupplierPage = lazy(
+  () => import("./pages/suppliers/pages/edit/edit-supplier.page")
+);
 const SuppliersPage = lazy(() => import("./pages/suppliers/suppliers.page"));
 const ProducersPage = lazy(() => import("./pages/producers/producers-page"));
 const CategoriesPage = lazy(() => import("./pages/category/category-page"));
@@ -30,6 +33,9 @@ export const AppRoutes = () => {
             <Switch>
               <Route path="/create">
                 <CreateSupplierPage />
+              </Route>
+              <Route path="/:id/edit">
+                <EditSupplierPage />
               </Route>
               <Route path="/:id">
                 <ViewSupplierPage />
