@@ -1,5 +1,6 @@
 import { Redirect, Route, Switch } from "wouter";
 import { lazy } from "react";
+import { useAuth } from "~/hooks/use-auth";
 
 const AuthPage = lazy(() => import("./pages/auth/auth.page"));
 const ExamplePage = lazy(() => import("./pages/example/example.page"));
@@ -9,7 +10,7 @@ const CategoriesPage = lazy(() => import("./pages/category/category-page"));
 const SkuPage = lazy(() => import("./pages/sku/sku-page"));
 
 export const AppRoutes = () => {
-  const isAuthed = Boolean(localStorage.getItem("token"));
+  const { isAuthenticated } = useAuth();
   return (
     <Switch>
       <Route path="/auth" nest>
@@ -21,16 +22,16 @@ export const AppRoutes = () => {
         <ExamplePage />
       </Route>
       <Route path="/suppliers/:search?">
-        {isAuthed ? <SuppliersPage /> : <Redirect to="/auth/login" />}
+        {isAuthenticated ? <SuppliersPage /> : <Redirect to="/auth/login" />}
       </Route>
       <Route path="/producers/:search?">
-        {isAuthed ? <ProducersPage /> : <Redirect to="/auth/login" />}
+        {isAuthenticated ? <ProducersPage /> : <Redirect to="/auth/login" />}
       </Route>
       <Route path="/categories/:search?">
-        {isAuthed ? <CategoriesPage /> : <Redirect to="/auth/login" />}
+        {isAuthenticated ? <CategoriesPage /> : <Redirect to="/auth/login" />}
       </Route>
       <Route path="/sku/:search?">
-        {isAuthed ? <SkuPage /> : <Redirect to="/auth/login" />}
+        {isAuthenticated ? <SkuPage /> : <Redirect to="/auth/login" />}
       </Route>
       <Route path="*">404 Page</Route>
     </Switch>
