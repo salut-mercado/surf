@@ -15,6 +15,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
           "--header-height": "calc(var(--spacing) * 12)",
         } as React.CSSProperties
       }
+      className="!bg-border"
     >
       {!isAuthPage && <AppSidebar variant="inset" />}
       <SidebarInset>
