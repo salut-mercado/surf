@@ -2,17 +2,15 @@ import { useMemo, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
 
 export type CategoryFormValues = {
   categoryName: string;
   parentCategoryId: string | null;
+};
+
+// Internal form values (without parent selection)
+type InternalFormValues = {
+  categoryName: string;
 };
 
 export type CategoryOption = {
@@ -26,19 +24,15 @@ export function CategoryForm({
   initial,
   onSubmit,
   submitting,
-  disabledOptionIds,
 }: {
   categories: CategoryOption[];
   initial?: Partial<CategoryFormValues>;
   onSubmit: (values: CategoryFormValues & { level: number }) => void;
   submitting?: boolean;
-  disabledOptionIds?: string[];
 }) {
   const [error, setError] = useState<string | null>(null);
-  const [values, setValues] = useState<CategoryFormValues>({
+  const [values, setValues] = useState<InternalFormValues>({
     categoryName: initial?.categoryName ?? "",
-    parentCategoryId:
-      initial?.parentCategoryId === undefined ? null : initial.parentCategoryId,
   });
 
   const byId = useMemo(() => {
@@ -48,15 +42,27 @@ export function CategoryForm({
   }, [categories]);
 
   const handleSubmit = () => {
-    const parent = values.parentCategoryId
-      ? byId.get(values.parentCategoryId)
+    const parent = initial?.parentCategoryId
+      ? byId.get(initial.parentCategoryId)
       : undefined;
     const level = parent ? parent.level + 1 : 0;
-    onSubmit({ ...values, level });
+    onSubmit({
+      categoryName: values.categoryName,
+      parentCategoryId: initial?.parentCategoryId ?? null,
+      level
+    });
   };
 
   return (
     <div className="space-y-4 py-2">
+      {initial?.parentCategoryId && (
+        <div className="space-y-2">
+          <Label>Parent Category</Label>
+          <div className="p-3 bg-muted rounded-md text-sm">
+            {byId.get(initial.parentCategoryId)?.categoryName || "Unknown parent"}
+          </div>
+        </div>
+      )}
       <div className="space-y-2">
         <Label>Category Name</Label>
         <Input
@@ -66,36 +72,6 @@ export function CategoryForm({
             if (error) setError(null);
           }}
         />
-      </div>
-      <div className="space-y-2">
-        <Label>Parent Category</Label>
-        <Select
-          value={values.parentCategoryId ?? "root"}
-          onValueChange={(val) =>
-            setValues((v) => ({
-              ...v,
-              parentCategoryId: val === "root" ? null : val,
-            }))
-          }
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select parent category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="root">Root Category (Level 0)</SelectItem>
-            {[...categories]
-              .sort((a, b) => a.level - b.level)
-              .map((c) => (
-                <SelectItem
-                  key={c.id}
-                  value={c.id}
-                  disabled={disabledOptionIds?.includes(c.id)}
-                >
-                  {c.categoryName} (Level {c.level})
-                </SelectItem>
-              ))}
-          </SelectContent>
-        </Select>
       </div>
       <Button onClick={handleSubmit} disabled={submitting}>
         {submitting ? "Saving..." : "Save"}

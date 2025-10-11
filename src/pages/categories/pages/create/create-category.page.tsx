@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useLocation } from "wouter";
+import { useLocation, useSearch } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { api } from "~/hooks/api";
@@ -9,6 +9,9 @@ export default function CreateCategoryPage() {
   const categories = api.categories.useGetAll({});
   const create = api.categories.useCreate();
   const [, setLocation] = useLocation();
+  const search = useSearch();
+  const urlParams = new URLSearchParams(search);
+  const parentId = urlParams.get('parent');
 
   const options = useMemo(() => {
     const list = (categories.data ?? []) as {
@@ -32,11 +35,12 @@ export default function CreateCategoryPage() {
         <CardContent>
           <CategoryForm
             categories={options}
+            initial={{ parentCategoryId: parentId }}
             onSubmit={async (vals) => {
               const res = await create.mutateAsync({
                 categorySchema: {
                   categoryName: vals.categoryName,
-                  parentCategoryId: vals.parentCategoryId ?? undefined,
+                  parentCategoryId: parentId ?? undefined,
                   level: vals.level,
                 },
               });
