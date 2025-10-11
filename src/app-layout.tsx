@@ -1,8 +1,12 @@
+import { useLocation } from "wouter";
 import { AppSidebar } from "~/components/app-sidebar";
 import { SiteHeader } from "~/components/site-header";
 import { SidebarInset, SidebarProvider } from "~/components/ui/sidebar";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
+  const [location] = useLocation();
+  const isAuthPage = location.startsWith("/auth");
+
   return (
     <SidebarProvider
       style={
@@ -12,9 +16,9 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
         } as React.CSSProperties
       }
     >
-      <AppSidebar variant="inset" />
+      {!isAuthPage && <AppSidebar variant="inset" />}
       <SidebarInset>
-        <SiteHeader />
+        {!isAuthPage && <SiteHeader />}
         <div className="flex flex-1 flex-col">{children}</div>
       </SidebarInset>
     </SidebarProvider>

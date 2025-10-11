@@ -55,6 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!token) return;
     localStorage.setItem("token", token);
     setIsAuthenticated(true);
+    setStep("password");
     setLocation("/suppliers");
   };
 
