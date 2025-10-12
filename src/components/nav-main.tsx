@@ -8,6 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
+import { cn } from "~/lib/utils";
 
 export function NavMain({
   items,
@@ -19,6 +20,7 @@ export function NavMain({
   }[];
 }) {
   const [location, navigate] = useLocation();
+  console.log(location);
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -29,12 +31,25 @@ export function NavMain({
                 tooltip={item.title}
                 onClick={() => navigate(item.url)}
                 className={
-                  location === item.url
+                  (
+                    item.url === "/"
+                      ? location === item.url
+                      : location.startsWith(item.url)
+                  )
                     ? "bg-accent text-accent-foreground"
                     : ""
                 }
               >
-                {item.icon && <item.icon />}
+                {item.icon && (
+                  <item.icon
+                    className={cn({
+                      "text-primary":
+                        item.url === "/"
+                          ? location === item.url
+                          : location.startsWith(item.url),
+                    })}
+                  />
+                )}
                 <span>{item.title}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>

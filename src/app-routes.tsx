@@ -125,7 +125,9 @@ export const AppRoutes = () => {
       )}
       <Route path="*">
         {isAuthenticated ? (
-          <DashboardPage>Overview</DashboardPage>
+          <TenantRequired>
+            <DashboardPage>Overview page</DashboardPage>
+          </TenantRequired>
         ) : (
           <Redirect to="/auth/login" />
         )}
