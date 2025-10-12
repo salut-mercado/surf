@@ -1,6 +1,6 @@
 import { useAuth } from "~/hooks/use-auth";
-import { LoginForm } from "./LoginForm";
-import { OTPForm } from "./OTPForm";
+import { LoginForm } from "./components/login-form";
+import { OTPForm } from "./components/otp-form";
 
 const AuthPage = () => {
   const { step } = useAuth();

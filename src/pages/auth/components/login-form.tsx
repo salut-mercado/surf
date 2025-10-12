@@ -79,7 +79,9 @@ export function LoginForm({
                       type="button"
                       size="icon-sm"
                       variant="ghost"
-                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
                       onClick={() => setShowPassword((v) => !v)}
                     >
                       {showPassword ? <EyeOff /> : <Eye />}
@@ -96,9 +98,8 @@ export function LoginForm({
                 {loginWithPassword.isError && (
                   <FieldDescription className="text-red-600">
                     {(
-                      (loginWithPassword.error as unknown as { message?: string })
-                        ?.message || "Login failed"
-                    )}
+                      loginWithPassword.error as unknown as { message?: string }
+                    )?.message || "Login failed"}
                   </FieldDescription>
                 )}
               </Field>
