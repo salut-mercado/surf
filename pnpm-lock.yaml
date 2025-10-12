@@ -60,8 +60,8 @@ importers:
         specifier: ^1.2.7
         version: 1.2.7(@types/react-dom@19.1.6(@types/react@19.1.7))(@types/react@19.1.7)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@salut-mercado/octo-client':
-        specifier: 0.2.1
-        version: 0.2.1
+        specifier: 0.2.2
+        version: 0.2.2
       '@tabler/icons-react':
         specifier: ^3.34.0
         version: 3.34.0(react@19.1.0)
@@ -1237,8 +1237,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@salut-mercado/octo-client@0.2.1':
-    resolution: {integrity: sha512-D2oKvoAicopvp8kDHzlhG7YyvbsuSx+jCCJejjYHjwMhc3x4P6bgK5xxSTD+vIutk00It7HwsBRr/2R6B1/0xg==, tarball: https://npm.pkg.github.com/download/@salut-mercado/octo-client/0.2.1/a74eb7cea68e5113f2b2c7a06d98253e011ff140}
+  '@salut-mercado/octo-client@0.2.2':
+    resolution: {integrity: sha512-EF0Idqc475JvuxTC6F3fS8dNM5/ApicFemM26vzV6HHSXoWS7v87kp1PcvC15ePdd7I6ymnNhatXHND7dEHufA==, tarball: https://npm.pkg.github.com/download/@salut-mercado/octo-client/0.2.2/d65db713dbb40b2aa376e5556ff45ac5b3e07421}
 
   '@sec-ant/readable-stream@0.4.1':
     resolution: {integrity: sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==}
@@ -4342,7 +4342,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.42.0':
     optional: true
 
-  '@salut-mercado/octo-client@0.2.1': {}
+  '@salut-mercado/octo-client@0.2.2': {}
 
   '@sec-ant/readable-stream@0.4.1': {}
 

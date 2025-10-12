@@ -17,7 +17,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "~/components/ui/sidebar";
+import { TenantSwitcher } from "./tenant-switcher";
 
 const data = {
   user: {
@@ -50,9 +52,11 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { state } = useSidebar();
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
+        <TenantSwitcher state={state} />
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
