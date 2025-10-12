@@ -2,10 +2,13 @@ import { useLocation } from "wouter";
 import { AppSidebar } from "~/components/app-sidebar";
 import { SiteHeader } from "~/components/site-header";
 import { SidebarInset, SidebarProvider } from "~/components/ui/sidebar";
+import { useTenantStore } from "~/store/tenant";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const [location] = useLocation();
   const isAuthPage = location.startsWith("/auth");
+  const unassigned = useTenantStore((s) => s.unassignedTenantId);
+  const hideLayout = unassigned || isAuthPage;
 
   return (
     <SidebarProvider
@@ -17,9 +20,9 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
       }
       className="!bg-border"
     >
-      {!isAuthPage && <AppSidebar variant="sidebar" />}
+      {!hideLayout && <AppSidebar variant="sidebar" />}
       <SidebarInset>
-        {!isAuthPage && <SiteHeader />}
+        {!hideLayout && <SiteHeader />}
         <div className="flex flex-1 flex-col">{children}</div>
       </SidebarInset>
     </SidebarProvider>

@@ -2,6 +2,7 @@ import { lazy } from "react";
 import { Redirect, Route, Switch } from "wouter";
 import { useAuth } from "~/hooks/use-auth";
 import { DashboardPage } from "./components/dashboard-page";
+import { TenantRequired } from "./components/app-no-tenant-selected";
 
 const AuthPage = lazy(() => import("./pages/auth/auth.page"));
 const CreateSupplierPage = lazy(
@@ -41,12 +42,8 @@ const ViewCategoryPage = lazy(
 const CreateSkuPage = lazy(
   () => import("./pages/skus/pages/create/create-sku.page")
 );
-const ViewSkuPage = lazy(
-  () => import("./pages/skus/pages/view/view-sku.page")
-);
-const EditSkuPage = lazy(
-  () => import("./pages/skus/pages/edit/edit-sku.page")
-);
+const ViewSkuPage = lazy(() => import("./pages/skus/pages/view/view-sku.page"));
+const EditSkuPage = lazy(() => import("./pages/skus/pages/edit/edit-sku.page"));
 const SkusPage = lazy(() => import("./pages/skus/skus.page"));
 
 export const AppRoutes = () => {
@@ -59,7 +56,7 @@ export const AppRoutes = () => {
         </Route>
       </Route>
       {isAuthenticated && (
-        <>
+        <TenantRequired>
           <Route path="/suppliers" nest>
             <Switch>
               <Route path="/create">
@@ -124,11 +121,11 @@ export const AppRoutes = () => {
               </Route>
             </Switch>
           </Route>
-        </>
+        </TenantRequired>
       )}
       <Route path="*">
         {isAuthenticated ? (
-          <DashboardPage>404 Page</DashboardPage>
+          <DashboardPage>Overview</DashboardPage>
         ) : (
           <Redirect to="/auth/login" />
         )}

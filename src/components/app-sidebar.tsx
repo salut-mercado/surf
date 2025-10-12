@@ -1,12 +1,11 @@
 import {
   IconBarcode,
   IconBuildingFactory2,
+  IconDashboardFilled,
   IconFolder,
-  IconInnerShadowTop,
   IconTruckDelivery,
 } from "@tabler/icons-react";
 import * as React from "react";
-import { Link } from "wouter";
 import { NavMain } from "~/components/nav-main";
 import { NavUser } from "~/components/nav-user";
 import {
@@ -14,15 +13,17 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   useSidebar,
 } from "~/components/ui/sidebar";
 import { TenantSwitcher } from "./tenant-switcher";
 
 const data = {
   navMain: [
+    {
+      title: "Overview",
+      url: "/",
+      icon: IconDashboardFilled,
+    },
     {
       title: "Suppliers",
       url: "/suppliers",
@@ -52,19 +53,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TenantSwitcher state={state} />
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
-              <Link href="~/">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Salut</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
