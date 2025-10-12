@@ -1,6 +1,6 @@
 import { useAuth } from "~/hooks/use-auth";
 import { Button } from "~/components/ui/button";
-import { useTenantStore } from "~/store/tenant";
+import { useTenantStore } from "~/store/tenant.store";
 import { TenantSwitcher } from "~/components/tenant-switcher";
 
 export const TenantRequired = ({ children }: { children: React.ReactNode }) => {

@@ -4,6 +4,7 @@ import { useAuth } from "~/hooks/use-auth";
 import { DashboardPage } from "./components/dashboard-page";
 import { TenantRequired } from "./components/app-no-tenant-selected";
 import UiKitPage from "./pages/ui-kit/ui-kit.page";
+import { useGlobalStore } from "./store/global.store";
 
 const AuthPage = lazy(() => import("./pages/auth/auth.page"));
 const CreateSupplierPage = lazy(
@@ -49,6 +50,7 @@ const SkusPage = lazy(() => import("./pages/skus/skus.page"));
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
+  const viewMode = useGlobalStore((s) => s.viewMode);
   return (
     <Switch>
       <Route path="/auth" nest>
@@ -126,7 +128,11 @@ export const AppRoutes = () => {
             <UiKitPage />
           </Route>
           <Route path="/">
-            <DashboardPage>Overview page</DashboardPage>
+            {viewMode === "pos" ? (
+              <DashboardPage>POS page</DashboardPage>
+            ) : (
+              <DashboardPage>Overview page</DashboardPage>
+            )}
           </Route>
         </TenantRequired>
       )}

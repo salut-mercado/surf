@@ -2,13 +2,16 @@ import { useLocation } from "wouter";
 import { AppSidebar } from "~/components/app-sidebar";
 import { SiteHeader } from "~/components/site-header";
 import { SidebarInset, SidebarProvider } from "~/components/ui/sidebar";
-import { useTenantStore } from "~/store/tenant";
+import { useTenantStore } from "~/store/tenant.store";
+import { useGlobalStore } from "./store/global.store";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const [location] = useLocation();
   const isAuthPage = location.startsWith("/auth");
   const unassigned = useTenantStore((s) => s.unassignedTenantId);
+  const viewMode = useGlobalStore((s) => s.viewMode);
   const hideLayout = unassigned || isAuthPage;
+  const isPos = viewMode === "pos";
 
   return (
     <SidebarProvider
@@ -20,7 +23,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
       }
       className="!bg-border"
     >
-      {!hideLayout && <AppSidebar variant="sidebar" />}
+      {!hideLayout && !isPos && <AppSidebar variant="sidebar" />}
       <SidebarInset>
         {!hideLayout && <SiteHeader />}
         <div className="flex flex-1 flex-col">{children}</div>

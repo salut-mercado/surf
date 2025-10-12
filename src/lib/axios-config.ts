@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getTenantStore } from "../store/tenant";
+import { getTenantStore } from "../store/tenant.store";
 import { api } from "./api";
 
 export const apiAxios = axios.create({

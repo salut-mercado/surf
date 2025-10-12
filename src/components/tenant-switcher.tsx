@@ -23,7 +23,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { sidebarMenuButtonVariants } from "~/components/ui/sidebar";
 import { api as hooks } from "~/hooks/api";
-import { useTenantStore } from "~/store/tenant";
+import { useTenantStore } from "~/store/tenant.store";
 
 export function TenantSwitcher({
   state = "expanded",
