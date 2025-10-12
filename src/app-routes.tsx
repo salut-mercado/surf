@@ -38,7 +38,16 @@ const EditCategoryPage = lazy(
 const ViewCategoryPage = lazy(
   () => import("./pages/categories/pages/view/view-category.page")
 );
-const SkuPage = lazy(() => import("./pages/sku/sku-page"));
+const CreateSkuPage = lazy(
+  () => import("./pages/skus/pages/create/create-sku.page")
+);
+const ViewSkuPage = lazy(
+  () => import("./pages/skus/pages/view/view-sku.page")
+);
+const EditSkuPage = lazy(
+  () => import("./pages/skus/pages/edit/edit-sku.page")
+);
+const SkusPage = lazy(() => import("./pages/skus/skus.page"));
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -99,8 +108,21 @@ export const AppRoutes = () => {
               </Route>
             </Switch>
           </Route>
-          <Route path="/sku/:search?">
-            <SkuPage />
+          <Route path="/skus" nest>
+            <Switch>
+              <Route path="/create">
+                <CreateSkuPage />
+              </Route>
+              <Route path="/:id/edit">
+                <EditSkuPage />
+              </Route>
+              <Route path="/:id">
+                <ViewSkuPage />
+              </Route>
+              <Route>
+                <SkusPage />
+              </Route>
+            </Switch>
           </Route>
         </>
       )}

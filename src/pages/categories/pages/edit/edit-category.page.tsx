@@ -42,7 +42,6 @@ export default function EditCategoryPage() {
                 categoryName: current.categoryName,
                 parentCategoryId: current.parentCategoryId ?? null,
               }}
-              disabledOptionIds={[id!]}
               onSubmit={async (vals) => {
                 const updated = await update.mutateAsync({
                   categoriesId: id!,

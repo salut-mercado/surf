@@ -1,10 +1,9 @@
 import {
-  IconChartBar,
-  IconDashboard,
+  IconBarcode,
+  IconBuildingFactory2,
   IconFolder,
   IconInnerShadowTop,
-  IconListDetails,
-  IconUsers,
+  IconTruckDelivery,
 } from "@tabler/icons-react";
 import * as React from "react";
 import { Link } from "wouter";
@@ -30,27 +29,22 @@ const data = {
     {
       title: "Suppliers",
       url: "/suppliers",
-      icon: IconDashboard,
+      icon: IconTruckDelivery,
     },
     {
       title: "Producers",
       url: "/producers",
-      icon: IconListDetails,
+      icon: IconBuildingFactory2,
     },
     {
       title: "Categories",
       url: "/categories",
-      icon: IconChartBar,
-    },
-    {
-      title: "Sku",
-      url: "/sku",
       icon: IconFolder,
     },
     {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
+      title: "SKUs",
+      url: "/skus",
+      icon: IconBarcode,
     },
   ],
 };

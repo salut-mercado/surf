@@ -1,0 +1,78 @@
+---
+globs: src/**/*.ts,src/**/*.tsx
+description: Wouter Link/useLocation relative vs absolute path resolution (base, nest)
+---
+
+## Wouter navigation — relative vs absolute paths
+
+Applies when using Wouter's `Link`, `Redirect`, and `useLocation`/`navigate`.
+
+- **Link basics**: `href` or `to` targets a path. Supports `replace` and `state` like the location hook. All `<a>` props are proxied.
+- **useLocation**: `const [location, navigate] = useLocation()`. Call `navigate(path, { replace, state })` to route programmatically.
+
+### Resolution rules
+
+- **Router base**: `<Router base="/app">` prefixes all paths across `Link`, `Route`, and `navigate`.
+
+  Example (from upstream docs):
+
+  ```jsx
+  <Router base="/app">
+    {/* link renders with href "/app/users" */}
+    <Link href="/users">Users</Link>
+    <Route path="/users">The current path is /app/users!</Route>
+  </Router>
+  ```
+
+- **Nested routes (scoped/relative)**: Inside `<Route path="/dashboard" nest>`, child paths are resolved relative to the parent route path, even if they start with `/`.
+
+  Example (from upstream docs):
+
+  ```jsx
+  <Router base="/app">
+    <Route path="/dashboard" nest>
+      {/* resolves to "/app/dashboard/users" */}
+      <Link to="/users" />
+
+      {/* inside this nested scope `useLocation()` returns "/users" */}
+      <Route path="/users" />
+    </Route>
+  </Router>
+  ```
+
+- **Absolute vs relative in practice**:
+  - In Wouter, "absolute" means relative to the current routing context: `Router base` + any active `nest` scopes.
+  - A leading `/` does NOT escape a nested scope; it is still scoped to the current nested route.
+  - Dot-segment paths like `./` or `../` are not part of Wouter’s documented API; prefer explicit paths within your current scope.
+
+- **Linking to app root (ignoring a nested scope)**:
+  - Place the link outside the nested `<Route nest>` scope, or
+  - Maintain a top-level path constant (e.g., `APP_ROOT = "/"`) and render the link where no nested scope applies, or
+  - Use a plain `<a href="/...">` if a full page load is acceptable.
+
+- **Programmatic navigation**: `navigate("/path", { replace, state })` follows the same resolution rules as `Link`.
+
+### Extras
+
+- **State/replace** via `Link`:
+
+  ```jsx
+  <Link href="/" replace state={{ animate: true }} />
+  ```
+
+- **Redirect** (same resolution rules):
+
+  ```jsx
+  <Redirect to="/" />
+  <Redirect to="/" replace state={{ modal: true }} />
+  ```
+
+- **Hash routing** (resolution is identical but uses the hash):
+
+  ```jsx
+  import { useHashLocation } from "wouter/use-hash-location";
+  <Router hook={useHashLocation} base="/app" />
+  ```
+
+References: Wouter v3 README — `Link`, `useLocation`, `Router base`, and `nest` examples.
+
