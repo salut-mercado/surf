@@ -20,7 +20,6 @@ export function NavMain({
   }[];
 }) {
   const [location, navigate] = useLocation();
-  console.log(location);
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
