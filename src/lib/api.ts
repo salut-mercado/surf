@@ -4,10 +4,21 @@ import {
   Configuration,
   FirmsProducerApi,
   SKUsApi,
+  StoresApi,
   SuppliersApi,
   SuppliersBankInfoApi,
   SuppliersDetailsApi,
   SuppliersGroupsApi,
+  PricesApi,
+  OutflowsApi,
+  DiscountsApi,
+  NutrientsApi,
+  WarehouseApi,
+  OrderInflowApi,
+  SKUMeasuresApi,
+  NutritionalComponentsApi,
+  FactoryPackagingSKUMeasuresApi,
+  StockSKUApi,
 } from "@salut-mercado/octo-client";
 import axios, { AxiosError, type AxiosResponse } from "axios";
 import { apiAxios } from "./axios-config";
@@ -16,6 +27,10 @@ const basePath = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 // Axios-backed fetch adapter for OpenAPI client
 const axiosFetch: typeof fetch = async (url, init) => {
+  const w = window as Window & typeof globalThis & { throttle?: number };
+  if (typeof w.throttle === "number") {
+    await new Promise((resolve) => setTimeout(resolve, w.throttle));
+  }
   try {
     const resp: AxiosResponse = await apiAxios.request({
       url: String(url),
@@ -96,4 +111,15 @@ export const api = {
   categories: new CategoriesApi(config),
   sku: new SKUsApi(config),
   auth: new AuthApi(config),
+  stores: new StoresApi(config),
+  prices: new PricesApi(config),
+  outflows: new OutflowsApi(config),
+  discounts: new DiscountsApi(config),
+  nutrients: new NutrientsApi(config),
+  warehouse: new WarehouseApi(config),
+  inflows: new OrderInflowApi(config),
+  skuMeasures: new SKUMeasuresApi(config),
+  nutritionalComponents: new NutritionalComponentsApi(config),
+  factoryPackagingSKUMeasures: new FactoryPackagingSKUMeasuresApi(config),
+  stockSKU: new StockSKUApi(config),
 };

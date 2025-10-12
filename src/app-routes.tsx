@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from "wouter";
 import { useAuth } from "~/hooks/use-auth";
 import { DashboardPage } from "./components/dashboard-page";
 import { TenantRequired } from "./components/app-no-tenant-selected";
+import UiKitPage from "./pages/ui-kit/ui-kit.page";
 
 const AuthPage = lazy(() => import("./pages/auth/auth.page"));
 const CreateSupplierPage = lazy(
@@ -121,16 +122,16 @@ export const AppRoutes = () => {
               </Route>
             </Switch>
           </Route>
+          <Route path="/ui-kit">
+            <UiKitPage />
+          </Route>
+          <Route path="/">
+            <DashboardPage>Overview page</DashboardPage>
+          </Route>
         </TenantRequired>
       )}
       <Route path="*">
-        {isAuthenticated ? (
-          <TenantRequired>
-            <DashboardPage>Overview page</DashboardPage>
-          </TenantRequired>
-        ) : (
-          <Redirect to="/auth/login" />
-        )}
+        <Redirect to="/auth/login" />
       </Route>
     </Switch>
   );

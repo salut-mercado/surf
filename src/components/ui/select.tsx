@@ -42,7 +42,13 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-50" />
+        <ChevronDownIcon
+          className={cn("size-4 opacity-50", {
+            hidden:
+              ("data-loading" in props && props["data-loading"] === "true") ||
+              ("data-errored" in props && props["data-errored"] === "true"),
+          })}
+        />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
