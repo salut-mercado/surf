@@ -1,5 +1,12 @@
+import type { ResponseLoginApiAuthLoginPost } from "@salut-mercado/octo-client";
 import { useMutation } from "@tanstack/react-query";
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { useLocation } from "wouter";
 import { api } from "~/lib/api";
 
@@ -14,26 +21,20 @@ export interface VerifyOtpInput {
   code: string;
 }
 
-interface LoginSuccessLike {
-  token?: string;
-  nextStep?: string;
-  pendingAuthenticationToken?: string;
-}
-
 type AuthContextValue = {
   step: AuthStep;
   pendingToken: string | null;
   isAuthenticated: boolean;
   loginWithPassword: ReturnType<
     typeof useMutation<
-      { httpStatus: number; json: LoginSuccessLike },
+      { httpStatus: number; json: ResponseLoginApiAuthLoginPost },
       Error,
       LoginWithPasswordInput
     >
   >;
   verifyOtp: ReturnType<
     typeof useMutation<
-      { httpStatus: number; json: LoginSuccessLike },
+      { httpStatus: number; json: ResponseLoginApiAuthLoginPost },
       Error,
       VerifyOtpInput
     >
@@ -65,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const res = await api.auth.loginApiAuthLoginPostRaw({
         loginRequest: { email: input.email, password: input.password },
       });
-      const json = (await res.value()) as LoginSuccessLike;
+      const json = await res.value();
       return { httpStatus: res.raw.status, json } as const;
     },
     onSuccess: ({ httpStatus, json }) => {
@@ -74,7 +75,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       if (
-        (httpStatus === 202 || json?.nextStep === "email_verification_required") &&
+        (httpStatus === 202 ||
+          json?.nextStep === "email_verification_required") &&
         json?.pendingAuthenticationToken
       ) {
         setPendingToken(json.pendingAuthenticationToken);
@@ -94,7 +96,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           pendingAuthenticationToken: pendingToken,
         },
       });
-      const json = (await res.value()) as LoginSuccessLike;
+      const json = await res.value();
       return { httpStatus: res.raw.status, json } as const;
     },
     onSuccess: ({ json }) => {
@@ -115,7 +117,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [setLocation]);
 
   const value = useMemo<AuthContextValue>(
-    () => ({ step, pendingToken, isAuthenticated, loginWithPassword, verifyOtp, logout }),
+    () => ({
+      step,
+      pendingToken,
+      isAuthenticated,
+      loginWithPassword,
+      verifyOtp,
+      logout,
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- loginWithPassword and verifyOtp are not dependent on other values
     [step, pendingToken, isAuthenticated, logout]
   );
 
@@ -127,5 +137,3 @@ export function useAuth() {
   if (!ctx) throw new Error("useAuth must be used within <AuthProvider>");
   return ctx;
 }
-
-
