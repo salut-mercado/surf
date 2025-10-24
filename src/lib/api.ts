@@ -29,6 +29,7 @@ const axiosFetch: typeof fetch = async (url, init) => {
       method: init?.method || "GET",
       headers: Object.fromEntries(new Headers(init?.headers || {}).entries()),
       data: init?.body,
+      withCredentials: true,
     });
     return axiosResponseToFetchResponse(resp);
   } catch (err) {

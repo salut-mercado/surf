@@ -5,6 +5,8 @@ import { DashboardPage } from "./components/dashboard-page";
 import { TenantRequired } from "./components/app-no-tenant-selected";
 import UiKitPage from "./pages/ui-kit/ui-kit.page";
 import { useGlobalStore } from "./store/global.store";
+import { useSession } from "./hooks/use-session";
+import { Spinner } from "./components/ui/spinner";
 
 const AuthPage = lazy(() => import("./pages/auth/auth.page"));
 const CreateSupplierPage = lazy(
@@ -50,7 +52,15 @@ const SkusPage = lazy(() => import("./pages/skus/skus.page"));
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
+  const { isLoading } = useSession();
   const viewMode = useGlobalStore((s) => s.viewMode);
+  if (isLoading) {
+    return (
+      <div className="z-50 bg-background fixed top-0 left-0 flex justify-center items-center right-0 bottom-0">
+        <Spinner className="size-10" />
+      </div>
+    );
+  }
   return (
     <Switch>
       <Route path="/auth" nest>
