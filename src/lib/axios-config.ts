@@ -83,7 +83,12 @@ apiAxios.interceptors.response.use(
         // ignore
       }
       localStorage.removeItem("token");
-      window.location.href = "/auth/login";
+      if (window.navigate) {
+        window.navigate("/auth/login?redirect=" + window.location.pathname);
+      } else {
+        window.location.href =
+          "/auth/login?redirect=" + window.location.pathname;
+      }
     }
     return Promise.reject(error);
   }

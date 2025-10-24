@@ -7,7 +7,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useLocation } from "wouter";
+import { useLocation, useSearchParams } from "wouter";
 import { api } from "~/lib/api";
 
 export type AuthStep = "password" | "otp";
@@ -51,13 +51,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     Boolean(typeof window !== "undefined" && localStorage.getItem("token"))
   );
   const [, setLocation] = useLocation();
+  const [searchParams] = useSearchParams();
 
   const finalizeLogin = (token?: string) => {
     if (!token) return;
     localStorage.setItem("token", token);
     setIsAuthenticated(true);
     setStep("password");
-    setLocation("/suppliers");
+    const redirect = searchParams.get("redirect");
+    if (redirect) {
+      setLocation(redirect);
+    } else {
+      setLocation("/suppliers");
+    }
   };
 
   const loginWithPassword = useMutation({
