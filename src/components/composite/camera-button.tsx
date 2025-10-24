@@ -31,19 +31,7 @@ export type CameraButtonRef = React.RefObject<{
   getVideoElement: () => HTMLVideoElement | null;
 }>;
 
-export const CameraButton = ({
-  onStreamChange,
-  title,
-  buttonLabel,
-  size,
-  variant,
-  icon: Icon = IconCamera,
-  constraints,
-  barcodeFormats = ["ean_13", "ean_8"],
-  scanInterval = 200,
-  onBarcodeDetected,
-  autoCloseOnBarcodeDetected,
-}: {
+type CameraButtonProps = {
   title: string;
   buttonLabel?: string;
   variant?: React.ComponentProps<typeof Button>["variant"];
@@ -55,43 +43,31 @@ export const CameraButton = ({
   scanInterval?: number;
   icon?: TablerIcon | LucideIcon;
   constraints?: WebcamConstraints;
-}) => {
+};
+
+export const CameraButton = ({
+  title,
+  buttonLabel,
+  size,
+  variant,
+  icon: Icon = IconCamera,
+  constraints,
+  barcodeFormats = ["ean_13", "ean_8"],
+  scanInterval = 200,
+  onBarcodeDetected,
+  autoCloseOnBarcodeDetected,
+  onStreamChange,
+}: CameraButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const scanIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const {
     devices,
     // error,
     // hasDevices,
     isLoading: isLoadingDevices,
-    defaultDevice,
     refetch: refetchDevices,
   } = useCameraDevices();
-
-  const [selectedDeviceId, setSelectedDeviceId] = useState<string>(
-    defaultDevice?.deviceId ?? "invalid"
-  );
-
-  const {
-    videoRef: webcamVideoRef,
-    isActive: webcamIsActive,
-    start: startWebcam,
-    stop: stopWebcam,
-    isStarting: webcamIsStarting,
-    isStopping: webcamIsStopping,
-  } = useWebcam({
-    deviceId:
-      selectedDeviceId === "invalid"
-        ? defaultDevice?.deviceId
-        : selectedDeviceId,
-    constraints,
-    onStreamChange,
-  });
-
-  // Barcode detection hook
-  const { detectFromElement } = useDetectBarcode({
-    formats: barcodeFormats,
-  });
+  const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
 
   useEffect(() => {
     const timoutId = setTimeout(() => {
@@ -99,6 +75,104 @@ export const CameraButton = ({
     }, 150);
     return () => clearTimeout(timoutId);
   }, [refetchDevices]);
+  return (
+    <AlertDialog
+      open={isOpen}
+      onOpenChange={(openValue) => {
+        setIsOpen(openValue);
+      }}
+    >
+      <AlertDialogTrigger asChild>
+        <Button variant={variant} size={size} onClick={() => setIsOpen(true)}>
+          <Icon className="size-4" />
+          {buttonLabel}
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader className="flex md:flex-row justify-between items-center">
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <Select
+            disabled={isLoadingDevices}
+            value={selectedDeviceId ?? ""}
+            onValueChange={(newValue) => {
+              setSelectedDeviceId(newValue);
+            }}
+          >
+            <SelectTrigger>
+              {isLoadingDevices ? (
+                <Spinner />
+              ) : (
+                <SelectValue placeholder="Select a device" />
+              )}
+            </SelectTrigger>
+            <SelectContent>
+              {devices.map((device) =>
+                device.deviceId ? (
+                  <SelectItem key={device.deviceId} value={device.deviceId}>
+                    {device.label}
+                  </SelectItem>
+                ) : (
+                  <Fragment key={device.deviceId} />
+                )
+              )}
+            </SelectContent>
+          </Select>
+        </AlertDialogHeader>
+        {selectedDeviceId && (
+          <CameraButtonContent
+            deviceId={selectedDeviceId}
+            autoCloseOnBarcodeDetected={autoCloseOnBarcodeDetected}
+            barcodeFormats={barcodeFormats}
+            constraints={constraints}
+            onBarcodeDetected={(barcodes) => {
+              onBarcodeDetected?.(barcodes);
+              if (autoCloseOnBarcodeDetected) {
+                setIsOpen(false);
+              }
+            }}
+            onStreamChange={onStreamChange}
+            scanInterval={scanInterval}
+          />
+        )}
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
+
+const CameraButtonContent = ({
+  autoCloseOnBarcodeDetected,
+  barcodeFormats,
+  constraints,
+  onBarcodeDetected,
+  onStreamChange,
+  scanInterval,
+  deviceId,
+}: Omit<
+  CameraButtonProps,
+  "title" | "buttonLabel" | "size" | "variant" | "icon"
+> & { deviceId: string }) => {
+  const scanIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const {
+    videoRef: webcamVideoRef,
+    isActive: webcamIsActive,
+    stop: stopWebcam,
+    isStarting: webcamIsStarting,
+    isStopping: webcamIsStopping,
+  } = useWebcam({
+    constraints,
+    onStreamChange,
+    deviceId,
+    autoStart: true,
+  });
+
+  // Barcode detection hook
+  const { detectFromElement } = useDetectBarcode({
+    formats: barcodeFormats,
+  });
 
   // Start/stop barcode scanning
   const stopScanning = useCallback(() => {
@@ -110,10 +184,8 @@ export const CameraButton = ({
 
   const reset = useCallback(() => {
     stopScanning();
-    setIsOpen(false);
-    setSelectedDeviceId("invalid");
     stopWebcam();
-  }, [stopScanning, setIsOpen, stopWebcam]);
+  }, [stopScanning, stopWebcam]);
 
   const startScanning = useCallback(() => {
     if (!webcamVideoRef.current) return;
@@ -156,79 +228,13 @@ export const CameraButton = ({
   // Cleanup on unmount
   useEffect(() => {
     return () => stopScanning();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [stopScanning]);
 
   return (
-    <AlertDialog
-      open={isOpen}
-      onOpenChange={(openValue) => {
-        setIsOpen(openValue);
-        if (!openValue) {
-          reset();
-        }
-      }}
-    >
-      <AlertDialogTrigger asChild>
-        <Button variant={variant} size={size} onClick={() => setIsOpen(true)}>
-          <Icon className="size-4" />
-          {buttonLabel}
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader className="flex md:flex-row justify-between items-center">
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <Select
-            disabled={isLoadingDevices}
-            value={selectedDeviceId}
-            onValueChange={(newValue) => {
-              setSelectedDeviceId(newValue);
-              if (newValue !== "invalid") {
-                startWebcam(newValue);
-              } else {
-                stopWebcam();
-              }
-            }}
-          >
-            <SelectTrigger>
-              {isLoadingDevices ? (
-                <Spinner />
-              ) : (
-                <SelectValue
-                  placeholder="Select a device"
-                  defaultValue="invalid"
-                />
-              )}
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="invalid" disabled>
-                Please choose a camera device
-              </SelectItem>
-              {devices.map((device) =>
-                device.deviceId ? (
-                  <SelectItem key={device.deviceId} value={device.deviceId}>
-                    {device.label}
-                  </SelectItem>
-                ) : (
-                  <Fragment key={device.deviceId} />
-                )
-              )}
-            </SelectContent>
-          </Select>
-        </AlertDialogHeader>
-        <video
-          className="w-full"
-          ref={webcamVideoRef}
-          autoPlay
-          playsInline
-          key={selectedDeviceId}
-        />
-        {webcamIsStarting && <Spinner />}
-        {webcamIsStopping && <Spinner />}
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <>
+      {webcamIsStarting && <Spinner />}
+      <video className="w-full" ref={webcamVideoRef} autoPlay playsInline />
+      {webcamIsStopping && <Spinner />}
+    </>
   );
 };
