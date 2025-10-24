@@ -27,7 +27,7 @@ export const SuppliersEmptyState = () => {
       <EmptyContent>
         <div className="flex gap-2">
           <Button asChild>
-            <Link href="/suppliers/create">Create Supplier</Link>
+            <Link href="/create">Create Supplier</Link>
           </Button>
         </div>
       </EmptyContent>

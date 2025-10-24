@@ -9,7 +9,7 @@ export const supplierSchema = z.object({
   agent: z.string().min(1),
   phone: z.string().min(1),
   delayDays: z.number().min(0),
-  nif: z.string().min(1),
+  nif: z.string().min(1).length(9),
   blocked: z.boolean(),
-  comments: z.string().min(1),
+  comments: z.string(),
 });

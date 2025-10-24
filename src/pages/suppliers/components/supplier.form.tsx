@@ -61,6 +61,9 @@ export function SupplierForm({
     }
   });
 
+  console.log("form.state.values", form.state.values);
+  console.log("form.state.errors", form.state.errors);
+
   return (
     <form
       onSubmit={async (e) => {
