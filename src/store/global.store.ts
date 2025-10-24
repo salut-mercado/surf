@@ -11,7 +11,7 @@ interface GlobalState {
 export const useGlobalStore = create<GlobalState>()(
   persist(
     (set) => ({
-      viewMode: "pos",
+      viewMode: "manager",
       setViewMode: (mode) => set({ viewMode: mode }),
     }),
     {
