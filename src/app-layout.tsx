@@ -23,7 +23,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
       }
       className="!bg-border"
     >
-      {!hideLayout && !isPos && <AppSidebar variant="sidebar" />}
+      {!hideLayout && !isPos && <AppSidebar />}
       <SidebarInset>
         {!hideLayout && <SiteHeader />}
         <div className="flex flex-1 flex-col">{children}</div>
