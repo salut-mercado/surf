@@ -1,21 +1,21 @@
 import type {
   AddSupplierHandlerApiSuppliersPostRequest,
-  GetSupplierBankInfoNandlerApiContractorBankInfoIdGetRequest,
-  GetSuppliersBankInfoNandlerApiContractorBankInfoGetRequest,
+  GetSupplierBankInfoHandlerApiSuppliersBankInfoIdGetRequest,
+  GetSupplierByIdHandlerApiSuppliersIdGetRequest,
+  GetSupplierHandlerApiSuppliersGetRequest,
+  GetSuppliersBankInfoHandlerApiSuppliersBankInfoGetRequest,
   SupplierBankInfoPaginatedResponseSchema,
   SupplierBankInfoReturnSchema,
   SupplierBankInfoSchema,
   SupplierBankInfoUpdateSchema,
-  GetSupplierHandlerApiSuppliersGetRequest,
-  GetSupplierHandlerApiSuppliersIdGetRequest,
   SupplierPaginatedResponseSchema,
-  UpdateSupplerHandlerApiSuppliersIdPutRequest,
+  UpdateSupplierHandlerApiSuppliersIdPutRequest,
 } from "@salut-mercado/octo-client";
 import {
+  skipToken,
+  useInfiniteQuery,
   useMutation,
   useQuery,
-  useInfiniteQuery,
-  skipToken,
   useQueryClient,
 } from "@tanstack/react-query";
 import { api } from "~/lib/api";
@@ -43,18 +43,18 @@ export const suppliers = {
           : skipToken,
     }),
   useGetById: (
-    args: GetSupplierHandlerApiSuppliersIdGetRequest | typeof skipToken
+    args: GetSupplierByIdHandlerApiSuppliersIdGetRequest | typeof skipToken
   ) =>
     useQuery({
       queryKey: ["suppliers", "getById", JSON.stringify(args)],
       queryFn:
         args !== skipToken
-          ? () => api.suppliers.getSupplierHandlerApiSuppliersIdGet(args)
+          ? () => api.suppliers.getSupplierByIdHandlerApiSuppliersIdGet(args)
           : skipToken,
     }),
   useBankingInfo: (
     args:
-      | GetSupplierBankInfoNandlerApiContractorBankInfoIdGetRequest
+      | GetSupplierBankInfoHandlerApiSuppliersBankInfoIdGetRequest
       | typeof skipToken
   ) =>
     useQuery({
@@ -62,7 +62,7 @@ export const suppliers = {
       queryFn:
         args !== skipToken
           ? () =>
-              api.suppliersBankInfo.getSupplierBankInfoNandlerApiContractorBankInfoIdGet(
+              api.suppliers.getSupplierBankInfoHandlerApiSuppliersBankInfoIdGet(
                 args
               )
           : skipToken,
@@ -70,7 +70,7 @@ export const suppliers = {
 
   useBankingList: (
     args:
-      | GetSuppliersBankInfoNandlerApiContractorBankInfoGetRequest
+      | GetSuppliersBankInfoHandlerApiSuppliersBankInfoGetRequest
       | typeof skipToken
   ) =>
     useQuery<SupplierBankInfoPaginatedResponseSchema>({
@@ -78,7 +78,7 @@ export const suppliers = {
       queryFn:
         args !== skipToken
           ? () =>
-              api.suppliersBankInfo.getSuppliersBankInfoNandlerApiContractorBankInfoGet(
+              api.suppliers.getSuppliersBankInfoHandlerApiSuppliersBankInfoGet(
                 args
               )
           : skipToken,
@@ -95,8 +95,8 @@ export const suppliers = {
   useUpdate: () =>
     useMutation({
       mutationKey: ["suppliers", "update"],
-      mutationFn: (args: UpdateSupplerHandlerApiSuppliersIdPutRequest) =>
-        api.suppliers.updateSupplerHandlerApiSuppliersIdPut(args),
+      mutationFn: (args: UpdateSupplierHandlerApiSuppliersIdPutRequest) =>
+        api.suppliers.updateSupplierHandlerApiSuppliersIdPut(args),
     }),
 
   useCreateBankInfo: () => {
@@ -104,9 +104,7 @@ export const suppliers = {
     return useMutation({
       mutationKey: ["suppliers", "banking", "create"],
       mutationFn: (args: { supplierBankInfoSchema: SupplierBankInfoSchema }) =>
-        api.suppliersBankInfo.addSupplierBankInfoNandlerApiContractorBankInfoPost(
-          args
-        ),
+        api.suppliers.addSupplierBankInfoHandlerApiSuppliersBankInfoPost(args),
       onSuccess: (created: SupplierBankInfoReturnSchema) => {
         // Invalidate lists and the specific bank info
         queryClient.invalidateQueries({
@@ -133,7 +131,7 @@ export const suppliers = {
         id: string;
         supplierBankInfoUpdateSchema: SupplierBankInfoUpdateSchema;
       }) =>
-        api.suppliersBankInfo.updateSupplerBankInfoApiContractorBankInfoIdPut(
+        api.suppliers.updateSupplierBankInfoHandlerApiSuppliersBankInfoIdPut(
           args
         ),
       onSuccess: (updated: SupplierBankInfoReturnSchema) => {

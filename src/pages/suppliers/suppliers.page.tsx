@@ -21,7 +21,7 @@ export default function SuppliersPage() {
         <SuppliersErrorState message={suppliers.error.message} />
       )}
       {allSuppliers.length === 0 && <SuppliersEmptyState />}
-      {suppliers.isSuccess && (
+      {suppliers.isSuccess && allSuppliers.length > 0 && (
         <>
           <div className="mb-2 justify-end flex w-full">
             <Button asChild>
