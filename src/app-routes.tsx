@@ -49,6 +49,7 @@ const CreateSkuPage = lazy(
 const ViewSkuPage = lazy(() => import("./pages/skus/pages/view/view-sku.page"));
 const EditSkuPage = lazy(() => import("./pages/skus/pages/edit/edit-sku.page"));
 const SkusPage = lazy(() => import("./pages/skus/skus.page"));
+const PosPage = lazy(() => import("./pages/pos/pos.page"));
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -139,7 +140,7 @@ export const AppRoutes = () => {
           </Route>
           <Route path="/">
             {viewMode === "pos" ? (
-              <DashboardPage>POS page</DashboardPage>
+              <PosPage />
             ) : (
               <DashboardPage>Overview page</DashboardPage>
             )}
