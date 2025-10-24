@@ -20,7 +20,7 @@ interface CategoryNode extends CategoryReturnSchema {
   children: CategoryNode[];
 }
 
-function buildCategoryTree(categories: CategoryReturnSchema[]): CategoryNode[] {
+export function buildCategoryTree(categories: CategoryReturnSchema[]): CategoryNode[] {
   const categoryMap = new Map<string, CategoryNode>();
   const rootCategories: CategoryNode[] = [];
 

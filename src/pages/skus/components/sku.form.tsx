@@ -18,6 +18,7 @@ import { api } from "~/hooks/api";
 import { skuSchema } from "./sku.validator";
 import { CameraButton } from "~/components/composite/camera-button";
 import { IconBarcode } from "@tabler/icons-react";
+import { orderCategories } from "~/lib/utils/order-categories";
 
 type SkuFormValues = SKUReturnSchema | (SKUSchema & { id?: string });
 
@@ -174,20 +175,20 @@ export function SkuForm({
                   <SelectValue placeholder="Select Category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {(categories.data || [])
-                    .filter((c) => c && c.id)
-                    .map((c) => (
-                      <SelectItem key={`cat-${c.id}`} value={c.id}>
-                        <span
-                          style={{
-                            paddingLeft: 8 * c.level,
-                            display: "inline-block",
-                          }}
-                        >
-                          {c.categoryName}
-                        </span>
-                      </SelectItem>
-                    ))}
+                  {orderCategories(
+                    (categories.data || []).filter((c) => c && c.id)
+                  ).map((c) => (
+                    <SelectItem key={`cat-${c.id}`} value={c.id}>
+                      <span
+                        style={{
+                          paddingLeft: 8 * c.level,
+                          display: "inline-block",
+                        }}
+                      >
+                        {c.categoryName}
+                      </span>
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <FieldDescription>
