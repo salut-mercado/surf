@@ -132,6 +132,7 @@ export const CameraButton = ({
             }}
             onStreamChange={onStreamChange}
             scanInterval={scanInterval}
+            key={selectedDeviceId}
           />
         )}
         <AlertDialogFooter>
