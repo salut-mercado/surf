@@ -43,6 +43,8 @@ export function SkuForm({
   const producers = api.producers.useGetAll({});
   const suppliers = api.suppliers.useGetAll({});
   const categories = api.categories.useGetAll({});
+  const { mutateAsync: getProductByBarcode } =
+    api.openfoodfacts.useGetProductByBarcode();
 
   const defaultValues: SkuFormValues = {
     // required  ids
@@ -369,8 +371,46 @@ export function SkuForm({
                   buttonLabel=""
                   icon={IconBarcode}
                   autoCloseOnBarcodeDetected
-                  onBarcodeDetected={(barcodes) => {
+                  onBarcodeDetected={async (barcodes) => {
                     field.handleChange(barcodes[0].rawValue);
+                    const product = await getProductByBarcode(
+                      barcodes[0].rawValue
+                    );
+                    if (product) {
+                      if (product.product.product_name) {
+                        form.setFieldValue(
+                          "name",
+                          product.product.product_name
+                        );
+                      }
+                      if (product.product.ingredients_text_es) {
+                        form.setFieldValue(
+                          "specifications",
+                          product.product.ingredients_text_es
+                        );
+                      }
+                      if (product.product.product_quantity) {
+                        form.setFieldValue(
+                          "netWeight",
+                          parseFloat(product.product.product_quantity)
+                        );
+                      }
+                      if (product.product.product_quantity_unit) {
+                        const product_quantity_unit =
+                          product.product.product_quantity_unit;
+                        if (product_quantity_unit === "g") {
+                          form.setFieldValue(
+                            "unitMeasurement",
+                            UnitMeasurementEnum.gramm
+                          );
+                        } else if (product_quantity_unit === "ml") {
+                          form.setFieldValue(
+                            "unitMeasurement",
+                            UnitMeasurementEnum.milliliter
+                          );
+                        }
+                      }
+                    }
                   }}
                   barcodeFormats={["ean_13", "ean_8", "upc_a", "upc_e"]}
                   size="icon"
