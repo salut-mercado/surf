@@ -1,6 +1,6 @@
 import { IconCamera, type TablerIcon } from "@tabler/icons-react";
 import type { LucideIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -20,6 +20,7 @@ import {
 } from "~/components/ui/select";
 import { Spinner } from "~/components/ui/spinner";
 import { useCameraDevices } from "~/hooks/use-camera-devices";
+import { useDetectBarcode } from "~/hooks/use-detect-barcode";
 import { useWebcam } from "~/hooks/use-webcam";
 import { useGlobalStore } from "~/store/global.store";
 
@@ -42,6 +43,8 @@ type CameraButtonProps = {
   scanInterval?: number;
 };
 
+// TODO: Add error handling
+
 export const CameraButton = ({
   variant,
   size,
@@ -50,9 +53,9 @@ export const CameraButton = ({
   title,
 
   autoCloseOnBarcodeDetected,
-  barcodeFormats,
+  barcodeFormats = ["ean_13", "ean_8"],
   onBarcodeDetected,
-  scanInterval,
+  scanInterval = 200,
 }: CameraButtonProps) => {
   const preferredCameraDeviceId = useGlobalStore(
     (state) => state.preferredCameraDeviceId
@@ -60,6 +63,7 @@ export const CameraButton = ({
   const setPreferredCameraDeviceId = useGlobalStore(
     (state) => state.setPreferredCameraDeviceId
   );
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Camera
   const devices = useCameraDevices({
@@ -85,16 +89,43 @@ export const CameraButton = ({
     withAudio: false,
   });
 
+  const { detectFromElement } = useDetectBarcode({
+    formats: barcodeFormats,
+    onBarcodeDetected(barcodes) {
+      if (!barcodes.length) return;
+      if (autoCloseOnBarcodeDetected) {
+        setIsOpen(false);
+      }
+      onBarcodeDetected?.(barcodes);
+    },
+  });
+
+  const startWebcamWithDetection = useCallback(() => {
+    startWebcam();
+    intervalRef.current = setInterval(() => {
+      if (!videoRef.current) return;
+      detectFromElement(videoRef.current);
+    }, scanInterval);
+  }, [startWebcam, detectFromElement, scanInterval]);
+
+  const stopWebcamWithDetection = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    stopWebcam();
+  }, [stopWebcam]);
+
   // Component controls
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
-      startWebcam();
+      startWebcamWithDetection();
     } else {
-      stopWebcam();
+      stopWebcamWithDetection();
     }
-  }, [isOpen, startWebcam, stopWebcam]);
+  }, [isOpen, startWebcamWithDetection, stopWebcamWithDetection]);
 
   return (
     <AlertDialog
@@ -117,7 +148,7 @@ export const CameraButton = ({
             value={preferredCameraDeviceId}
             onValueChange={(newValue) => {
               setPreferredCameraDeviceId(newValue);
-              startWebcam();
+              startWebcamWithDetection();
             }}
           >
             <SelectTrigger>

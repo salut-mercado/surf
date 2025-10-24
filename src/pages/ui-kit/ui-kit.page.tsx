@@ -38,14 +38,6 @@ const UiKitPage = () => {
         title="Scan Barcode"
         buttonLabel="Scan Barcode"
         icon={IconBarcode}
-        constraints={{
-          video: {
-            facingMode: "environment",
-            frameRate: 30,
-            height: 1000,
-            width: 1000,
-          },
-        }}
         onBarcodeDetected={(barcodes) => {
           setDetectedBarcode(barcodes[0].rawValue);
         }}

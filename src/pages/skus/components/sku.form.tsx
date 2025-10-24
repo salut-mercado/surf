@@ -374,13 +374,7 @@ export function SkuForm({
                   }}
                   barcodeFormats={["ean_13", "ean_8", "upc_a", "upc_e"]}
                   size="icon"
-                  constraints={{
-                    video: {
-                      frameRate: 15,
-                      height: 1000,
-                      width: 1000,
-                    },
-                  }}
+                  scanInterval={200}
                   variant="outline"
                 />
               </div>

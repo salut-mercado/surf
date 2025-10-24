@@ -16,6 +16,7 @@ export interface UseDetectBarcodeOptions {
   formats?: BarcodeFormat[];
   enabled?: boolean;
   staleTime?: number;
+  onBarcodeDetected?: (barcodes: DetectedBarcode[]) => void;
 }
 
 export interface DetectBarcodeResult {
@@ -72,7 +73,7 @@ const detectBarcodes = async (
  * Hook for checking Barcode Detection API support and getting supported formats
  */
 export const useBarcodeDetectionSupport = (
-  options: UseDetectBarcodeOptions = {}
+  options: Pick<UseDetectBarcodeOptions, "enabled" | "staleTime"> = {}
 ) => {
   const { enabled = true, staleTime = 5 * 60 * 1000 } = options;
 
@@ -111,9 +112,10 @@ export const useBarcodeDetectionSupport = (
 /**
  * Hook for detecting barcodes in images using the Barcode Detection API
  */
-export const useDetectBarcode = (options: UseDetectBarcodeOptions = {}) => {
-  const { formats = [] } = options;
-
+export const useDetectBarcode = ({
+  formats = [],
+  onBarcodeDetected,
+}: Omit<UseDetectBarcodeOptions, "staleTime" | "enabled"> = {}) => {
   // Mutation for detecting barcodes
   const detectMutation = useMutation({
     mutationKey: ["barcode", "detect", formats],
@@ -130,6 +132,8 @@ export const useDetectBarcode = (options: UseDetectBarcodeOptions = {}) => {
         }
 
         const barcodes = await detectBarcodes(imageSource, { formats });
+
+        onBarcodeDetected?.(barcodes);
 
         return {
           barcodes,
@@ -166,65 +170,12 @@ export const useDetectBarcode = (options: UseDetectBarcodeOptions = {}) => {
     [detect]
   );
 
-  const detectFromImageData = useCallback(
-    (imageData: ImageData) => {
-      return detect(imageData);
-    },
-    [detect]
-  );
-
-  const detectFromBlob = useCallback(
-    async (blob: Blob) => {
-      try {
-        const imageBitmap = await createImageBitmap(blob);
-        return await detect(imageBitmap);
-      } catch (error: unknown) {
-        console.error(error);
-        return {
-          barcodes: [],
-          success: false,
-          error: "Failed to process image blob",
-        };
-      }
-    },
-    [detect]
-  );
-
-  const detectFromFile = useCallback(
-    async (file: File) => {
-      return detectFromBlob(file);
-    },
-    [detectFromBlob]
-  );
-
-  const detectFromDataURL = useCallback(
-    async (dataURL: string) => {
-      try {
-        const response = await fetch(dataURL);
-        const blob = await response.blob();
-        return await detectFromBlob(blob);
-      } catch (error: unknown) {
-        console.error(error);
-        return {
-          barcodes: [],
-          success: false,
-          error: "Failed to process data URL",
-        };
-      }
-    },
-    [detectFromBlob]
-  );
-
   // Utility functions
   const hasBarcodes = useMemo(() => {
     return (
       detectMutation.data?.barcodes?.length &&
       detectMutation.data.barcodes.length > 0
     );
-  }, [detectMutation.data]);
-
-  const firstBarcode = useMemo(() => {
-    return detectMutation.data?.barcodes[0] || null;
   }, [detectMutation.data]);
 
   const qrCodes = useMemo(() => {
@@ -271,33 +222,19 @@ export const useDetectBarcode = (options: UseDetectBarcodeOptions = {}) => {
   return {
     // Detection methods
     detectFromElement,
-    detectFromImageData,
-    detectFromBlob,
-    detectFromFile,
-    detectFromDataURL,
-
-    // State
-    isDetecting: detectMutation.isPending,
-    data: detectMutation.data,
-    error: detectMutation.error,
-
     // Utilities
     hasBarcodes,
-    firstBarcode,
     qrCodes,
     linearBarcodes,
     matrixBarcodes,
-
-    // Actions
-    reset: detectMutation.reset,
   };
 };
 
 // Export types for external use
 export type {
-  BarcodeFormat as BarcodeFormatType,
-  DetectedBarcode as DetectedBarcodeType,
   BarcodeDetectorOptions as BarcodeDetectorOptionsType,
-  UseDetectBarcodeOptions as UseDetectBarcodeOptionsType,
+  BarcodeFormat as BarcodeFormatType,
   DetectBarcodeResult as DetectBarcodeResultType,
+  DetectedBarcode as DetectedBarcodeType,
+  UseDetectBarcodeOptions as UseDetectBarcodeOptionsType,
 };
