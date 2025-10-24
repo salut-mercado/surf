@@ -9,11 +9,37 @@ export interface CameraDevice {
 export interface UseCameraDevicesOptions {
   enabled?: boolean;
   staleTime?: number;
+  onDevicesLoaded?: (
+    devices: CameraDevice[],
+    defaultDevice: CameraDevice | null
+  ) => void;
 }
 
-export const useCameraDevices = (options: UseCameraDevicesOptions = {}) => {
-  const { enabled = true, staleTime = 5 * 60 * 1000 } = options;
+const requestDevices = async (): Promise<CameraDevice[]> => {
+  const mediaDevices = await navigator.mediaDevices.enumerateDevices();
+  return mediaDevices
+    .filter((device) => device.kind === "videoinput" && device.deviceId !== "")
+    .map((device) => ({
+      deviceId: device.deviceId,
+      label: device.label || `Camera ${device.deviceId.slice(0, 8)}`,
+      groupId: device.groupId,
+    }));
+};
 
+const requestPermissions = async (): Promise<void> => {
+  await navigator.mediaDevices
+    .getUserMedia({
+      audio: false,
+      video: true,
+    })
+    .then((stream) => stream.getTracks().forEach((track) => track.stop()));
+};
+
+export const useCameraDevices = ({
+  enabled = true,
+  staleTime = 5 * 60 * 1000,
+  onDevicesLoaded,
+}: UseCameraDevicesOptions = {}) => {
   const {
     data: devices = [],
     isLoading,
@@ -24,18 +50,17 @@ export const useCameraDevices = (options: UseCameraDevicesOptions = {}) => {
     queryKey: ["camera", "devices"],
     queryFn: async (): Promise<CameraDevice[]> => {
       try {
-        await navigator.mediaDevices.getUserMedia({
-          audio: false,
-          video: true,
-        });
-        const mediaDevices = await navigator.mediaDevices.enumerateDevices();
-        return mediaDevices
-          .filter((device) => device.kind === "videoinput")
-          .map((device) => ({
-            deviceId: device.deviceId,
-            label: device.label || `Camera ${device.deviceId.slice(0, 8)}`,
-            groupId: device.groupId,
-          }));
+        let devices = await requestDevices();
+        if (devices.length === 0) {
+          try {
+            await requestPermissions();
+            devices = await requestDevices();
+          } catch {
+            throw new Error("Failed to request camera permissions");
+          }
+        }
+        onDevicesLoaded?.(devices, devices[0] || null);
+        return devices;
       } catch (error) {
         console.error("Failed to enumerate camera devices:", error);
         throw new Error("Failed to access camera devices");

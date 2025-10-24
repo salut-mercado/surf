@@ -3,11 +3,11 @@ import { Redirect, Route, Switch } from "wouter";
 import { useAuth } from "~/hooks/use-auth";
 import { DashboardPage } from "./components/dashboard-page";
 import { TenantRequired } from "./components/app-no-tenant-selected";
-import UiKitPage from "./pages/ui-kit/ui-kit.page";
 import { useGlobalStore } from "./store/global.store";
-import { useSession } from "./hooks/use-session";
+import { api } from "./hooks/api";
 import { Spinner } from "./components/ui/spinner";
 
+const UiKitPage = lazy(() => import("./pages/ui-kit/ui-kit.page"));
 const AuthPage = lazy(() => import("./pages/auth/auth.page"));
 const CreateSupplierPage = lazy(
   () => import("./pages/suppliers/pages/create/create-supplier.page")
@@ -53,7 +53,7 @@ const PosPage = lazy(() => import("./pages/pos/pos.page"));
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
-  const { isLoading } = useSession();
+  const { isLoading } = api.auth.useMe();
   const viewMode = useGlobalStore((s) => s.viewMode);
   if (isLoading) {
     return (

@@ -1,6 +1,6 @@
 import { IconCamera, type TablerIcon } from "@tabler/icons-react";
 import type { LucideIcon } from "lucide-react";
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -11,70 +11,91 @@ import {
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
-import { useCameraDevices } from "~/hooks/use-camera-devices";
-import {
-  useWebcam,
-  type UseWebcamOptions,
-  type WebcamConstraints,
-} from "~/hooks/use-webcam";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-import { Spinner } from "../ui/spinner";
-import { useDetectBarcode } from "~/hooks/use-detect-barcode";
+} from "~/components/ui/select";
+import { Spinner } from "~/components/ui/spinner";
+import { useCameraDevices } from "~/hooks/use-camera-devices";
+import { useWebcam } from "~/hooks/use-webcam";
+import { useGlobalStore } from "~/store/global.store";
 
 export type CameraButtonRef = React.RefObject<{
   getVideoElement: () => HTMLVideoElement | null;
 }>;
 
 type CameraButtonProps = {
+  // Button
   title: string;
   buttonLabel?: string;
   variant?: React.ComponentProps<typeof Button>["variant"];
   size?: React.ComponentProps<typeof Button>["size"];
-  onStreamChange?: UseWebcamOptions["onStreamChange"];
+  icon?: TablerIcon | LucideIcon;
+
+  // Barcode detection
   barcodeFormats?: BarcodeFormat[];
   onBarcodeDetected?: (barcodes: DetectedBarcode[]) => void;
   autoCloseOnBarcodeDetected?: boolean;
   scanInterval?: number;
-  icon?: TablerIcon | LucideIcon;
-  constraints?: WebcamConstraints;
 };
 
 export const CameraButton = ({
-  title,
-  buttonLabel,
-  size,
   variant,
+  size,
   icon: Icon = IconCamera,
-  constraints,
-  barcodeFormats = ["ean_13", "ean_8"],
-  scanInterval = 200,
-  onBarcodeDetected,
+  buttonLabel,
+  title,
+
   autoCloseOnBarcodeDetected,
-  onStreamChange,
+  barcodeFormats,
+  onBarcodeDetected,
+  scanInterval,
 }: CameraButtonProps) => {
+  const preferredCameraDeviceId = useGlobalStore(
+    (state) => state.preferredCameraDeviceId
+  );
+  const setPreferredCameraDeviceId = useGlobalStore(
+    (state) => state.setPreferredCameraDeviceId
+  );
+
+  // Camera
+  const devices = useCameraDevices({
+    onDevicesLoaded(_, defaultDevice) {
+      if (defaultDevice && preferredCameraDeviceId === undefined) {
+        setPreferredCameraDeviceId(defaultDevice.deviceId);
+      }
+    },
+  });
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const {
+    start: startWebcam,
+    stop: stopWebcam,
+    isStarting,
+    isStopping,
+  } = useWebcam({
+    ref: videoRef,
+    deviceId: preferredCameraDeviceId,
+    facingMode: "environment",
+    width: 1000,
+    height: 1000,
+    frameRate: 30,
+    withAudio: false,
+  });
+
+  // Component controls
   const [isOpen, setIsOpen] = useState(false);
 
-  const {
-    devices,
-    // error,
-    // hasDevices,
-    isLoading: isLoadingDevices,
-    refetch: refetchDevices,
-  } = useCameraDevices();
-  const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
-
   useEffect(() => {
-    const timoutId = setTimeout(() => {
-      refetchDevices();
-    }, 150);
-    return () => clearTimeout(timoutId);
-  }, [refetchDevices]);
+    if (isOpen) {
+      startWebcam();
+    } else {
+      stopWebcam();
+    }
+  }, [isOpen, startWebcam, stopWebcam]);
+
   return (
     <AlertDialog
       open={isOpen}
@@ -92,150 +113,42 @@ export const CameraButton = ({
         <AlertDialogHeader className="flex md:flex-row justify-between items-center">
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <Select
-            disabled={isLoadingDevices}
-            value={selectedDeviceId ?? ""}
+            disabled={devices.isLoading}
+            value={preferredCameraDeviceId}
             onValueChange={(newValue) => {
-              setSelectedDeviceId(newValue);
+              setPreferredCameraDeviceId(newValue);
+              startWebcam();
             }}
           >
             <SelectTrigger>
-              {isLoadingDevices ? (
+              {devices.isLoading ? (
                 <Spinner />
               ) : (
                 <SelectValue placeholder="Select a device" />
               )}
             </SelectTrigger>
             <SelectContent>
-              {devices.map((device) =>
-                device.deviceId ? (
-                  <SelectItem key={device.deviceId} value={device.deviceId}>
-                    {device.label}
-                  </SelectItem>
-                ) : (
-                  <Fragment key={device.deviceId} />
-                )
-              )}
+              {devices.devices.map((device) => (
+                <SelectItem key={device.deviceId} value={device.deviceId}>
+                  {device.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </AlertDialogHeader>
-        {selectedDeviceId && (
-          <CameraButtonContent
-            deviceId={selectedDeviceId}
-            autoCloseOnBarcodeDetected={autoCloseOnBarcodeDetected}
-            barcodeFormats={barcodeFormats}
-            constraints={constraints}
-            onBarcodeDetected={(barcodes) => {
-              onBarcodeDetected?.(barcodes);
-              if (autoCloseOnBarcodeDetected) {
-                setIsOpen(false);
-              }
-            }}
-            onStreamChange={onStreamChange}
-            scanInterval={scanInterval}
-            key={selectedDeviceId}
+        <div className="bg-muted rounded-md aspect-square w-full overflow-hidden grid place-items-center">
+          {(isStarting || isStopping) && <Spinner />}
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            className="w-full object-cover"
           />
-        )}
+        </div>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
-};
-
-const CameraButtonContent = ({
-  autoCloseOnBarcodeDetected,
-  barcodeFormats,
-  constraints,
-  onBarcodeDetected,
-  onStreamChange,
-  scanInterval,
-  deviceId,
-}: Omit<
-  CameraButtonProps,
-  "title" | "buttonLabel" | "size" | "variant" | "icon"
-> & { deviceId: string }) => {
-  const scanIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const {
-    videoRef: webcamVideoRef,
-    isActive: webcamIsActive,
-    stop: stopWebcam,
-    isStarting: webcamIsStarting,
-    isStopping: webcamIsStopping,
-  } = useWebcam({
-    constraints,
-    onStreamChange,
-    deviceId,
-    autoStart: true,
-  });
-
-  // Barcode detection hook
-  const { detectFromElement } = useDetectBarcode({
-    formats: barcodeFormats,
-  });
-
-  // Start/stop barcode scanning
-  const stopScanning = useCallback(() => {
-    if (scanIntervalRef.current) {
-      clearInterval(scanIntervalRef.current);
-      scanIntervalRef.current = null;
-    }
-  }, []);
-
-  const reset = useCallback(() => {
-    stopScanning();
-    stopWebcam();
-  }, [stopScanning, stopWebcam]);
-
-  const startScanning = useCallback(() => {
-    if (!webcamVideoRef.current) return;
-
-    scanIntervalRef.current = setInterval(async () => {
-      if (webcamVideoRef.current && webcamIsActive) {
-        try {
-          const result = await detectFromElement(webcamVideoRef.current);
-          if (result.success && result.barcodes.length > 0) {
-            onBarcodeDetected?.(result.barcodes);
-            if (autoCloseOnBarcodeDetected) {
-              reset();
-            }
-          }
-        } catch (error) {
-          console.error("Barcode detection error:", error);
-        }
-      }
-    }, scanInterval);
-  }, [
-    webcamVideoRef,
-    scanInterval,
-    webcamIsActive,
-    detectFromElement,
-    onBarcodeDetected,
-    autoCloseOnBarcodeDetected,
-    reset,
-  ]);
-
-  // Auto-start scanning when camera is active
-  useEffect(() => {
-    if (webcamIsActive) {
-      startScanning();
-    } else {
-      stopScanning();
-    }
-    return () => stopScanning();
-  }, [webcamIsActive, startScanning, stopScanning]);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => stopScanning();
-  }, [stopScanning]);
-
-  return (
-    <>
-      {webcamIsStarting && <Spinner />}
-      <video className="w-full" ref={webcamVideoRef} autoPlay playsInline />
-      {webcamIsStopping && <Spinner />}
-    </>
   );
 };
