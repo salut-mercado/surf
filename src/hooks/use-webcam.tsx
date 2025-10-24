@@ -16,7 +16,6 @@ export interface WebcamState {
   isActive: boolean;
   error: string | null;
   hasPermission: boolean;
-  currentDeviceId: string | null;
 }
 
 export interface UseWebcamOptions {
@@ -58,7 +57,6 @@ export const useWebcam = (options: UseWebcamOptions = {}) => {
     isActive: false,
     error: null,
     hasPermission: false,
-    currentDeviceId: null,
   });
 
   // Mutation to start webcam
@@ -95,7 +93,6 @@ export const useWebcam = (options: UseWebcamOptions = {}) => {
           isActive: true,
           error: null,
           hasPermission: true,
-          currentDeviceId: targetDeviceId || null,
         }));
 
         onStreamChange?.(stream);
@@ -131,7 +128,6 @@ export const useWebcam = (options: UseWebcamOptions = {}) => {
         ...prev,
         stream: null,
         isActive: false,
-        currentDeviceId: null,
       }));
 
       onStreamChange?.(null);

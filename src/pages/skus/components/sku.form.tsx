@@ -16,6 +16,8 @@ import { Spinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/hooks/api";
 import { skuSchema } from "./sku.validator";
+import { CameraButton } from "~/components/composite/camera-button";
+import { IconBarcode } from "@tabler/icons-react";
 
 type SkuFormValues = SKUReturnSchema | (SKUSchema & { id?: string });
 
@@ -174,7 +176,14 @@ export function SkuForm({
                     .filter((c) => c && c.id)
                     .map((c) => (
                       <SelectItem key={`cat-${c.id}`} value={c.id}>
-                        {c.categoryName}
+                        <span
+                          style={{
+                            paddingLeft: 8 * c.level,
+                            display: "inline-block",
+                          }}
+                        >
+                          {c.categoryName}
+                        </span>
                       </SelectItem>
                     ))}
                 </SelectContent>
@@ -227,9 +236,7 @@ export function SkuForm({
                 min={0}
                 value={field.state.value ?? 0}
                 onBlur={field.handleBlur}
-                onChange={(e) =>
-                  field.handleChange(e.target.valueAsNumber)
-                }
+                onChange={(e) => field.handleChange(e.target.valueAsNumber)}
               />
               <FieldDescription>
                 How many days the item can be stored.
@@ -349,13 +356,34 @@ export function SkuForm({
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>Barcode</Label>
-              <Input
-                id={field.name}
-                name={field.name}
-                value={field.state.value ?? ""}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
+              <div className="flex gap-2">
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value ?? ""}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                <CameraButton
+                  title="Scan Barcode"
+                  buttonLabel=""
+                  icon={IconBarcode}
+                  autoCloseOnBarcodeDetected
+                  onBarcodeDetected={(barcodes) => {
+                    field.handleChange(barcodes[0].rawValue);
+                  }}
+                  barcodeFormats={["ean_13", "ean_8", "upc_a", "upc_e"]}
+                  size="icon"
+                  constraints={{
+                    video: {
+                      frameRate: 15,
+                      height: 1000,
+                      width: 1000,
+                    },
+                  }}
+                  variant="outline"
+                />
+              </div>
               <FieldDescription>Barcode (EAN/UPC).</FieldDescription>
             </div>
           )}
