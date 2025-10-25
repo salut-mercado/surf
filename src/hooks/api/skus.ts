@@ -20,8 +20,12 @@ export const skus = {
     args: Omit<GetSkusHandlerApiSkusGetRequest, "skip"> | typeof skipToken
   ) =>
     useInfiniteQuery<SKUPaginatedResponseSchema>({
-      getNextPageParam: (lastPage: SKUPaginatedResponseSchema) =>
-        (lastPage.skip ?? 0) + (lastPage.limit ?? 0),
+      getNextPageParam: (lastPage: SKUPaginatedResponseSchema) => {
+        if (lastPage.items.length < (lastPage.limit ?? 1)) {
+          return undefined;
+        }
+        return (lastPage.skip ?? 0) + (lastPage.limit ?? 0);
+      },
       initialPageParam: 0,
       queryKey: ["skus", "getAll", JSON.stringify(args)],
       queryFn:
@@ -30,14 +34,11 @@ export const skus = {
               api.sku.getSkusHandlerApiSkusGet({
                 ...(args as GetSkusHandlerApiSkusGetRequest),
                 skip: pageParam as number,
-                limit:
-                  (args as GetSkusHandlerApiSkusGetRequest).limit ?? 10,
+                limit: (args as GetSkusHandlerApiSkusGetRequest).limit ?? 10,
               })
           : (skipToken as unknown as () => Promise<SKUPaginatedResponseSchema>),
     }),
-  useGetById: (
-    args: GetSkuHandlerApiSkusIdGetRequest | typeof skipToken
-  ) =>
+  useGetById: (args: GetSkuHandlerApiSkusIdGetRequest | typeof skipToken) =>
     useQuery<SKUReturnSchema>({
       queryKey: ["skus", "getById", JSON.stringify(args)],
       queryFn:
@@ -60,5 +61,3 @@ export const skus = {
         api.sku.updateSkuHandlerApiSkusIdPut(args),
     }),
 };
-
-

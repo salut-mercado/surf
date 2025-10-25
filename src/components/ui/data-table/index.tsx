@@ -16,18 +16,18 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { DataTablePagination } from "./pagination";
+import { DataTablePagination, type PaginationConfig } from "./pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  pageSize?: number;
+  pagination?: PaginationConfig;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  pageSize = 10,
+  pagination,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -36,7 +36,7 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     initialState: {
       pagination: {
-        pageSize,
+        pageSize: pagination?.pageSize ?? 10,
       },
     },
   });
@@ -93,7 +93,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      <DataTablePagination table={table} pagination={pagination} />
     </div>
   );
 }

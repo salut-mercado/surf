@@ -32,6 +32,17 @@ export default function SuppliersPage() {
             </Button>
           </div>
           <DataTable data={allSuppliers} columns={columns} />
+          {suppliers.hasNextPage && (
+            <div className="flex justify-center mt-4">
+              <Button
+                onClick={() => suppliers.fetchNextPage()}
+                disabled={suppliers.isFetchingNextPage}
+                variant="outline"
+              >
+                {suppliers.isFetchingNextPage ? "Loading..." : "Load More"}
+              </Button>
+            </div>
+          )}
         </>
       )}
     </DashboardPage>

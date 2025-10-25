@@ -8,10 +8,22 @@ import { columns } from "./columns";
 import { SkusEmptyState } from "./skus.empty-state";
 import { SkusErrorState } from "./skus.error-state";
 import { SkusSkeleton } from "./skus.skeleton";
+import { useEffect } from "react";
+
+const PAGE_SIZE = 10;
 
 export default function SkusPage() {
-  const skus = api.skus.useGetAll({});
+  const skus = api.skus.useGetAll({ limit: PAGE_SIZE });
   const allSkus = skus.data?.pages.flatMap((page) => page.items) ?? [];
+
+  useEffect(() => {
+    const iv = setInterval(async () => {
+      if (skus.hasNextPage) {
+        await skus.fetchNextPage();
+      }
+    }, 1000);
+    return () => clearInterval(iv);
+  }, [skus]);
 
   return (
     <DashboardPage>
@@ -28,7 +40,18 @@ export default function SkusPage() {
               </Link>
             </Button>
           </div>
-          <DataTable data={allSkus} columns={columns} />
+          <DataTable data={allSkus} columns={columns} pagination={{}} />
+          {skus.hasNextPage && (
+            <div className="flex justify-center mt-4">
+              <Button
+                onClick={() => skus.fetchNextPage()}
+                disabled={skus.isFetchingNextPage}
+                variant="outline"
+              >
+                {skus.isFetchingNextPage ? "Loading..." : "Load More"}
+              </Button>
+            </div>
+          )}
         </>
       )}
     </DashboardPage>
