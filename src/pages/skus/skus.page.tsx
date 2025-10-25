@@ -41,17 +41,6 @@ export default function SkusPage() {
             </Button>
           </div>
           <DataTable data={allSkus} columns={columns} pagination={{}} />
-          {skus.hasNextPage && (
-            <div className="flex justify-center mt-4">
-              <Button
-                onClick={() => skus.fetchNextPage()}
-                disabled={skus.isFetchingNextPage}
-                variant="outline"
-              >
-                {skus.isFetchingNextPage ? "Loading..." : "Load More"}
-              </Button>
-            </div>
-          )}
         </>
       )}
     </DashboardPage>
