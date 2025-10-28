@@ -41,9 +41,15 @@ export function SkuForm({
   isSubmitting = false,
   submitLabel = "Save SKU",
 }: SkuFormProps) {
-  const producers = api.producers.useGetAll({});
-  const suppliers = api.suppliers.useGetAll({});
-  const categories = api.categories.useGetAll({});
+  const producers = api.producers.useGetAll({
+    limit: 1000,
+  });
+  const suppliers = api.suppliers.useGetAll({
+    limit: 1000,
+  });
+  const categories = api.categories.useGetAll({
+    limit: 1000
+  });
   const { mutateAsync: getProductByBarcode } =
     api.openfoodfacts.useGetProductByBarcode();
 
