@@ -12,7 +12,7 @@ export default function EditCategoryPage() {
   const category = api.categories.useGetById(
     id ? { categoriesId: id } : skipToken
   );
-  const categories = api.categories.useGetAll({});
+  const categories = api.categories.useGetAll({ limit: 1000 });
   const update = api.categories.useUpdate();
   const [, setLocation] = useLocation();
   const list = useMemo(() => categories.data ?? [], [categories.data]);

@@ -6,12 +6,12 @@ import { api } from "~/hooks/api";
 import { CategoryForm } from "../../components/category.form";
 
 export default function CreateCategoryPage() {
-  const categories = api.categories.useGetAll({});
+  const categories = api.categories.useGetAll({ limit: 1000 });
   const create = api.categories.useCreate();
   const [, setLocation] = useLocation();
   const search = useSearch();
   const urlParams = new URLSearchParams(search);
-  const parentId = urlParams.get('parent');
+  const parentId = urlParams.get("parent");
 
   const options = useMemo(() => {
     const list = (categories.data ?? []) as {

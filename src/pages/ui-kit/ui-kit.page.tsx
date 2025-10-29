@@ -7,7 +7,7 @@ import { Badge } from "~/components/ui/badge";
 import { api } from "~/hooks/api";
 
 const UiKitPage = () => {
-  const suppliers = api.suppliers.useGetAll({});
+  const suppliers = api.suppliers.useGetAll({ limit: 1000 });
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [detectedBarcode, setDetectedBarcode] = useState<string>("");
   return (

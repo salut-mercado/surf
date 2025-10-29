@@ -10,7 +10,7 @@ import { SuppliersErrorState } from "./suppliers.error-state";
 import { SuppliersSkeleton } from "./suppliers.skeleton";
 
 export default function SuppliersPage() {
-  const suppliers = api.suppliers.useGetAll({});
+  const suppliers = api.suppliers.useGetAll({ limit: 1000 });
   const allSuppliers =
     suppliers.data?.pages.flatMap((page) => page.items) ?? [];
 

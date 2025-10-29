@@ -10,7 +10,7 @@ import { CategoryTree } from "./components/category-tree";
 import { Card, CardContent } from "~/components/ui/card";
 
 export default function CategoriesPage() {
-  const categories = api.categories.useGetAll({});
+  const categories = api.categories.useGetAll({ limit: 1000 });
 
   const list = categories.data ?? [];
 
