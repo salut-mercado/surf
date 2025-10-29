@@ -8,10 +8,20 @@ import { columns } from "./columns";
 import { SkusEmptyState } from "./skus.empty-state";
 import { SkusErrorState } from "./skus.error-state";
 import { SkusSkeleton } from "./skus.skeleton";
+import { useEffect } from "react";
 
 export default function SkusPage() {
   const skus = api.skus.useGetAll({ limit: 1000 });
   const allSkus = skus.data?.pages.flatMap((page) => page.items) ?? [];
+
+  useEffect(() => {
+    const iv = setInterval(async () => {
+      if (skus.hasNextPage) {
+        await skus.fetchNextPage();
+      }
+    }, 100);
+    return () => clearInterval(iv);
+  }, [skus]);
 
   return (
     <DashboardPage>
