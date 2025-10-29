@@ -8,22 +8,10 @@ import { columns } from "./columns";
 import { SkusEmptyState } from "./skus.empty-state";
 import { SkusErrorState } from "./skus.error-state";
 import { SkusSkeleton } from "./skus.skeleton";
-import { useEffect } from "react";
-
-const PAGE_SIZE = 10;
 
 export default function SkusPage() {
-  const skus = api.skus.useGetAll({ limit: PAGE_SIZE });
+  const skus = api.skus.useGetAll({ limit: 1000 });
   const allSkus = skus.data?.pages.flatMap((page) => page.items) ?? [];
-
-  useEffect(() => {
-    const iv = setInterval(async () => {
-      if (skus.hasNextPage) {
-        await skus.fetchNextPage();
-      }
-    }, 1000);
-    return () => clearInterval(iv);
-  }, [skus]);
 
   return (
     <DashboardPage>
@@ -40,7 +28,7 @@ export default function SkusPage() {
               </Link>
             </Button>
           </div>
-          <DataTable data={allSkus} columns={columns} pagination={{}} />
+          <DataTable data={allSkus} columns={columns} />
         </>
       )}
     </DashboardPage>
