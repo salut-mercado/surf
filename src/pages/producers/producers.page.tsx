@@ -10,7 +10,7 @@ import { ProducersErrorState } from "./producers.error-state";
 import { ProducersSkeleton } from "./producers.skeleton";
 
 export default function ProducersPage() {
-  const producers = api.producers.useGetAll({});
+  const producers = api.producers.useGetAll({ limit: 1000 });
   const items = producers.data ?? [];
 
   return (
