@@ -91,7 +91,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       icon: IconMapPinPlus,
       roles: [UserRoleEnum.manager],
     })
-    if (selectedTenant.role !== UserRoleEnum.manager) {
+    if (selectedTenant.role !== UserRoleEnum.manager && allStores.length === 0) {
       storesItem.items.push({
         title: "No stores assigned",
         url: "#",
