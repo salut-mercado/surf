@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "./components/common/theme-provider";
 import { AuthProvider } from "~/hooks/use-auth";
+import { ThemeProvider } from "./components/common/theme-provider";
 import { useInjectNavigate } from "./hooks/use-inject-navigate";
 
 const TEN_SECONDS = 1000 * 10;

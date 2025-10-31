@@ -1,15 +1,21 @@
-import { IconBarcode } from "@tabler/icons-react";
-import { Clock } from "lucide-react";
+import { PaymentType, type SKUReturnSchema } from "@salut-mercado/octo-client";
+import { IconBarcode, IconReceipt } from "@tabler/icons-react";
+import { Clock, FilePlus2Icon } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
 import { useParams } from "wouter";
-import { useState, useMemo, useCallback } from "react";
-import { DashboardPage } from "~/components/dashboard-page";
 import { CameraButton } from "~/components/composite/camera-button";
+import { DashboardPage } from "~/components/dashboard-page";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Separator } from "~/components/ui/separator";
-import { Spinner } from "~/components/ui/spinner";
 import {
   Sheet,
   SheetContent,
@@ -18,9 +24,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "~/components/ui/sheet";
+import { Spinner } from "~/components/ui/spinner";
 import { api } from "~/hooks/api";
 import { outflows } from "~/hooks/api/outflows";
-import { PaymentType, type SKUReturnSchema } from "@salut-mercado/octo-client";
 
 interface CheckItem {
   barcode: string;
@@ -123,20 +129,15 @@ const PosPage = () => {
 
   const handleCheckout = async () => {
     if (!storeId || checkItems.length === 0) return;
-
-    setError(null);
-    setSuccess(false);
     try {
       await createStoreSale.mutateAsync({
-        storeSalesOutflowSchema: {
-          storeId: storeId,
-          skuOutflow: checkItems.map((item) => ({
-            barcode: item.barcode,
-            quantity: item.quantity,
-          })),
-          additionalInformation: {
-            paymentType: PaymentType.cash,
-          },
+        storeId: storeId,
+        skuOutflow: checkItems.map((item) => ({
+          barcode: item.barcode,
+          quantity: item.quantity,
+        })),
+        additionalInformation: {
+          paymentType: PaymentType.cash,
         },
       });
       setSuccess(true);
@@ -158,14 +159,7 @@ const PosPage = () => {
   return (
     <DashboardPage>
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <Button
-            onClick={handleCheckout}
-            disabled={checkItems.length === 0 || createStoreSale.isPending}
-          >
-            <IconBarcode className="size-4" />
-            Checkout
-          </Button>
+        <div className="flex items-center justify-end">
           <Sheet open={isHistoryOpen} onOpenChange={setIsHistoryOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" className="gap-2" disabled>
@@ -192,39 +186,12 @@ const PosPage = () => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <Card className="md:col-span-3">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <IconBarcode className="size-5" />
-                Barcode Scanner
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Enter or scan barcode..."
-                  value={barcodeInput}
-                  onChange={handleBarcodeInputChange}
-                  onKeyDown={handleBarcodeInputKeyDown}
-                  className="flex-1"
-                />
-                <CameraButton
-                  title="Scan Barcode"
-                  buttonLabel="Scan"
-                  icon={IconBarcode}
-                  autoCloseOnBarcodeDetected
-                  onBarcodeDetected={handleBarcodeDetected}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
               <CardTitle>Check Summary</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {checkItems.length === 0 ? (
                 <div className="text-center text-muted-foreground py-8">
-                  No active check
+                  Scan first item to open a new check
                 </div>
               ) : (
                 <>
@@ -256,12 +223,55 @@ const PosPage = () => {
                   </div>
                 </>
               )}
-
-              <Button onClick={handleOpenNewCheck} className="w-full">
-                Open New Check
-              </Button>
             </CardContent>
+            <CardFooter className="justify-end">
+              <Button
+                onClick={handleCheckout}
+                disabled={checkItems.length === 0 || createStoreSale.isPending}
+              >
+                <IconReceipt className="size-4" />
+                Checkout
+              </Button>
+            </CardFooter>
           </Card>
+          <div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <IconBarcode className="size-5" />
+                  Barcode Scanner
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex flex-col gap-2">
+                  <Input
+                    placeholder="Enter or scan barcode..."
+                    value={barcodeInput}
+                    onChange={handleBarcodeInputChange}
+                    onKeyDown={handleBarcodeInputKeyDown}
+                  />
+                  {barcodeInput.trim() ? (
+                    <Button
+                      onClick={() => handleAddBarcode(barcodeInput)}
+                      variant="secondary"
+                    >
+                      <FilePlus2Icon className="size-4" />
+                      Add
+                    </Button>
+                  ) : (
+                    <CameraButton
+                      variant="secondary"
+                      title="Scan Barcode"
+                      buttonLabel="Scan"
+                      icon={IconBarcode}
+                      autoCloseOnBarcodeDetected
+                      onBarcodeDetected={handleBarcodeDetected}
+                    />
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {error && (
