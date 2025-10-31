@@ -1,6 +1,6 @@
 import { OrderStatusEnum } from "@salut-mercado/octo-client";
 import { AlertCircleIcon, ChevronLeft } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useLocation, useParams } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
@@ -33,7 +33,9 @@ const InventoryCreateInflowPage = () => {
   const { id: storeId } = useParams<{ id: string }>();
   const [, setLocation] = useLocation();
   const [supplierId, setSupplierId] = useState<string>("");
-  const [orderStatus, setOrderStatus] = useState<OrderStatusEnum>(OrderStatusEnum.created);
+  const [orderStatus, setOrderStatus] = useState<OrderStatusEnum>(
+    OrderStatusEnum.created
+  );
   const [items, setItems] = useState<OrderItem[]>([{ skuId: "", quantity: 1 }]);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,6 +43,17 @@ const InventoryCreateInflowPage = () => {
   const skus = api.skus.useGetAll({ limit: 1000 });
   const createInflow = api.inflows.useCreate();
   const addSkuItems = api.inflows.useAddSkuItems();
+  const warehouses = api.warehouse.useGetAll({ limit: 1000 });
+  const firstWarehouse = useMemo(() => {
+    if (!warehouses.data?.pages) return null;
+    const allWarehouses = warehouses.data.pages.flatMap((page) => page.items);
+    const storeWarehouses = allWarehouses.filter(
+      (wh) => wh.storeId === storeId
+    );
+    return storeWarehouses[0] || null;
+  }, [warehouses.data, storeId]);
+
+  const warehouseId = firstWarehouse?.id;
 
   const allSuppliers =
     suppliers.data?.pages.flatMap((page) => page.items) ?? [];
@@ -78,6 +91,11 @@ const InventoryCreateInflowPage = () => {
       return;
     }
 
+    if (orderStatus === OrderStatusEnum.delivered && !warehouseId) {
+      setError("Warehouse is required for DELIVERED orders");
+      return;
+    }
+
     try {
       const result = await createInflow.mutateAsync({
         orderInflowScheme: {
@@ -90,11 +108,14 @@ const InventoryCreateInflowPage = () => {
       // After creating order, add SKU items
       if (result && items.length > 0) {
         try {
+          console.log("warehouseId", warehouseId);
           await addSkuItems.mutateAsync({
             orderInflowId: result.id,
             items: items.map((item) => ({
               skuId: item.skuId,
               quantity: item.quantity,
+              orderStatus: orderStatus,
+              ...(warehouseId && { warehouseId }),
             })),
           });
         } catch (err) {
