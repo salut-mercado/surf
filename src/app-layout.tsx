@@ -3,13 +3,14 @@ import { AppSidebar } from "~/components/app-sidebar";
 import { SiteHeader } from "~/components/site-header";
 import { SidebarInset, SidebarProvider } from "~/components/ui/sidebar";
 import { useTenantStore } from "~/store/tenant.store";
+import { useIsPos } from "./hooks/use-is-pos";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const [location] = useLocation();
   const isAuthPage = location.startsWith("/auth");
   const unassigned = useTenantStore((s) => s.unassignedTenantId);
   const hideLayout = unassigned || isAuthPage;
-  const isPos = location.endsWith("/pos");
+  const [isPos] = useIsPos();
 
   return (
     <SidebarProvider
