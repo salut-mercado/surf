@@ -58,6 +58,16 @@ const EditStorePage = lazy(
   () => import("./pages/stores/pages/edit/edit-store.page")
 );
 const PosPage = lazy(() => import("./pages/stores/pages/view/pages/pos.page"));
+const InventoryPage = lazy(
+  () => import("./pages/stores/pages/view/pages/inventory.page")
+);
+const InventoryViewPage = lazy(
+  () => import("./pages/stores/pages/view/pages/pages/view/inventory.view.page")
+);
+const InventoryCreateInflowPage = lazy(
+  () =>
+    import("./pages/stores/pages/view/pages/pages/create/inventory.create-inflow.page")
+);
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -152,6 +162,15 @@ export const AppRoutes = () => {
               </Route>
               <Route path="/:id/pos">
                 <PosPage />
+              </Route>
+              <Route path="/:id/inventory/:skuId">
+                <InventoryViewPage />
+              </Route>
+              <Route path="/:id/inventory/create">
+                <InventoryCreateInflowPage />
+              </Route>
+              <Route path="/:id/inventory">
+                <InventoryPage />
               </Route>
               <Route path="/:id">
                 <ViewStorePage />

@@ -5,6 +5,9 @@ import { skus } from "./skus";
 import { auth } from "./auth";
 import { openfoodfacts } from "./openfoodfacts";
 import { stores } from "./stores";
+import { warehouse } from "./warehouse";
+import { stockSKU } from "./stock-sku";
+import { inflows } from "./inflows";
 
 export const api = {
   suppliers,
@@ -14,4 +17,7 @@ export const api = {
   auth,
   openfoodfacts,
   stores,
+  warehouse,
+  stockSKU,
+  inflows,
 };
