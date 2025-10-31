@@ -11,6 +11,9 @@ export const useInjectNavigate = () => {
   const [, setLocation] = useLocation();
   useEffect(() => {
     window.navigate = setLocation;
+    return () => {
+      window.navigate = undefined;
+    };
   }, [setLocation]);
   return null;
 };
