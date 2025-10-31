@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { api } from "~/hooks/api";
 
 interface TenantState {
   tenantId: string | null;
@@ -26,3 +27,9 @@ export const useTenantStore = create<TenantState>()(
 );
 
 export const getTenantStore = () => useTenantStore.getState();
+
+export const useSelectedTenant = () => {
+  const tenants = api.auth.useTenants();
+  const selectedTenantId = useTenantStore((s) => s.tenantId);
+  return tenants.data?.items?.find((t) => t.id === selectedTenantId);
+};

@@ -1,8 +1,12 @@
 import {
+  IconAlertCircle,
   IconBarcode,
   IconBuildingFactory2,
+  IconBuildingStore,
   IconDashboardFilled,
   IconFolder,
+  IconMapPin,
+  IconMapPinPlus,
   IconTruckDelivery,
 } from "@tabler/icons-react";
 import * as React from "react";
@@ -16,13 +20,17 @@ import {
   SidebarRail,
   useSidebar,
 } from "~/components/ui/sidebar";
+import { api } from "~/hooks/api";
+import { useSelectedTenant } from "~/store/tenant.store";
 import { TenantSwitcher } from "./tenant-switcher";
+import { UserRoleEnum } from "@salut-mercado/octo-client";
 
 const data: { navMain: NavMainItem[] } = {
   navMain: [
     {
       title: "Dashboard",
       url: "/",
+      roles: [UserRoleEnum.manager],
       items: [
         {
           title: "Overview",
@@ -51,18 +59,55 @@ const data: { navMain: NavMainItem[] } = {
         },
       ],
     },
+    { title: "Stores", url: "/stores", icon: IconBuildingStore, loading: true },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar();
+
+  const { data: stores } = api.stores.useGetAll({ limit: 1000 });
+  const selectedTenant = useSelectedTenant();
+
+  const navMain = React.useMemo(() => {
+    if (!selectedTenant) {
+      return [];
+    }
+    if (!stores) {
+      return data.navMain;
+    }
+    const clone = data.navMain;
+    const storesItem = clone.find((item) => item.url === "/stores")!;
+    storesItem.loading = false;
+    storesItem.items = stores.items.map((store) => ({
+      title: store.address,
+      url: `/stores/${store.id}`,
+      icon: IconMapPin,
+    }));
+    storesItem.items.push({
+      title: "Create Store",
+      url: "/stores/create",
+      icon: IconMapPinPlus,
+      roles: [UserRoleEnum.manager],
+    })
+    if (selectedTenant.role !== UserRoleEnum.manager) {
+      storesItem.items.push({
+        title: "No stores assigned",
+        url: "#",
+        icon: IconAlertCircle,
+        disabled: true,
+      })
+    }
+    return data.navMain;
+  }, [stores, selectedTenant]);
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <TenantSwitcher state={state} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMain} role={selectedTenant?.role} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
