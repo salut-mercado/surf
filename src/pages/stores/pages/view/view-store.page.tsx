@@ -13,6 +13,8 @@ import {
 } from "~/components/ui/card";
 import { api } from "~/hooks/api";
 import { StoreViewSkeleton } from "./view-store.skeleton";
+import { ActionRow } from "./components/action-row";
+import { Separator } from "~/components/ui/separator";
 
 const ViewStorePage = () => {
   const { id } = useParams();
@@ -49,7 +51,8 @@ const ViewStorePage = () => {
               <Link href={`/${id}/edit`}>Edit</Link>
             </Button>
           </div>
-
+          <ActionRow id={data.id} />
+          <Separator />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <Card>
               <CardHeader>
