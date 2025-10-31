@@ -49,6 +49,15 @@ const CreateSkuPage = lazy(
 const ViewSkuPage = lazy(() => import("./pages/skus/pages/view/view-sku.page"));
 const EditSkuPage = lazy(() => import("./pages/skus/pages/edit/edit-sku.page"));
 const SkusPage = lazy(() => import("./pages/skus/skus.page"));
+const CreateStorePage = lazy(
+  () => import("./pages/stores/pages/create/create-store.page")
+);
+const ViewStorePage = lazy(
+  () => import("./pages/stores/pages/view/view-store.page")
+);
+const EditStorePage = lazy(
+  () => import("./pages/stores/pages/edit/edit-store.page")
+);
 const PosPage = lazy(() => import("./pages/pos/pos.page"));
 
 export const AppRoutes = () => {
@@ -132,6 +141,19 @@ export const AppRoutes = () => {
               </Route>
               <Route>
                 <SkusPage />
+              </Route>
+            </Switch>
+          </Route>
+          <Route path="/stores" nest>
+            <Switch>
+              <Route path="/create">
+                <CreateStorePage />
+              </Route>
+              <Route path="/:id/edit">
+                <EditStorePage />
+              </Route>
+              <Route path="/:id">
+                <ViewStorePage />
               </Route>
             </Switch>
           </Route>

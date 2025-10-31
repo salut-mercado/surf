@@ -66,20 +66,21 @@ const data: { navMain: NavMainItem[] } = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar();
 
-  const { data: stores } = api.stores.useGetAll({ limit: 1000 });
+  const stores = api.stores.useGetAll({ limit: 1000 });
   const selectedTenant = useSelectedTenant();
 
   const navMain = React.useMemo(() => {
     if (!selectedTenant) {
       return [];
     }
-    if (!stores) {
+    const allStores = stores.data?.pages.flatMap((page) => page.items) ?? [];
+    if (!stores.data) {
       return data.navMain;
     }
     const clone = data.navMain;
     const storesItem = clone.find((item) => item.url === "/stores")!;
     storesItem.loading = false;
-    storesItem.items = stores.items.map((store) => ({
+    storesItem.items = allStores.map((store) => ({
       title: store.address,
       url: `/stores/${store.id}`,
       icon: IconMapPin,
