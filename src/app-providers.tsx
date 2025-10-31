@@ -4,8 +4,18 @@ import { AuthProvider } from "~/hooks/use-auth";
 import { useInjectNavigate } from "./hooks/use-inject-navigate";
 
 const TEN_SECONDS = 1000 * 10;
+const CACHE_TIME = 1000 * 60 * 60 * 24; // 24 hours
+
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { refetchInterval: TEN_SECONDS } },
+  defaultOptions: {
+    queries: {
+      refetchInterval: TEN_SECONDS,
+      networkMode: "offlineFirst",
+      staleTime: CACHE_TIME,
+      gcTime: CACHE_TIME,
+    },
+    mutations: { networkMode: "offlineFirst" },
+  },
 });
 
 export const AppProviders = ({ children }: { children: React.ReactNode }) => {
