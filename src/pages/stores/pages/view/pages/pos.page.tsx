@@ -6,6 +6,16 @@ import { useParams } from "wouter";
 import { CameraButton } from "~/components/composite/camera-button";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -41,6 +51,7 @@ const PosPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const { data: skusData, isLoading: isLoadingSkus } = api.skus.useGetAll({
     limit: 1000,
@@ -117,6 +128,25 @@ const PosPage = () => {
       handleAddBarcode(barcodeInput);
     }
   };
+
+  const handleQuantityChange = useCallback(
+    (barcode: string, delta: number) => {
+      setCheckItems((prev) =>
+        prev.map((item) =>
+          item.barcode === barcode
+            ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+            : item
+        )
+      );
+    },
+    []
+  );
+
+  const handleDeleteItem = useCallback(() => {
+    if (!itemToDelete) return;
+    setCheckItems((prev) => prev.filter((item) => item.barcode !== itemToDelete));
+    setItemToDelete(null);
+  }, [itemToDelete]);
 
   const handleOpenNewCheck = () => {
     setCheckItems([]);
@@ -198,8 +228,8 @@ const PosPage = () => {
                   <div className="space-y-2">
                     {checkItems.map((item, index) => (
                       <div key={`${item.barcode}-${index}`}>
-                        <div className="flex justify-between items-center">
-                          <div>
+                        <div className="flex justify-between items-center gap-4">
+                          <div className="flex-1">
                             <div className="font-medium">
                               {item.skuName || item.barcode}
                             </div>
@@ -207,7 +237,35 @@ const PosPage = () => {
                               {item.barcode}
                             </div>
                           </div>
-                          <div className="font-medium">×{item.quantity}</div>
+                          <div className="flex items-center gap-1">
+                            {item.quantity === 1 ? (
+                              <Button
+                                variant="outline"
+                                size="icon-sm"
+                                onClick={() => setItemToDelete(item.barcode)}
+                              >
+                                −
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                size="icon-sm"
+                                onClick={() => handleQuantityChange(item.barcode, -1)}
+                              >
+                                −
+                              </Button>
+                            )}
+                            <div className="font-medium w-8 text-center">
+                              {item.quantity}
+                            </div>
+                            <Button
+                              variant="outline"
+                              size="icon-sm"
+                              onClick={() => handleQuantityChange(item.barcode, 1)}
+                            >
+                              +
+                            </Button>
+                          </div>
                         </div>
                         {index < checkItems.length - 1 && (
                           <Separator className="my-2" />
@@ -296,6 +354,21 @@ const PosPage = () => {
           </div>
         )}
       </div>
+
+      <AlertDialog open={itemToDelete !== null} onOpenChange={(open) => !open && setItemToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove item?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to remove this item from the check?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteItem}>Remove</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </DashboardPage>
   );
 };
