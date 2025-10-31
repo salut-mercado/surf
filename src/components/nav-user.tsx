@@ -22,6 +22,8 @@ import {
 } from "~/components/ui/sidebar";
 import { api } from "~/hooks/api";
 import { useAuth } from "~/hooks/use-auth";
+import { Badge } from "./ui/badge";
+import { APP_VERSION } from "~/lib/utils/get-app-version";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -54,7 +56,10 @@ export function NavUser() {
                   {email}
                 </span>
               </div>
-              <IconDotsVertical className="ml-auto size-4" />
+              <div className="ml-auto flex gap-1 items-center">
+                <Badge variant="secondary">v{APP_VERSION}</Badge>
+                <IconDotsVertical className="size-4" />
+              </div>
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
