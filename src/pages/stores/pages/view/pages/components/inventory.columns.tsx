@@ -36,7 +36,7 @@ export const columns: ColumnDef<InventoryItem>[] = [
         <div className="flex justify-end">
           <Link
             asChild
-            href={`/stores/${row.original.storeId}/inventory/${row.original.sku.id}`}
+            href={`~/stores/${row.original.storeId}/inventory/${row.original.sku.id}`}
           >
             <Button
               variant="ghost"

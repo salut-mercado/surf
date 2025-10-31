@@ -104,7 +104,7 @@ const InventoryCreateInflowPage = () => {
         }
       }
 
-      setLocation(`/stores/${storeId}/inventory`, { replace: true });
+      setLocation(`~/stores/${storeId}/inventory`, { replace: true });
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to create order inflow"
@@ -127,7 +127,7 @@ const InventoryCreateInflowPage = () => {
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <Button asChild size="icon-sm" variant="outline">
-            <Link href={`/stores/${storeId}/inventory`}>
+            <Link href={`~/stores/${storeId}/inventory`}>
               <ChevronLeft className="size-4" />
             </Link>
           </Button>
@@ -252,7 +252,7 @@ const InventoryCreateInflowPage = () => {
 
           <div className="flex justify-end gap-2">
             <Button type="button" variant="outline" asChild>
-              <Link href={`/stores/${storeId}/inventory`}>Cancel</Link>
+              <Link href={`~/stores/${storeId}/inventory`}>Cancel</Link>
             </Button>
             <Button type="submit" disabled={createInflow.isPending}>
               {createInflow.isPending ? (

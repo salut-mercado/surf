@@ -89,7 +89,7 @@ const InventoryViewPage = () => {
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <Button asChild size="icon-sm" variant="outline">
-                <Link href={`/stores/${storeId}/inventory`}>
+                <Link href={`~/stores/${storeId}/inventory`}>
                   <ChevronLeft className="size-4" />
                 </Link>
               </Button>

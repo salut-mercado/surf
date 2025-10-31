@@ -113,7 +113,7 @@ const InventoryPage = () => {
             Scan arrival doc
           </Button>
           <Button asChild>
-            <Link href={`/stores/${storeId}/inventory/create`}>
+            <Link href={`~/stores/${storeId}/inventory/create`}>
               <Plus className="size-4 mr-2" />
               Manual add
             </Link>
