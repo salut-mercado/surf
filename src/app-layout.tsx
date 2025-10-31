@@ -3,15 +3,13 @@ import { AppSidebar } from "~/components/app-sidebar";
 import { SiteHeader } from "~/components/site-header";
 import { SidebarInset, SidebarProvider } from "~/components/ui/sidebar";
 import { useTenantStore } from "~/store/tenant.store";
-import { useGlobalStore } from "./store/global.store";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const [location] = useLocation();
   const isAuthPage = location.startsWith("/auth");
   const unassigned = useTenantStore((s) => s.unassignedTenantId);
-  const viewMode = useGlobalStore((s) => s.viewMode);
   const hideLayout = unassigned || isAuthPage;
-  const isPos = viewMode === "pos";
+  const isPos = location.endsWith("/pos");
 
   return (
     <SidebarProvider

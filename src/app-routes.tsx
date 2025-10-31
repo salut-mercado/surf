@@ -1,11 +1,10 @@
 import { lazy } from "react";
 import { Redirect, Route, Switch } from "wouter";
 import { useAuth } from "~/hooks/use-auth";
-import { DashboardPage } from "./components/dashboard-page";
 import { TenantRequired } from "./components/app-no-tenant-selected";
-import { useGlobalStore } from "./store/global.store";
-import { api } from "./hooks/api";
+import { DashboardPage } from "./components/dashboard-page";
 import { Spinner } from "./components/ui/spinner";
+import { api } from "./hooks/api";
 
 const UiKitPage = lazy(() => import("./pages/ui-kit/ui-kit.page"));
 const AuthPage = lazy(() => import("./pages/auth/auth.page"));
@@ -58,12 +57,10 @@ const ViewStorePage = lazy(
 const EditStorePage = lazy(
   () => import("./pages/stores/pages/edit/edit-store.page")
 );
-const PosPage = lazy(() => import("./pages/pos/pos.page"));
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
   const { isLoading } = api.auth.useMe();
-  const viewMode = useGlobalStore((s) => s.viewMode);
   if (isLoading) {
     return (
       <div className="z-50 bg-background fixed top-0 left-0 flex justify-center items-center right-0 bottom-0">
@@ -161,11 +158,7 @@ export const AppRoutes = () => {
             <UiKitPage />
           </Route>
           <Route path="/">
-            {viewMode === "pos" ? (
-              <PosPage />
-            ) : (
-              <DashboardPage>Overview page</DashboardPage>
-            )}
+            <DashboardPage>Overview page</DashboardPage>
           </Route>
         </TenantRequired>
       )}
