@@ -57,6 +57,7 @@ const ViewStorePage = lazy(
 const EditStorePage = lazy(
   () => import("./pages/stores/pages/edit/edit-store.page")
 );
+const PosPage = lazy(() => import("./pages/stores/pages/view/pages/pos.page"));
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -148,6 +149,9 @@ export const AppRoutes = () => {
               </Route>
               <Route path="/:id/edit">
                 <EditStorePage />
+              </Route>
+              <Route path="/:id/pos">
+                <PosPage />
               </Route>
               <Route path="/:id">
                 <ViewStorePage />
