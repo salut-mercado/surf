@@ -1,10 +1,9 @@
 import type {
-  GetWarehousesHandlerApiWarehouseGetRequest,
-  WareHousePaginatedResponseSchema,
   AddWarehouseHandlerApiWarehousePostRequest,
-  WareHouseReturnSchema,
   GetWarehouseByIdHandlerApiWarehouseIdGetRequest,
+  GetWarehousesHandlerApiWarehouseGetRequest,
   UpdateWarehouseHandlerApiWarehouseIdPutRequest,
+  WareHousePaginatedResponseSchema,
 } from "@salut-mercado/octo-client";
 import {
   skipToken,

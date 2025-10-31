@@ -13,7 +13,7 @@ export const ActionRow = ({ id }: { id: string }) => {
       description: "Point of Sale",
     },
     {
-      href: `/${id}/inventory`,
+      href: `/stores/${id}/inventory`,
       icon: Package,
       label: "Inventory",
       description: "Stock Management",

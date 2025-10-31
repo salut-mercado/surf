@@ -1,4 +1,4 @@
-import { skipToken, useQueries } from "@tanstack/react-query";
+import { skipToken } from "@tanstack/react-query";
 import { ChevronLeft, AlertCircleIcon } from "lucide-react";
 import { Link, useParams } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
@@ -7,7 +7,6 @@ import { Button } from "~/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
@@ -90,7 +89,7 @@ const InventoryViewPage = () => {
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <Button asChild size="icon-sm" variant="outline">
-                <Link href={`/${storeId}/inventory`}>
+                <Link href={`/stores/${storeId}/inventory`}>
                   <ChevronLeft className="size-4" />
                 </Link>
               </Button>

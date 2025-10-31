@@ -66,7 +66,9 @@ const InventoryViewPage = lazy(
 );
 const InventoryCreateInflowPage = lazy(
   () =>
-    import("./pages/stores/pages/view/pages/pages/create/inventory.create-inflow.page")
+    import(
+      "./pages/stores/pages/view/pages/pages/create/inventory.create-inflow.page"
+    )
 );
 
 export const AppRoutes = () => {
@@ -163,11 +165,11 @@ export const AppRoutes = () => {
               <Route path="/:id/pos">
                 <PosPage />
               </Route>
-              <Route path="/:id/inventory/:skuId">
-                <InventoryViewPage />
-              </Route>
               <Route path="/:id/inventory/create">
                 <InventoryCreateInflowPage />
+              </Route>
+              <Route path="/:id/inventory/:skuId">
+                <InventoryViewPage />
               </Route>
               <Route path="/:id/inventory">
                 <InventoryPage />

@@ -1,7 +1,9 @@
-import { skipToken } from "@tanstack/react-query";
-import { ChevronLeft } from "lucide-react";
+import { OrderStatusEnum } from "@salut-mercado/octo-client";
+import { AlertCircleIcon, ChevronLeft } from "lucide-react";
+import { useState } from "react";
 import { Link, useLocation, useParams } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -10,15 +12,17 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Label } from "~/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 import { Spinner } from "~/components/ui/spinner";
 import { api } from "~/hooks/api";
-import { useState } from "react";
-import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
-import { AlertCircleIcon } from "lucide-react";
-import type { OrderStatusEnum } from "@salut-mercado/octo-client";
 
 interface OrderItem {
   skuId: string;
@@ -29,7 +33,7 @@ const InventoryCreateInflowPage = () => {
   const { id: storeId } = useParams<{ id: string }>();
   const [, setLocation] = useLocation();
   const [supplierId, setSupplierId] = useState<string>("");
-  const [orderStatus, setOrderStatus] = useState<OrderStatusEnum>("CREATED");
+  const [orderStatus, setOrderStatus] = useState<OrderStatusEnum>(OrderStatusEnum.created);
   const [items, setItems] = useState<OrderItem[]>([{ skuId: "", quantity: 1 }]);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,7 +42,8 @@ const InventoryCreateInflowPage = () => {
   const createInflow = api.inflows.useCreate();
   const addSkuItems = api.inflows.useAddSkuItems();
 
-  const allSuppliers = suppliers.data?.pages.flatMap((page) => page.items) ?? [];
+  const allSuppliers =
+    suppliers.data?.pages.flatMap((page) => page.items) ?? [];
   const allSkus = skus.data?.pages.flatMap((page) => page.items) ?? [];
 
   const handleAddItem = () => {
@@ -49,7 +54,11 @@ const InventoryCreateInflowPage = () => {
     setItems(items.filter((_, i) => i !== index));
   };
 
-  const handleItemChange = (index: number, field: keyof OrderItem, value: string | number) => {
+  const handleItemChange = (
+    index: number,
+    field: keyof OrderItem,
+    value: string | number
+  ) => {
     const newItems = [...items];
     newItems[index] = { ...newItems[index], [field]: value };
     setItems(newItems);
@@ -95,9 +104,11 @@ const InventoryCreateInflowPage = () => {
         }
       }
 
-      setLocation(`/${storeId}/inventory`, { replace: true });
+      setLocation(`/stores/${storeId}/inventory`, { replace: true });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create order inflow");
+      setError(
+        err instanceof Error ? err.message : "Failed to create order inflow"
+      );
     }
   };
 
@@ -116,7 +127,7 @@ const InventoryCreateInflowPage = () => {
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <Button asChild size="icon-sm" variant="outline">
-            <Link href={`/${storeId}/inventory`}>
+            <Link href={`/stores/${storeId}/inventory`}>
               <ChevronLeft className="size-4" />
             </Link>
           </Button>
@@ -152,7 +163,9 @@ const InventoryCreateInflowPage = () => {
                 <Label htmlFor="status">Order Status</Label>
                 <Select
                   value={orderStatus}
-                  onValueChange={(value) => setOrderStatus(value as OrderStatusEnum)}
+                  onValueChange={(value) =>
+                    setOrderStatus(value as OrderStatusEnum)
+                  }
                 >
                   <SelectTrigger id="status">
                     <SelectValue />
@@ -238,12 +251,8 @@ const InventoryCreateInflowPage = () => {
           )}
 
           <div className="flex justify-end gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              asChild
-            >
-              <Link href={`/${storeId}/inventory`}>Cancel</Link>
+            <Button type="button" variant="outline" asChild>
+              <Link href={`/stores/${storeId}/inventory`}>Cancel</Link>
             </Button>
             <Button type="submit" disabled={createInflow.isPending}>
               {createInflow.isPending ? (
