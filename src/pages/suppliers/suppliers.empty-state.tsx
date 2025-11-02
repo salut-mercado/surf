@@ -1,4 +1,5 @@
 import { IconUserPlus } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 
 import { Button } from "~/components/ui/button";
@@ -12,22 +13,22 @@ import {
 } from "~/components/ui/empty";
 
 export const SuppliersEmptyState = () => {
+  const { t } = useTranslation();
   return (
     <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <IconUserPlus />
         </EmptyMedia>
-        <EmptyTitle>No Suppliers Yet</EmptyTitle>
+        <EmptyTitle>{t("suppliers.emptyState.title")}</EmptyTitle>
         <EmptyDescription>
-          You haven&apos;t created any suppliers yet. Get started by creating
-          your first supplier.
+          {t("suppliers.emptyState.description")}
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <div className="flex gap-2">
           <Button asChild>
-            <Link href="/create">Create Supplier</Link>
+            <Link href="/create">{t("suppliers.createSupplier")}</Link>
           </Button>
         </div>
       </EmptyContent>

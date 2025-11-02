@@ -1,15 +1,17 @@
 import { Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Button } from "~/components/ui/button";
 import { DataTable } from "~/components/ui/data-table";
 import { api } from "~/hooks/api";
-import { columns } from "./columns";
+import { getColumns } from "./columns";
 import { SuppliersEmptyState } from "./suppliers.empty-state";
 import { SuppliersErrorState } from "./suppliers.error-state";
 import { SuppliersSkeleton } from "./suppliers.skeleton";
 
 export default function SuppliersPage() {
+  const { t } = useTranslation();
   const suppliers = api.suppliers.useGetAll({ limit: 1000 });
   const allSuppliers =
     suppliers.data?.pages.flatMap((page) => page.items) ?? [];
@@ -27,11 +29,11 @@ export default function SuppliersPage() {
             <Button asChild>
               <Link href="/create">
                 <Plus className="size-4" />
-                Add Supplier
+                {t("suppliers.addSupplier")}
               </Link>
             </Button>
           </div>
-          <DataTable data={allSuppliers} columns={columns} />
+          <DataTable data={allSuppliers} columns={getColumns(t)} />
         </>
       )}
     </DashboardPage>

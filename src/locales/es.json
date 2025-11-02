@@ -1,4 +1,98 @@
 {
-  "overviewPage": "Página de resumen"
+  "overviewPage": "Página de resumen",
+  "suppliers": {
+    "addSupplier": "Añadir Proveedor",
+    "createSupplier": "Crear Proveedor",
+    "editSupplier": "Editar Proveedor",
+    "columns": {
+      "code": "Código",
+      "name": "Nombre",
+      "agent": "Agente",
+      "phone": "Teléfono",
+      "taxId": "ID Fiscal",
+      "delayDays": "Días de Retraso",
+      "blocked": "Bloqueado",
+      "view": "Ver"
+    },
+    "emptyState": {
+      "title": "Aún No Hay Proveedores",
+      "description": "Aún no has creado ningún proveedor. Comienza creando tu primer proveedor."
+    },
+    "errorState": {
+      "title": "No se pueden cargar los proveedores."
+    },
+    "form": {
+      "fields": {
+        "code": "Código",
+        "name": "Nombre",
+        "agent": "Agente",
+        "phone": "Teléfono",
+        "taxId": "ID Fiscal",
+        "delayDays": "Días de Retraso",
+        "comments": "Comentarios",
+        "blocked": "Bloqueado"
+      },
+      "placeholders": {
+        "code": "SUP-001",
+        "name": "Suministros Acme",
+        "agent": "Jane Doe",
+        "phone": "+1 555 123 4567",
+        "taxId": "PT123456789",
+        "delayDays": "30",
+        "comments": "Añade notas internas..."
+      },
+      "descriptions": {
+        "code": "Código único del proveedor para búsqueda rápida.",
+        "name": "Nombre de visualización del proveedor.",
+        "agent": "Persona de contacto principal en el proveedor.",
+        "phone": "Teléfono de contacto incl. código de país.",
+        "taxId": "ID Fiscal (NIF/IVA).",
+        "delayDays": "Retraso de pago predeterminado en días."
+      },
+      "blockedOptions": {
+        "active": "Activo",
+        "activeDescription": "El proveedor está disponible",
+        "blocked": "Bloqueado",
+        "blockedDescription": "Prevenir nuevas transacciones"
+      }
+    },
+    "view": {
+      "blocked": "Bloqueado",
+      "active": "Activo",
+      "code": "Código",
+      "edit": "Editar",
+      "sections": {
+        "summary": "Resumen",
+        "contact": "Contacto",
+        "paymentTerms": "Términos de Pago",
+        "notes": "Notas",
+        "tax": "Impuestos",
+        "banking": "Banca",
+        "otherInformation": "Otra Información"
+      },
+      "labels": {
+        "supplierId": "ID del Proveedor",
+        "updated": "Actualizado",
+        "agent": "Agente",
+        "phone": "Teléfono",
+        "delayDays": "Días de Retraso",
+        "days": "días",
+        "comments": "Comentarios",
+        "noComments": "Sin comentarios",
+        "nifVat": "NIF / IVA"
+      },
+      "descriptions": {
+        "banking": "Detalles bancarios y métodos de pago",
+        "otherInformation": "Metadatos adicionales y banderas"
+      },
+      "plannedSection": "Sección planificada",
+      "toBeAdded": "Por añadir",
+      "notFound": {
+        "title": "Proveedor no encontrado",
+        "description": "El proveedor puede haber sido eliminado."
+      },
+      "error": "Error"
+    }
+  }
 }
 

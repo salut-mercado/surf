@@ -1,4 +1,98 @@
 {
-  "overviewPage": "Overview page"
+  "overviewPage": "Overview page",
+  "suppliers": {
+    "addSupplier": "Add Supplier",
+    "createSupplier": "Create Supplier",
+    "editSupplier": "Edit Supplier",
+    "columns": {
+      "code": "Code",
+      "name": "Name",
+      "agent": "Agent",
+      "phone": "Phone",
+      "taxId": "Tax ID",
+      "delayDays": "Delay Days",
+      "blocked": "Blocked",
+      "view": "View"
+    },
+    "emptyState": {
+      "title": "No Suppliers Yet",
+      "description": "You haven't created any suppliers yet. Get started by creating your first supplier."
+    },
+    "errorState": {
+      "title": "Unable to load suppliers."
+    },
+    "form": {
+      "fields": {
+        "code": "Code",
+        "name": "Name",
+        "agent": "Agent",
+        "phone": "Phone",
+        "taxId": "Tax ID",
+        "delayDays": "Delay Days",
+        "comments": "Comments",
+        "blocked": "Blocked"
+      },
+      "placeholders": {
+        "code": "SUP-001",
+        "name": "Acme Supplies",
+        "agent": "Jane Doe",
+        "phone": "+1 555 123 4567",
+        "taxId": "PT123456789",
+        "delayDays": "30",
+        "comments": "Add any internal notes..."
+      },
+      "descriptions": {
+        "code": "Unique supplier code for quick lookup.",
+        "name": "Supplier display name.",
+        "agent": "Primary contact person at the supplier.",
+        "phone": "Contact phone incl. country code.",
+        "taxId": "Tax ID (NIF/VAT).",
+        "delayDays": "Default payment delay in days."
+      },
+      "blockedOptions": {
+        "active": "Active",
+        "activeDescription": "Supplier is usable",
+        "blocked": "Blocked",
+        "blockedDescription": "Prevent new transactions"
+      }
+    },
+    "view": {
+      "blocked": "Blocked",
+      "active": "Active",
+      "code": "Code",
+      "edit": "Edit",
+      "sections": {
+        "summary": "Summary",
+        "contact": "Contact",
+        "paymentTerms": "Payment Terms",
+        "notes": "Notes",
+        "tax": "Tax",
+        "banking": "Banking",
+        "otherInformation": "Other Information"
+      },
+      "labels": {
+        "supplierId": "Supplier ID",
+        "updated": "Updated",
+        "agent": "Agent",
+        "phone": "Phone",
+        "delayDays": "Delay Days",
+        "days": "days",
+        "comments": "Comments",
+        "noComments": "No comments",
+        "nifVat": "NIF / VAT"
+      },
+      "descriptions": {
+        "banking": "Bank details and payment methods",
+        "otherInformation": "Additional metadata and flags"
+      },
+      "plannedSection": "Planned section",
+      "toBeAdded": "To be added",
+      "notFound": {
+        "title": "Supplier not found",
+        "description": "The supplier may have been removed."
+      },
+      "error": "Error"
+    }
+  }
 }
 

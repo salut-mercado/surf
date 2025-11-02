@@ -1,4 +1,5 @@
 import { skipToken } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { Link, useParams } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Badge } from "~/components/ui/badge";
@@ -16,6 +17,7 @@ import { SupplierViewSkeleton } from "./view-supplier.skeleton";
 import { ChevronLeft } from "lucide-react";
 
 const ViewSupplierPage = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const { data, isLoading, isError, error } = api.suppliers.useGetById(
     id ? { id } : skipToken
