@@ -1,4 +1,5 @@
 import { lazy } from "react";
+import { useTranslation } from "react-i18next";
 import { Redirect, Route, Switch } from "wouter";
 import { useAuth } from "~/hooks/use-auth";
 import { TenantRequired } from "./components/app-no-tenant-selected";
@@ -32,6 +33,7 @@ const UiKitPage = lazy(() => import("./pages/ui-kit/ui-kit.page"));
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
+  const { t } = useTranslation();
   return (
     <Switch>
       <Route path="/auth" nest>
@@ -136,7 +138,7 @@ export const AppRoutes = () => {
             </Route>
           )}
           <Route path="/">
-            <DashboardPage>Overview page</DashboardPage>
+            <DashboardPage>{t("overviewPage")}</DashboardPage>
           </Route>
         </TenantRequired>
       )}

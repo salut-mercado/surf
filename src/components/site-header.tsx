@@ -4,6 +4,7 @@ import { useIsPos } from "~/hooks/use-is-pos";
 import { Link } from "wouter";
 import { Button } from "./ui/button";
 import { ChevronLeft } from "lucide-react";
+import { LanguageToggle } from "./common/language-toggle";
 
 export function SiteHeader() {
   const [isPos, storeId] = useIsPos();
@@ -20,6 +21,7 @@ export function SiteHeader() {
           <SidebarTrigger className="-ml-1" />
         )}
         <div className="ml-auto flex items-center gap-2">
+          <LanguageToggle variant="ghost" className="size-7" />
           <ThemeToggle variant="ghost" className="size-7" />
         </div>
       </div>
