@@ -3,7 +3,7 @@ name: Build Static Site
 on:
   push:
     branches:
-      - main
+      - relase
 
 jobs:
   generate-and-publish:
@@ -20,13 +20,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          registry-url: "https://npm.pkg.github.com/"
-          scope: "@salut-mercado"
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 10.6.3
+
+      - name: Configure GitHub Package Registry
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
+          echo "@salut-mercado:registry=https://npm.pkg.github.com/" >> .npmrc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
 
       - name: Cache pnpm store
         uses: actions/cache@v4
@@ -37,9 +42,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install --ignore-scripts --store=node_modules/.pnpm-store
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build
@@ -47,9 +50,12 @@ jobs:
           VITE_API_URL: ${{ env.VITE_API_URL }}
           VITE_AI_API_URL: ${{ env.VITE_AI_API_URL }}
 
+      - name: Cleanup auth files
+        run: rm -f .npmrc
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          publish_branch: www
+          publish_branch: pages
