@@ -31,17 +31,17 @@ export default defineConfig({
             urlPattern: /\/api\/auth\/.*/i,
             handler: "NetworkOnly",
           },
-          {
-            urlPattern: /\/api\/.*/i,
-            handler: "NetworkFirst",
-            options: {
-              cacheName: "api-cache",
-              networkTimeoutSeconds: 10,
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
+          // {
+          //   urlPattern: /\/api\/.*/i,
+          //   handler: "NetworkFirst",
+          //   options: {
+          //     cacheName: "api-cache",
+          //     networkTimeoutSeconds: 10,
+          //     cacheableResponse: {
+          //       statuses: [0, 200],
+          //     },
+          //   },
+          // },
           {
             urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|ico|woff|woff2|ttf|otf|eot)$/i,
             handler: "CacheFirst",
