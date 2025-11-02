@@ -10,6 +10,7 @@ import {
   IconTruckDelivery,
 } from "@tabler/icons-react";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { NavMain, type NavMainItem } from "~/components/nav-main";
 import { NavUser } from "~/components/nav-user";
 import {
@@ -25,51 +26,53 @@ import { useSelectedTenant } from "~/store/tenant.store";
 import { TenantSwitcher } from "./tenant-switcher";
 import { UserRoleEnum } from "@salut-mercado/octo-client";
 
-const data: { navMain: NavMainItem[] } = {
+const getNavData = (t: (key: string) => string): { navMain: NavMainItem[] } => ({
   navMain: [
     {
-      title: "Dashboard",
+      title: t("navigation.dashboard"),
       url: "/",
       roles: [UserRoleEnum.manager],
       items: [
         {
-          title: "Overview",
+          title: t("navigation.overview"),
           url: "/",
           icon: IconDashboardFilled,
         },
         {
-          title: "Suppliers",
+          title: t("navigation.suppliers"),
           url: "/suppliers",
           icon: IconTruckDelivery,
         },
         {
-          title: "Producers",
+          title: t("navigation.producers"),
           url: "/producers",
           icon: IconBuildingFactory2,
         },
         {
-          title: "Categories",
+          title: t("navigation.categories"),
           url: "/categories",
           icon: IconFolder,
         },
         {
-          title: "SKUs",
+          title: t("navigation.skus"),
           url: "/skus",
           icon: IconBarcode,
         },
       ],
     },
-    { title: "Stores", url: "/stores", icon: IconBuildingStore, loading: true },
+    { title: t("navigation.stores"), url: "/stores", icon: IconBuildingStore, loading: true },
   ],
-};
+});
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar();
+  const { t } = useTranslation();
 
   const stores = api.stores.useGetAll({ limit: 1000 });
   const selectedTenant = useSelectedTenant();
 
   const navMain = React.useMemo(() => {
+    const data = getNavData(t);
     if (!selectedTenant) {
       return data.navMain;
     }
@@ -86,21 +89,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       icon: IconMapPin,
     }));
     storesItem.items.push({
-      title: "Create Store",
+      title: t("navigation.createStore"),
       url: "/stores/create",
       icon: IconMapPinPlus,
       roles: [UserRoleEnum.manager],
     })
     if (selectedTenant.role !== UserRoleEnum.manager && allStores.length === 0) {
       storesItem.items.push({
-        title: "No stores assigned",
+        title: t("navigation.noStoresAssigned"),
         url: "#",
         icon: IconAlertCircle,
         disabled: true,
       })
     }
     return data.navMain;
-  }, [stores, selectedTenant]);
+  }, [stores, selectedTenant, t]);
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>

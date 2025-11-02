@@ -3,6 +3,27 @@
   "common": {
     "cancel": "Cancel"
   },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "overview": "Overview",
+    "suppliers": "Suppliers",
+    "producers": "Producers",
+    "categories": "Categories",
+    "skus": "SKUs",
+    "stores": "Stores",
+    "createStore": "Create Store",
+    "noStoresAssigned": "No stores assigned"
+  },
+  "user": {
+    "user": "User",
+    "logOut": "Log out",
+    "uiKit": "UI Kit"
+  },
+  "tenant": {
+    "organizations": "Organizations",
+    "selectTenant": "Select Tenant",
+    "loading": "loading..."
+  },
   "suppliers": {
     "addSupplier": "Add Supplier",
     "createSupplier": "Create Supplier",

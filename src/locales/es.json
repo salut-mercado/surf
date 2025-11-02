@@ -3,6 +3,27 @@
   "common": {
     "cancel": "Cancelar"
   },
+  "navigation": {
+    "dashboard": "Panel",
+    "overview": "Resumen",
+    "suppliers": "Proveedores",
+    "producers": "Productores",
+    "categories": "Categorías",
+    "skus": "SKUs",
+    "stores": "Tiendas",
+    "createStore": "Crear Tienda",
+    "noStoresAssigned": "No hay tiendas asignadas"
+  },
+  "user": {
+    "user": "Usuario",
+    "logOut": "Cerrar sesión",
+    "uiKit": "Kit de UI"
+  },
+  "tenant": {
+    "organizations": "Organizaciones",
+    "selectTenant": "Seleccionar Organización",
+    "loading": "cargando..."
+  },
   "suppliers": {
     "addSupplier": "Añadir Proveedor",
     "createSupplier": "Crear Proveedor",
