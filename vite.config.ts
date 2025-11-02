@@ -11,7 +11,66 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    VitePWA({ registerType: "autoUpdate" }) as PluginOption,
+    VitePWA({
+      registerType: "autoUpdate",
+      manifest: {
+        name: "Salut ERP",
+        short_name: "Salut",
+        theme_color: "#ffffff",
+        icons: [
+          {
+            src: "/vite.svg",
+            sizes: "any",
+            type: "image/svg+xml",
+          },
+        ],
+      },
+      workbox: {
+        runtimeCaching: [
+          {
+            urlPattern: /\/api\/.*/i,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "api-cache",
+              networkTimeoutSeconds: 10,
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|ico|woff|woff2|ttf|otf|eot)$/i,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "static-assets-cache",
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+              },
+            },
+          },
+          {
+            urlPattern: /\.(?:js|css|json)$/i,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "js-css-cache",
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+              },
+            },
+          },
+          {
+            urlPattern: /^https?:\/\/.*$/i,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "navigation-cache",
+              networkTimeoutSeconds: 3,
+            },
+          },
+        ],
+      },
+    }) as PluginOption,
   ],
   resolve: {
     alias: {
