@@ -37,6 +37,8 @@ const EditSkuPage = () => {
               naturalLossPercent: data.naturalLossPercent,
               maxOnCheckout: data.maxOnCheckout,
               specifications: data.specifications ?? "",
+              wholesalePrice: data.wholesalePrice,
+              barcode: data.barcode,
             },
           });
           if (updated) setLocation(`/${updated.id}`, { replace: true });
