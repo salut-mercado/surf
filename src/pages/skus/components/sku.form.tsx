@@ -19,6 +19,7 @@ import { skuSchema } from "./sku.validator";
 import { CameraButton } from "~/components/composite/camera-button";
 import { IconBarcode } from "@tabler/icons-react";
 import { orderCategories } from "~/lib/utils/order-categories";
+import { VatField } from "./fields/vat.fields";
 
 type SkuFormValues = SKUReturnSchema | (SKUSchema & { id?: string });
 
@@ -48,7 +49,7 @@ export function SkuForm({
     limit: 1000,
   });
   const categories = api.categories.useGetAll({
-    limit: 1000
+    limit: 1000,
   });
   const { mutateAsync: getProductByBarcode } =
     api.openfoodfacts.useGetProductByBarcode();
@@ -93,7 +94,7 @@ export function SkuForm({
       className="space-y-4"
       aria-disabled={isSubmitting}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
         <form.Field
           name="name"
           children={(field) => (
@@ -275,27 +276,6 @@ export function SkuForm({
         />
 
         <form.Field
-          name="vatPercent"
-          children={(field) => (
-            <div className="grid gap-2">
-              <Label htmlFor={field.name}>VAT (%)</Label>
-              <Input
-                id={field.name}
-                name={field.name}
-                type="number"
-                min={0}
-                max={100}
-                step="0.1"
-                value={field.state.value ?? 0}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.valueAsNumber)}
-              />
-              <FieldDescription>Value-added tax percent.</FieldDescription>
-            </div>
-          )}
-        />
-
-        <form.Field
           name="alcoholPercent"
           children={(field) => (
             <div className="grid gap-2">
@@ -312,6 +292,15 @@ export function SkuForm({
                 onChange={(e) => field.handleChange(e.target.valueAsNumber)}
               />
               <FieldDescription>Alcohol by volume percent.</FieldDescription>
+            </div>
+          )}
+        />
+
+        <form.Field
+          name="vatPercent"
+          children={(field) => (
+            <div className="grid gap-2 md:col-span-2">
+              <VatField field={field} />
             </div>
           )}
         />
