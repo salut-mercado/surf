@@ -1,5 +1,6 @@
 import type { FirmsProducerSchema } from "@salut-mercado/octo-client";
 import { useForm } from "@tanstack/react-form";
+import { useTranslation } from "react-i18next";
 import { Button } from "~/components/ui/button";
 import { FieldDescription } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
@@ -24,8 +25,10 @@ export function ProducerForm({
   onSubmit,
   initialValues = defaultValues,
   isSubmitting = false,
-  submitLabel = "Create Producer",
+  submitLabel,
 }: ProducerFormProps) {
+  const { t } = useTranslation();
+  const defaultSubmitLabel = t("producers.createProducer");
   const form = useForm({
     defaultValues: initialValues,
     onSubmit: async ({ value }) => {
@@ -57,16 +60,20 @@ export function ProducerForm({
           name="name"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Name</Label>
+              <Label htmlFor={field.name}>
+                {t("producers.form.fields.name")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
-                placeholder="Producer name"
+                placeholder={t("producers.form.placeholders.name")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>Producer display name.</FieldDescription>
+              <FieldDescription>
+                {t("producers.form.descriptions.name")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -74,16 +81,20 @@ export function ProducerForm({
           name="nif"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Tax ID</Label>
+              <Label htmlFor={field.name}>
+                {t("producers.form.fields.taxId")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
-                placeholder="PT123456789"
+                placeholder={t("producers.form.placeholders.taxId")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>Tax ID (NIF/VAT).</FieldDescription>
+              <FieldDescription>
+                {t("producers.form.descriptions.taxId")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -91,18 +102,20 @@ export function ProducerForm({
           name="minimumStock"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Minimum Stock</Label>
+              <Label htmlFor={field.name}>
+                {t("producers.form.fields.minimumStock")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
                 type="number"
-                placeholder="0"
+                placeholder={t("producers.form.placeholders.minimumStock")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.valueAsNumber)}
               />
               <FieldDescription>
-                Required minimum stock for this producer.
+                {t("producers.form.descriptions.minimumStock")}
               </FieldDescription>
             </div>
           )}
@@ -117,7 +130,7 @@ export function ProducerForm({
             className="w-full"
             disabled={!canSubmit || isSubmitting}
           >
-            {isSubmitting ? <Spinner /> : submitLabel}
+            {isSubmitting ? <Spinner /> : submitLabel ?? defaultSubmitLabel}
           </Button>
         )}
       />

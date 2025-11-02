@@ -1,15 +1,17 @@
 import { Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Button } from "~/components/ui/button";
 import { DataTable } from "~/components/ui/data-table";
 import { api } from "~/hooks/api";
-import { columns } from "./columns";
+import { getColumns } from "./columns";
 import { ProducersEmptyState } from "./producers.empty-state";
 import { ProducersErrorState } from "./producers.error-state";
 import { ProducersSkeleton } from "./producers.skeleton";
 
 export default function ProducersPage() {
+  const { t } = useTranslation();
   const producers = api.producers.useGetAll({ limit: 1000 });
   const items = producers.data ?? [];
 
@@ -26,11 +28,11 @@ export default function ProducersPage() {
             <Button asChild>
               <Link href="/create">
                 <Plus className="size-4" />
-                Add Producer
+                {t("producers.addProducer")}
               </Link>
             </Button>
           </div>
-          <DataTable data={items} columns={columns} />
+          <DataTable data={items} columns={getColumns(t)} />
         </>
       )}
     </DashboardPage>

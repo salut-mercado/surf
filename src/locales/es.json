@@ -93,6 +93,65 @@
       },
       "error": "Error"
     }
+  },
+  "producers": {
+    "addProducer": "Añadir Productor",
+    "createProducer": "Crear Productor",
+    "editProducer": "Editar Productor",
+    "columns": {
+      "name": "Nombre",
+      "taxId": "ID Fiscal",
+      "minimumStock": "Stock Mínimo",
+      "view": "Ver"
+    },
+    "emptyState": {
+      "title": "Aún No Hay Productores",
+      "description": "Aún no has creado ningún productor. Comienza creando tu primer productor."
+    },
+    "errorState": {
+      "title": "No se pueden cargar los productores."
+    },
+    "form": {
+      "fields": {
+        "name": "Nombre",
+        "taxId": "ID Fiscal",
+        "minimumStock": "Stock Mínimo"
+      },
+      "placeholders": {
+        "name": "Nombre del productor",
+        "taxId": "PT123456789",
+        "minimumStock": "0"
+      },
+      "descriptions": {
+        "name": "Nombre de visualización del productor.",
+        "taxId": "ID Fiscal (NIF/IVA).",
+        "minimumStock": "Stock mínimo requerido para este productor."
+      }
+    },
+    "view": {
+      "producer": "Productor",
+      "taxId": "ID Fiscal",
+      "edit": "Editar",
+      "sections": {
+        "summary": "Resumen",
+        "inventory": "Inventario",
+        "otherInformation": "Otra Información"
+      },
+      "labels": {
+        "producerId": "ID del Productor",
+        "minimumStock": "Stock Mínimo"
+      },
+      "descriptions": {
+        "otherInformation": "Metadatos adicionales"
+      },
+      "plannedSection": "Sección planificada",
+      "toBeAdded": "Por añadir",
+      "notFound": {
+        "title": "Productor no encontrado",
+        "description": "El productor puede haber sido eliminado."
+      },
+      "error": "Error"
+    }
   }
 }
 

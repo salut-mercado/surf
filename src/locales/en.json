@@ -93,6 +93,65 @@
       },
       "error": "Error"
     }
+  },
+  "producers": {
+    "addProducer": "Add Producer",
+    "createProducer": "Create Producer",
+    "editProducer": "Edit Producer",
+    "columns": {
+      "name": "Name",
+      "taxId": "Tax ID",
+      "minimumStock": "Minimum Stock",
+      "view": "View"
+    },
+    "emptyState": {
+      "title": "No Producers Yet",
+      "description": "You haven't created any producers yet. Get started by creating your first producer."
+    },
+    "errorState": {
+      "title": "Unable to load producers."
+    },
+    "form": {
+      "fields": {
+        "name": "Name",
+        "taxId": "Tax ID",
+        "minimumStock": "Minimum Stock"
+      },
+      "placeholders": {
+        "name": "Producer name",
+        "taxId": "PT123456789",
+        "minimumStock": "0"
+      },
+      "descriptions": {
+        "name": "Producer display name.",
+        "taxId": "Tax ID (NIF/VAT).",
+        "minimumStock": "Required minimum stock for this producer."
+      }
+    },
+    "view": {
+      "producer": "Producer",
+      "taxId": "Tax ID",
+      "edit": "Edit",
+      "sections": {
+        "summary": "Summary",
+        "inventory": "Inventory",
+        "otherInformation": "Other Information"
+      },
+      "labels": {
+        "producerId": "Producer ID",
+        "minimumStock": "Minimum Stock"
+      },
+      "descriptions": {
+        "otherInformation": "Additional metadata"
+      },
+      "plannedSection": "Planned section",
+      "toBeAdded": "To be added",
+      "notFound": {
+        "title": "Producer not found",
+        "description": "The producer may have been removed."
+      },
+      "error": "Error"
+    }
   }
 }
 
