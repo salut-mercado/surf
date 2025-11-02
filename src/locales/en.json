@@ -152,6 +152,55 @@
       },
       "error": "Error"
     }
+  },
+  "categories": {
+    "addCategory": "Add Category",
+    "createCategory": "Create Category",
+    "editCategory": "Edit Category",
+    "emptyState": {
+      "title": "No Categories Yet",
+      "description": "You haven't created any categories yet. Get started by creating your first category."
+    },
+    "errorState": {
+      "title": "Unable to load categories."
+    },
+    "tree": {
+      "view": "View",
+      "addSubcategory": "Add Subcategory",
+      "move": "Move",
+      "moving": "Moving",
+      "cannotSelect": "Cannot select this category",
+      "clickToSelect": "Click to select as parent",
+      "movingCategory": "Moving: {{categoryName}}",
+      "cancel": "Cancel",
+      "makeRoot": "Make Root",
+      "movingInProgress": "Moving...",
+      "moveHere": "Move Here",
+      "makeRootHint": "Click \"Move Here\" to make this category a root category",
+      "moveUnderHint": "Click \"Move Here\" to move under: {{categoryName}}"
+    },
+    "table": {
+      "name": "Name",
+      "level": "Level",
+      "parent": "Parent",
+      "view": "View",
+      "none": "-"
+    },
+    "form": {
+      "parentCategory": "Parent Category",
+      "unknownParent": "Unknown parent",
+      "categoryName": "Category Name",
+      "saving": "Saving...",
+      "save": "Save"
+    },
+    "view": {
+      "edit": "Edit",
+      "categoryDetails": "Category details",
+      "id": "ID",
+      "parent": "Parent",
+      "level": "Level",
+      "none": "-"
+    }
   }
 }
 

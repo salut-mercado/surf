@@ -1,11 +1,13 @@
 import { AlertCircleIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 
 export const CategoriesErrorState = ({ message }: { message: string }) => {
+  const { t } = useTranslation();
   return (
     <Alert variant="destructive">
       <AlertCircleIcon />
-      <AlertTitle>Unable to load categories.</AlertTitle>
+      <AlertTitle>{t("categories.errorState.title")}</AlertTitle>
       <AlertDescription>
         <p>{message}</p>
       </AlertDescription>
