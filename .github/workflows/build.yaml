@@ -3,7 +3,7 @@ name: Build Static Site
 on:
   push:
     branches:
-      - relase
+      - release
 
 jobs:
   generate-and-publish:
