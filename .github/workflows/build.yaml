@@ -18,12 +18,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  determine-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ github.ref == 'refs/heads/release' && 'release' || github.ref == 'refs/heads/main' && 'staging'}}
+    steps:
+      - name: Determine environment
+        run: echo "environment=${{ github.ref == 'refs/heads/release' && 'release' || github.ref == 'refs/heads/main' && 'staging'}}" >> $GITHUB_OUTPUT
+      - name: Debug environment
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: echo "Skipping pages deployment for main branch as it is not supported yet"
+
   deploy:
+    needs: determine-environment
     environment:
-      name: ${{ github.ref == 'refs/heads/release' && 'release' || github.ref == 'refs/heads/main' && 'staging'}}
+      name: ${{ needs.determine-environment.outputs.environment }}
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/release' || github.ref == 'refs/heads/main' }}
+    if: ${{ needs.determine-environment.outputs.environment == 'release'  }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
