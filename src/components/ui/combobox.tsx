@@ -18,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
+import { cn } from "~/lib/utils";
 
 type Value = {
   value: string;
@@ -30,12 +31,14 @@ export function Combobox({
   value,
   disabled,
   placeholder,
+  className,
 }: {
   values: Value[];
   value: Value | null;
   onValueChange: (value: Value | null) => void;
   disabled?: boolean;
   placeholder?: string;
+  className?: string;
 }) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -45,11 +48,11 @@ export function Combobox({
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild disabled={disabled}>
-          <Button variant="outline" className="w-[150px] justify-start">
+          <Button variant="outline" className={cn("justify-start", className)}>
             {selectedValue ? <>{selectedValue.label}</> : <>{placeholder}</>}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0" align="start">
+        <PopoverContent className="w-full p-0" align="start">
           <ComboboxList
             setOpen={setOpen}
             onValueChange={onValueChange}
