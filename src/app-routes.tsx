@@ -1,4 +1,3 @@
-import { lazy } from "react";
 import { Redirect, Route, Switch } from "wouter";
 import { useAuth } from "~/hooks/use-auth";
 import { TenantRequired } from "./components/app-no-tenant-selected";
@@ -6,70 +5,31 @@ import { DashboardPage } from "./components/dashboard-page";
 import { Spinner } from "./components/ui/spinner";
 import { api } from "./hooks/api";
 
-const UiKitPage = lazy(() => import("./pages/ui-kit/ui-kit.page"));
-const AuthPage = lazy(() => import("./pages/auth/auth.page"));
-const CreateSupplierPage = lazy(
-  () => import("./pages/suppliers/pages/create/create-supplier.page")
-);
-const ViewSupplierPage = lazy(
-  () => import("./pages/suppliers/pages/view/view-supplier.page")
-);
-const EditSupplierPage = lazy(
-  () => import("./pages/suppliers/pages/edit/edit-supplier.page")
-);
-const SuppliersPage = lazy(() => import("./pages/suppliers/suppliers.page"));
-const ProducersListPage = lazy(
-  () => import("./pages/producers/producers.page")
-);
-const CreateProducerPage = lazy(
-  () => import("./pages/producers/pages/create/create-producer.page")
-);
-const EditProducerPage = lazy(
-  () => import("./pages/producers/pages/edit/edit-producer.page")
-);
-const ViewProducerPage = lazy(
-  () => import("./pages/producers/pages/view/view-producer.page")
-);
-const CategoriesListPage = lazy(
-  () => import("./pages/categories/categories.page")
-);
-const CreateCategoryPage = lazy(
-  () => import("./pages/categories/pages/create/create-category.page")
-);
-const EditCategoryPage = lazy(
-  () => import("./pages/categories/pages/edit/edit-category.page")
-);
-const ViewCategoryPage = lazy(
-  () => import("./pages/categories/pages/view/view-category.page")
-);
-const CreateSkuPage = lazy(
-  () => import("./pages/skus/pages/create/create-sku.page")
-);
-const ViewSkuPage = lazy(() => import("./pages/skus/pages/view/view-sku.page"));
-const EditSkuPage = lazy(() => import("./pages/skus/pages/edit/edit-sku.page"));
-const SkusPage = lazy(() => import("./pages/skus/skus.page"));
-const CreateStorePage = lazy(
-  () => import("./pages/stores/pages/create/create-store.page")
-);
-const ViewStorePage = lazy(
-  () => import("./pages/stores/pages/view/view-store.page")
-);
-const EditStorePage = lazy(
-  () => import("./pages/stores/pages/edit/edit-store.page")
-);
-const PosPage = lazy(() => import("./pages/stores/pages/view/pages/pos.page"));
-const InventoryPage = lazy(
-  () => import("./pages/stores/pages/view/pages/inventory.page")
-);
-const InventoryViewPage = lazy(
-  () => import("./pages/stores/pages/view/pages/pages/view/inventory.view.page")
-);
-const InventoryCreateInflowPage = lazy(
-  () =>
-    import(
-      "./pages/stores/pages/view/pages/pages/create/inventory.create-inflow.page"
-    )
-);
+import AuthPage from "./pages/auth/auth.page";
+import CategoriesListPage from "./pages/categories/categories.page";
+import CreateCategoryPage from "./pages/categories/pages/create/create-category.page";
+import EditCategoryPage from "./pages/categories/pages/edit/edit-category.page";
+import ViewCategoryPage from "./pages/categories/pages/view/view-category.page";
+import CreateProducerPage from "./pages/producers/pages/create/create-producer.page";
+import EditProducerPage from "./pages/producers/pages/edit/edit-producer.page";
+import ViewProducerPage from "./pages/producers/pages/view/view-producer.page";
+import ProducersListPage from "./pages/producers/producers.page";
+import CreateSkuPage from "./pages/skus/pages/create/create-sku.page";
+import EditSkuPage from "./pages/skus/pages/edit/edit-sku.page";
+import ViewSkuPage from "./pages/skus/pages/view/view-sku.page";
+import SkusPage from "./pages/skus/skus.page";
+import CreateStorePage from "./pages/stores/pages/create/create-store.page";
+import EditStorePage from "./pages/stores/pages/edit/edit-store.page";
+import InventoryPage from "./pages/stores/pages/view/pages/inventory.page";
+import InventoryCreateInflowPage from "./pages/stores/pages/view/pages/pages/create/inventory.create-inflow.page";
+import InventoryViewPage from "./pages/stores/pages/view/pages/pages/view/inventory.view.page";
+import PosPage from "./pages/stores/pages/view/pages/pos.page";
+import ViewStorePage from "./pages/stores/pages/view/view-store.page";
+import CreateSupplierPage from "./pages/suppliers/pages/create/create-supplier.page";
+import EditSupplierPage from "./pages/suppliers/pages/edit/edit-supplier.page";
+import ViewSupplierPage from "./pages/suppliers/pages/view/view-supplier.page";
+import SuppliersPage from "./pages/suppliers/suppliers.page";
+import UiKitPage from "./pages/ui-kit/ui-kit.page";
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
