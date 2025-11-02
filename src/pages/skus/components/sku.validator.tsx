@@ -12,7 +12,7 @@ export const skuSchema = z.object({
   unitMeasurement: z.enum(UnitMeasurementEnum),
   shelfLifetime: z.number().min(0),
   netWeight: z.number().min(0),
-  vatPercent: z.number().min(0).max(100),
+  vatPercent: z.number().min(0).max(100).multipleOf(0.01),
   alcoholPercent: z.number().min(0).max(100),
   naturalLossPercent: z.number().min(0).max(100),
   maxOnCheckout: z.number().min(0),
