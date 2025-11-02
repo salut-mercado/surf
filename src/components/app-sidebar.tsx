@@ -108,7 +108,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TenantSwitcher state={state} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navMain} role={selectedTenant?.role} />
+        <NavMain items={navMain} role={selectedTenant?.role ?? UserRoleEnum.seller} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
