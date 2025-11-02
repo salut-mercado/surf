@@ -1,5 +1,8 @@
 {
   "overviewPage": "Página de resumen",
+  "common": {
+    "cancel": "Cancelar"
+  },
   "suppliers": {
     "addSupplier": "Añadir Proveedor",
     "createSupplier": "Crear Proveedor",
@@ -200,6 +203,121 @@
       "parent": "Padre",
       "level": "Nivel",
       "none": "-"
+    }
+  },
+  "skus": {
+    "addSku": "Añadir SKU",
+    "createSku": "Crear SKU",
+    "editSku": "Editar SKU",
+    "saveSku": "Guardar SKU",
+    "columns": {
+      "name": "Nombre",
+      "unit": "Unidad",
+      "netWeight": "Peso Neto",
+      "view": "Ver"
+    },
+    "emptyState": {
+      "title": "Aún No Hay SKUs",
+      "description": "Aún no has creado ningún SKU. Comienza creando tu primer SKU."
+    },
+    "errorState": {
+      "title": "No se pueden cargar los SKUs."
+    },
+    "view": {
+      "edit": "Editar",
+      "summary": "Resumen",
+      "details": "Detalles",
+      "specifications": "Especificaciones",
+      "skuId": "ID de SKU",
+      "category": "Categoría",
+      "supplier": "Proveedor",
+      "producer": "Productor",
+      "unit": "Unidad",
+      "shelfLife": "Vida Útil",
+      "netWeight": "Peso Neto",
+      "vat": "IVA %",
+      "alcohol": "Alcohol %",
+      "naturalLoss": "Pérdida Natural %",
+      "maxOnCheckout": "Máx. en Caja",
+      "measurementsAndConstraints": "Medidas y restricciones",
+      "freeFormAttributes": "Atributos de forma libre",
+      "notFound": {
+        "title": "SKU no encontrado",
+        "description": "El SKU puede haber sido eliminado."
+      },
+      "error": "Error"
+    },
+    "form": {
+      "fields": {
+        "name": "Nombre",
+        "supplier": "Proveedor",
+        "producer": "Productor",
+        "category": "Categoría",
+        "unit": "Unidad",
+        "shelfLifetime": "Vida Útil (días)",
+        "netWeight": "Peso Neto",
+        "alcoholPercent": "Alcohol (%)",
+        "vat": "IVA (%)",
+        "naturalLossPercent": "Pérdida Natural (%)",
+        "maxOnCheckout": "Máx. en Caja",
+        "barcode": "Código de Barras",
+        "wholesalePrice": "Precio Mayorista",
+        "specifications": "Especificaciones"
+      },
+      "placeholders": {
+        "selectSupplier": "Seleccionar Proveedor",
+        "selectProducer": "Seleccionar Productor",
+        "selectCategory": "Seleccionar Categoría",
+        "selectUnit": "Seleccionar Unidad"
+      },
+      "descriptions": {
+        "name": "Nombre del producto mostrado en toda la aplicación.",
+        "supplier": "Proveedor que suministra este SKU.",
+        "producer": "Productor o fabricante.",
+        "category": "Clasificación/categoría del SKU.",
+        "unit": "Unidad de medida utilizada para este SKU.",
+        "shelfLifetime": "Cantidad de días que el artículo puede almacenarse.",
+        "netWeight": "Peso excluyendo el empaque.",
+        "alcoholPercent": "Porcentaje de alcohol por volumen.",
+        "vat": "Porcentaje de impuesto sobre el valor añadido.",
+        "naturalLossPercent": "Porcentaje de pérdida natural esperada.",
+        "maxOnCheckout": "Cantidad máxima permitida por pedido.",
+        "barcode": "Código de barras (EAN/UPC).",
+        "wholesalePrice": "Precio unitario mayorista base."
+      },
+      "unitMeasurement": {
+        "unit": "Unidad",
+        "gramm": "Gramo",
+        "milliliter": "Mililitro"
+      },
+      "vat": {
+        "title": "IVA (%)",
+        "custom": "Personalizado",
+        "customDescription": "Tasa de IVA personalizada",
+        "presets": {
+          "0": {
+            "title": "0% (temporal)",
+            "description": "Productos alimenticios básicos, extendido hasta finales de 2025"
+          },
+          "4": {
+            "title": "4% Superreducido",
+            "description": "IVA Superreducido - Periódicos, libros, medicamentos con receta"
+          },
+          "5": {
+            "title": "5% Reducido",
+            "description": "Aceites y pasta, extendido hasta finales de 2025"
+          },
+          "10": {
+            "title": "10% Reducido",
+            "description": "Alimentos, restaurantes, hoteles, transporte, eventos culturales"
+          },
+          "21": {
+            "title": "21% General",
+            "description": "Tasa base para la mayoría de bienes y servicios"
+          }
+        }
+      },
+      "scanBarcode": "Escanear Código de Barras"
     }
   }
 }

@@ -1,6 +1,7 @@
 import type { SKUReturnSchema, SKUSchema } from "@salut-mercado/octo-client";
 import { UnitMeasurementEnum } from "@salut-mercado/octo-client";
 import { useForm } from "@tanstack/react-form";
+import { useTranslation } from "react-i18next";
 import { Button } from "~/components/ui/button";
 import { FieldDescription, FieldError } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
@@ -30,18 +31,21 @@ interface SkuFormProps {
   submitLabel?: string;
 }
 
-const unitMeasurementOptions = [
-  { value: UnitMeasurementEnum.unit, label: "Unit" },
-  { value: UnitMeasurementEnum.gramm, label: "Gramm" },
-  { value: UnitMeasurementEnum.milliliter, label: "Milliliter" },
-];
-
 export function SkuForm({
   onSubmit,
   initialValues = {},
   isSubmitting = false,
-  submitLabel = "Save SKU",
+  submitLabel,
 }: SkuFormProps) {
+  const { t } = useTranslation();
+
+  const unitMeasurementOptions = [
+    { value: UnitMeasurementEnum.unit, label: t("skus.form.unitMeasurement.unit") },
+    { value: UnitMeasurementEnum.gramm, label: t("skus.form.unitMeasurement.gramm") },
+    { value: UnitMeasurementEnum.milliliter, label: t("skus.form.unitMeasurement.milliliter") },
+  ];
+
+  const defaultSubmitLabel = submitLabel ?? t("skus.saveSku");
   const producers = api.producers.useGetAll({
     limit: 1000,
   });
@@ -97,7 +101,7 @@ export function SkuForm({
           name="name"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Name*</Label>
+              <Label htmlFor={field.name}>{t("skus.form.fields.name")}*</Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -113,7 +117,7 @@ export function SkuForm({
                 }
               />
               <FieldDescription>
-                Product name displayed across the app.
+                {t("skus.form.descriptions.name")}
               </FieldDescription>
             </div>
           )}
@@ -123,7 +127,7 @@ export function SkuForm({
           name="supplierId"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Supplier*</Label>
+              <Label htmlFor={field.name}>{t("skus.form.fields.supplier")}*</Label>
               <Select
                 value={field.state.value ?? ""}
                 onValueChange={(v) => field.handleChange(v)}
@@ -132,7 +136,7 @@ export function SkuForm({
                 }}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Supplier" />
+                  <SelectValue placeholder={t("skus.form.placeholders.selectSupplier")} />
                 </SelectTrigger>
                 <SelectContent>
                   {suppliers.data?.pages
@@ -152,7 +156,7 @@ export function SkuForm({
                     : undefined
                 }
               />
-              <FieldDescription>Supplier providing this SKU.</FieldDescription>
+              <FieldDescription>{t("skus.form.descriptions.supplier")}</FieldDescription>
             </div>
           )}
         />
@@ -161,7 +165,7 @@ export function SkuForm({
           name="producerId"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Producer*</Label>
+              <Label htmlFor={field.name}>{t("skus.form.fields.producer")}*</Label>
               <Select
                 value={field.state.value ?? ""}
                 onValueChange={(v) => field.handleChange(v)}
@@ -170,7 +174,7 @@ export function SkuForm({
                 }}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Producer" />
+                  <SelectValue placeholder={t("skus.form.placeholders.selectProducer")} />
                 </SelectTrigger>
                 <SelectContent>
                   {(producers.data || [])
@@ -189,7 +193,7 @@ export function SkuForm({
                     : undefined
                 }
               />
-              <FieldDescription>Producer or manufacturer.</FieldDescription>
+              <FieldDescription>{t("skus.form.descriptions.producer")}</FieldDescription>
             </div>
           )}
         />
@@ -198,7 +202,7 @@ export function SkuForm({
           name="categoryId"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Category*</Label>
+              <Label htmlFor={field.name}>{t("skus.form.fields.category")}*</Label>
               <Select
                 value={field.state.value ?? ""}
                 onValueChange={(v) => field.handleChange(v)}
@@ -207,7 +211,7 @@ export function SkuForm({
                 }}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Category" />
+                  <SelectValue placeholder={t("skus.form.placeholders.selectCategory")} />
                 </SelectTrigger>
                 <SelectContent>
                   {orderCategories(
@@ -234,7 +238,7 @@ export function SkuForm({
                 }
               />
               <FieldDescription>
-                Classification/category for the SKU.
+                {t("skus.form.descriptions.category")}
               </FieldDescription>
             </div>
           )}
@@ -244,7 +248,7 @@ export function SkuForm({
           name="unitMeasurement"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Unit*</Label>
+              <Label htmlFor={field.name}>{t("skus.form.fields.unit")}*</Label>
               <Select
                 value={field.state.value ?? UnitMeasurementEnum.unit}
                 onValueChange={(v) =>
@@ -255,7 +259,7 @@ export function SkuForm({
                 }}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select Unit" />
+                  <SelectValue placeholder={t("skus.form.placeholders.selectUnit")} />
                 </SelectTrigger>
                 <SelectContent>
                   {unitMeasurementOptions.map((u) => (
@@ -273,7 +277,7 @@ export function SkuForm({
                 }
               />
               <FieldDescription>
-                Measurement unit used for this SKU.
+                {t("skus.form.descriptions.unit")}
               </FieldDescription>
             </div>
           )}
@@ -283,7 +287,7 @@ export function SkuForm({
           name="shelfLifetime"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Shelf Lifetime (days)</Label>
+              <Label htmlFor={field.name}>{t("skus.form.fields.shelfLifetime")}</Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -301,7 +305,7 @@ export function SkuForm({
                 }
               />
               <FieldDescription>
-                How many days the item can be stored.
+                {t("skus.form.descriptions.shelfLifetime")}
               </FieldDescription>
             </div>
           )}
@@ -311,7 +315,7 @@ export function SkuForm({
           name="netWeight"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Net Weight</Label>
+              <Label htmlFor={field.name}>{t("skus.form.fields.netWeight")}</Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -329,7 +333,7 @@ export function SkuForm({
                     : undefined
                 }
               />
-              <FieldDescription>Weight excluding packaging.</FieldDescription>
+              <FieldDescription>{t("skus.form.descriptions.netWeight")}</FieldDescription>
             </div>
           )}
         />
@@ -338,7 +342,7 @@ export function SkuForm({
           name="alcoholPercent"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Alcohol (%)</Label>
+              <Label htmlFor={field.name}>{t("skus.form.fields.alcoholPercent")}</Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -357,7 +361,7 @@ export function SkuForm({
                     : undefined
                 }
               />
-              <FieldDescription>Alcohol by volume percent.</FieldDescription>
+              <FieldDescription>{t("skus.form.descriptions.alcoholPercent")}</FieldDescription>
             </div>
           )}
         />
@@ -375,7 +379,7 @@ export function SkuForm({
           name="naturalLossPercent"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Natural Loss (%)</Label>
+              <Label htmlFor={field.name}>{t("skus.form.fields.naturalLossPercent")}</Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -395,7 +399,7 @@ export function SkuForm({
                 }
               />
               <FieldDescription>
-                Expected natural loss percent.
+                {t("skus.form.descriptions.naturalLossPercent")}
               </FieldDescription>
             </div>
           )}
@@ -405,7 +409,7 @@ export function SkuForm({
           name="maxOnCheckout"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Max on Checkout</Label>
+              <Label htmlFor={field.name}>{t("skus.form.fields.maxOnCheckout")}</Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -423,7 +427,7 @@ export function SkuForm({
                 }
               />
               <FieldDescription>
-                Maximum quantity allowed per order.
+                {t("skus.form.descriptions.maxOnCheckout")}
               </FieldDescription>
             </div>
           )}
@@ -433,7 +437,7 @@ export function SkuForm({
           name="barcode"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Barcode</Label>
+              <Label htmlFor={field.name}>{t("skus.form.fields.barcode")}</Label>
               <div className="flex gap-2">
                 <Input
                   id={field.name}
@@ -443,7 +447,7 @@ export function SkuForm({
                   onChange={(e) => field.handleChange(e.target.value)}
                 />
                 <CameraButton
-                  title="Scan Barcode"
+                  title={t("skus.form.scanBarcode")}
                   buttonLabel=""
                   icon={IconBarcode}
                   autoCloseOnBarcodeDetected
@@ -501,7 +505,7 @@ export function SkuForm({
                     : undefined
                 }
               />
-              <FieldDescription>Barcode (EAN/UPC).</FieldDescription>
+              <FieldDescription>{t("skus.form.descriptions.barcode")}</FieldDescription>
             </div>
           )}
         />
@@ -510,7 +514,7 @@ export function SkuForm({
           name="wholesalePrice"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Wholesale Price</Label>
+              <Label htmlFor={field.name}>{t("skus.form.fields.wholesalePrice")}</Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -528,7 +532,7 @@ export function SkuForm({
                     : undefined
                 }
               />
-              <FieldDescription>Base wholesale unit price.</FieldDescription>
+              <FieldDescription>{t("skus.form.descriptions.wholesalePrice")}</FieldDescription>
             </div>
           )}
         />
@@ -538,7 +542,7 @@ export function SkuForm({
         name="specifications"
         children={(field) => (
           <div className="grid gap-2">
-            <Label htmlFor={field.name}>Specifications</Label>
+            <Label htmlFor={field.name}>{t("skus.form.fields.specifications")}</Label>
             <Textarea
               id={field.name}
               name={field.name}
@@ -564,7 +568,7 @@ export function SkuForm({
             className="w-full"
             disabled={!canSubmit || isSubmitting}
           >
-            {isSubmitting ? <Spinner /> : submitLabel}
+            {isSubmitting ? <Spinner /> : defaultSubmitLabel}
           </Button>
         )}
       />

@@ -1,16 +1,18 @@
 import { Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Button } from "~/components/ui/button";
 import { DataTable } from "~/components/ui/data-table";
 import { api } from "~/hooks/api";
-import { columns } from "./columns";
+import { getColumns } from "./columns";
 import { SkusEmptyState } from "./skus.empty-state";
 import { SkusErrorState } from "./skus.error-state";
 import { SkusSkeleton } from "./skus.skeleton";
 import { useEffect } from "react";
 
 export default function SkusPage() {
+  const { t } = useTranslation();
   const skus = api.skus.useGetAll({ limit: 1000 });
   const allSkus = skus.data?.pages.flatMap((page) => page.items) ?? [];
 
@@ -34,11 +36,11 @@ export default function SkusPage() {
             <Button asChild>
               <Link href="/create">
                 <Plus className="size-4" />
-                Add SKU
+                {t("skus.addSku")}
               </Link>
             </Button>
           </div>
-          <DataTable data={allSkus} columns={columns} />
+          <DataTable data={allSkus} columns={getColumns(t)} />
         </>
       )}
     </DashboardPage>

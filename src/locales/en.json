@@ -1,5 +1,8 @@
 {
   "overviewPage": "Overview page",
+  "common": {
+    "cancel": "Cancel"
+  },
   "suppliers": {
     "addSupplier": "Add Supplier",
     "createSupplier": "Create Supplier",
@@ -200,6 +203,121 @@
       "parent": "Parent",
       "level": "Level",
       "none": "-"
+    }
+  },
+  "skus": {
+    "addSku": "Add SKU",
+    "createSku": "Create SKU",
+    "editSku": "Edit SKU",
+    "saveSku": "Save SKU",
+    "columns": {
+      "name": "Name",
+      "unit": "Unit",
+      "netWeight": "Net Weight",
+      "view": "View"
+    },
+    "emptyState": {
+      "title": "No SKUs Yet",
+      "description": "You haven't created any SKUs yet. Get started by creating your first SKU."
+    },
+    "errorState": {
+      "title": "Unable to load SKUs."
+    },
+    "view": {
+      "edit": "Edit",
+      "summary": "Summary",
+      "details": "Details",
+      "specifications": "Specifications",
+      "skuId": "SKU ID",
+      "category": "Category",
+      "supplier": "Supplier",
+      "producer": "Producer",
+      "unit": "Unit",
+      "shelfLife": "Shelf Life",
+      "netWeight": "Net Weight",
+      "vat": "VAT %",
+      "alcohol": "Alcohol %",
+      "naturalLoss": "Natural Loss %",
+      "maxOnCheckout": "Max on Checkout",
+      "measurementsAndConstraints": "Measurements and constraints",
+      "freeFormAttributes": "Free-form attributes",
+      "notFound": {
+        "title": "SKU not found",
+        "description": "The SKU may have been removed."
+      },
+      "error": "Error"
+    },
+    "form": {
+      "fields": {
+        "name": "Name",
+        "supplier": "Supplier",
+        "producer": "Producer",
+        "category": "Category",
+        "unit": "Unit",
+        "shelfLifetime": "Shelf Lifetime (days)",
+        "netWeight": "Net Weight",
+        "alcoholPercent": "Alcohol (%)",
+        "vat": "VAT (%)",
+        "naturalLossPercent": "Natural Loss (%)",
+        "maxOnCheckout": "Max on Checkout",
+        "barcode": "Barcode",
+        "wholesalePrice": "Wholesale Price",
+        "specifications": "Specifications"
+      },
+      "placeholders": {
+        "selectSupplier": "Select Supplier",
+        "selectProducer": "Select Producer",
+        "selectCategory": "Select Category",
+        "selectUnit": "Select Unit"
+      },
+      "descriptions": {
+        "name": "Product name displayed across the app.",
+        "supplier": "Supplier providing this SKU.",
+        "producer": "Producer or manufacturer.",
+        "category": "Classification/category for the SKU.",
+        "unit": "Measurement unit used for this SKU.",
+        "shelfLifetime": "How many days the item can be stored.",
+        "netWeight": "Weight excluding packaging.",
+        "alcoholPercent": "Alcohol by volume percent.",
+        "vat": "Value-added tax percent.",
+        "naturalLossPercent": "Expected natural loss percent.",
+        "maxOnCheckout": "Maximum quantity allowed per order.",
+        "barcode": "Barcode (EAN/UPC).",
+        "wholesalePrice": "Base wholesale unit price."
+      },
+      "unitMeasurement": {
+        "unit": "Unit",
+        "gramm": "Gramm",
+        "milliliter": "Milliliter"
+      },
+      "vat": {
+        "title": "VAT (%)",
+        "custom": "Custom",
+        "customDescription": "Custom VAT rate",
+        "presets": {
+          "0": {
+            "title": "0% (temporal)",
+            "description": "Staple food products, extended until end of 2025"
+          },
+          "4": {
+            "title": "4% Superreducido",
+            "description": "IVA Superreducido - Newspapers, books, prescription medicines"
+          },
+          "5": {
+            "title": "5% Reducido",
+            "description": "Oils and pasta, extended until end of 2025"
+          },
+          "10": {
+            "title": "10% Reducido",
+            "description": "Food, restaurants, hotels, transport, cultural events"
+          },
+          "21": {
+            "title": "21% General",
+            "description": "Base rate for most goods and services"
+          }
+        }
+      },
+      "scanBarcode": "Scan Barcode"
     }
   }
 }
