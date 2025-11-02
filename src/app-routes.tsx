@@ -1,9 +1,8 @@
+import { lazy } from "react";
 import { Redirect, Route, Switch } from "wouter";
 import { useAuth } from "~/hooks/use-auth";
 import { TenantRequired } from "./components/app-no-tenant-selected";
 import { DashboardPage } from "./components/dashboard-page";
-import { Spinner } from "./components/ui/spinner";
-import { api } from "./hooks/api";
 
 import AuthPage from "./pages/auth/auth.page";
 import CategoriesListPage from "./pages/categories/categories.page";
@@ -29,18 +28,10 @@ import CreateSupplierPage from "./pages/suppliers/pages/create/create-supplier.p
 import EditSupplierPage from "./pages/suppliers/pages/edit/edit-supplier.page";
 import ViewSupplierPage from "./pages/suppliers/pages/view/view-supplier.page";
 import SuppliersPage from "./pages/suppliers/suppliers.page";
-import UiKitPage from "./pages/ui-kit/ui-kit.page";
+const UiKitPage = lazy(() => import("./pages/ui-kit/ui-kit.page"));
 
 export const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
-  const { isLoading } = api.auth.useMe();
-  if (isLoading) {
-    return (
-      <div className="z-50 bg-background fixed top-0 left-0 flex justify-center items-center right-0 bottom-0">
-        <Spinner className="size-10" />
-      </div>
-    );
-  }
   return (
     <Switch>
       <Route path="/auth" nest>
@@ -139,9 +130,11 @@ export const AppRoutes = () => {
               </Route>
             </Switch>
           </Route>
-          <Route path="/ui-kit">
-            <UiKitPage />
-          </Route>
+          {import.meta.env.DEV && (
+            <Route path="/ui-kit">
+              <UiKitPage />
+            </Route>
+          )}
           <Route path="/">
             <DashboardPage>Overview page</DashboardPage>
           </Route>
