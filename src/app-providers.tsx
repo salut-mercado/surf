@@ -11,14 +11,14 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchInterval: TEN_SECONDS,
-      networkMode: "offlineFirst",
+      networkMode: "online",
       staleTime: CACHE_TIME,
       gcTime: CACHE_TIME,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       refetchIntervalInBackground: false,
     },
-    mutations: { networkMode: "offlineFirst" },
+    mutations: { networkMode: "online" },
   },
 });
 
