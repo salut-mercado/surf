@@ -1,6 +1,7 @@
 import { skipToken } from "@tanstack/react-query";
 import { AlertCircleIcon, FileScan, Plus } from "lucide-react";
 import { useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useParams } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
@@ -8,9 +9,10 @@ import { Button } from "~/components/ui/button";
 import { DataTable } from "~/components/ui/data-table";
 import { Skeleton } from "~/components/ui/skeleton";
 import { api } from "~/hooks/api";
-import { columns, type InventoryItem } from "./components/inventory.columns";
+import { getColumns, type InventoryItem } from "./components/inventory.columns";
 
 const InventoryPage = () => {
+  const { t } = useTranslation();
   const { id: storeId } = useParams<{ id: string }>();
 
   // Fetch warehouses
@@ -82,9 +84,9 @@ const InventoryPage = () => {
       <DashboardPage>
         <Alert variant="destructive">
           <AlertCircleIcon />
-          <AlertTitle>Error</AlertTitle>
+          <AlertTitle>{t("stores.inventory.error")}</AlertTitle>
           <AlertDescription>
-            Failed to load inventory data. Please try again.
+            {t("stores.inventory.errorLoading")}
           </AlertDescription>
         </Alert>
       </DashboardPage>
@@ -95,9 +97,9 @@ const InventoryPage = () => {
     return (
       <DashboardPage>
         <Alert>
-          <AlertTitle>No Warehouse</AlertTitle>
+          <AlertTitle>{t("stores.inventory.noWarehouse.title")}</AlertTitle>
           <AlertDescription>
-            No warehouse found for this store. Please create a warehouse first.
+            {t("stores.inventory.noWarehouse.description")}
           </AlertDescription>
         </Alert>
       </DashboardPage>
@@ -110,17 +112,17 @@ const InventoryPage = () => {
         <div className="flex justify-end gap-2">
           <Button variant="outline" disabled>
             <FileScan className="size-4 mr-2" />
-            Scan arrival doc
+            {t("stores.inventory.scanArrivalDoc")}
           </Button>
           <Button asChild>
             <Link href={`~/stores/${storeId}/inventory/create`}>
               <Plus className="size-4 mr-2" />
-              Manual add
+              {t("stores.inventory.manualAdd")}
             </Link>
           </Button>
         </div>
 
-        <DataTable data={inventoryItems} columns={columns} />
+        <DataTable data={inventoryItems} columns={getColumns(t)} />
       </div>
     </DashboardPage>
   );

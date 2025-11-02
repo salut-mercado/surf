@@ -1,5 +1,6 @@
 import type { SKUReturnSchema } from "@salut-mercado/octo-client";
 import type { ColumnDef } from "@tanstack/react-table";
+import type { TFunction } from "i18next";
 import { ChevronRight } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "~/components/ui/button";
@@ -10,20 +11,22 @@ export interface InventoryItem {
   storeId: string;
 }
 
-export const columns: ColumnDef<InventoryItem>[] = [
+export const getColumns = (
+  t: TFunction
+): ColumnDef<InventoryItem>[] => [
   {
     accessorFn: (row) => row.sku.name,
     id: "name",
-    header: "Name",
+    header: t("stores.inventory.columns.name"),
   },
   {
     accessorFn: (row) => row.sku.barcode,
     id: "barcode",
-    header: "Barcode",
+    header: t("stores.inventory.columns.barcode"),
   },
   {
     accessorKey: "quantity",
-    header: "Quantity",
+    header: t("stores.inventory.columns.quantity"),
     cell: ({ row }) => (
       <div className="font-medium">{row.original.quantity}</div>
     ),
@@ -43,7 +46,7 @@ export const columns: ColumnDef<InventoryItem>[] = [
               size="sm"
               disabled={row.original.quantity <= 0}
             >
-              View <ChevronRight className="size-4 ml-1" />
+              {t("stores.inventory.columns.view")} <ChevronRight className="size-4 ml-1" />
             </Button>
           </Link>
         </div>

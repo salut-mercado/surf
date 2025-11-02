@@ -1,5 +1,6 @@
 import { skipToken } from "@tanstack/react-query";
 import { ChevronLeft, AlertCircleIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link, useParams } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
@@ -14,6 +15,7 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { api } from "~/hooks/api";
 
 const InventoryViewPage = () => {
+  const { t } = useTranslation();
   const { id: storeId, skuId } = useParams<{ id: string; skuId: string }>();
 
   const sku = api.skus.useGetById(
@@ -60,9 +62,9 @@ const InventoryViewPage = () => {
       <DashboardPage>
         <Alert variant="destructive">
           <AlertCircleIcon />
-          <AlertTitle>Error</AlertTitle>
+          <AlertTitle>{t("stores.inventory.view.error")}</AlertTitle>
           <AlertDescription>
-            Failed to load inventory entry. Please try again.
+            {t("stores.inventory.view.errorLoading")}
           </AlertDescription>
         </Alert>
       </DashboardPage>
@@ -73,9 +75,9 @@ const InventoryViewPage = () => {
     return (
       <DashboardPage>
         <Alert>
-          <AlertTitle>SKU not found</AlertTitle>
+          <AlertTitle>{t("stores.inventory.view.notFound.title")}</AlertTitle>
           <AlertDescription>
-            The inventory entry may have been removed.
+            {t("stores.inventory.view.notFound.description")}
           </AlertDescription>
         </Alert>
       </DashboardPage>
@@ -101,14 +103,14 @@ const InventoryViewPage = () => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <Card>
             <CardHeader>
-              <CardTitle>Stock Information</CardTitle>
+              <CardTitle>{t("stores.inventory.view.sections.stockInformation")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <div className="text-sm text-muted-foreground">Quantity</div>
+              <div className="text-sm text-muted-foreground">{t("stores.inventory.view.labels.quantity")}</div>
               <div className="font-medium text-2xl">{quantity}</div>
               {firstWarehouse && (
                 <>
-                  <div className="text-sm text-muted-foreground">Warehouse</div>
+                  <div className="text-sm text-muted-foreground">{t("stores.inventory.view.labels.warehouse")}</div>
                   <div className="font-medium break-all">
                     {firstWarehouse.address}
                   </div>
@@ -119,37 +121,37 @@ const InventoryViewPage = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>SKU Details</CardTitle>
+              <CardTitle>{t("stores.inventory.view.sections.skuDetails")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <div className="text-sm text-muted-foreground">SKU ID</div>
+              <div className="text-sm text-muted-foreground">{t("stores.inventory.view.labels.skuId")}</div>
               <div className="font-mono text-sm break-all">{sku.data.id}</div>
-              <div className="text-sm text-muted-foreground">Barcode</div>
+              <div className="text-sm text-muted-foreground">{t("stores.inventory.view.labels.barcode")}</div>
               <div className="font-medium break-all">{sku.data.barcode}</div>
-              <div className="text-sm text-muted-foreground">Unit</div>
+              <div className="text-sm text-muted-foreground">{t("stores.inventory.view.labels.unit")}</div>
               <div className="font-medium">{sku.data.unitMeasurement}</div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>Product Information</CardTitle>
+              <CardTitle>{t("stores.inventory.view.sections.productInformation")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <div className="text-sm text-muted-foreground">Name</div>
+              <div className="text-sm text-muted-foreground">{t("stores.inventory.view.labels.name")}</div>
               <div className="font-medium break-all">{sku.data.name}</div>
               {sku.data.netWeight && (
                 <>
-                  <div className="text-sm text-muted-foreground">Net Weight</div>
+                  <div className="text-sm text-muted-foreground">{t("stores.inventory.view.labels.netWeight")}</div>
                   <div className="font-medium">{sku.data.netWeight}</div>
                 </>
               )}
               {sku.data.shelfLifetime && (
                 <>
                   <div className="text-sm text-muted-foreground">
-                    Shelf Lifetime
+                    {t("stores.inventory.view.labels.shelfLifetime")}
                   </div>
-                  <div className="font-medium">{sku.data.shelfLifetime} days</div>
+                  <div className="font-medium">{sku.data.shelfLifetime} {t("stores.inventory.view.days")}</div>
                 </>
               )}
             </CardContent>

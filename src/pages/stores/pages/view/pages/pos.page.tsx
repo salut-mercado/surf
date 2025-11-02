@@ -2,6 +2,7 @@ import { PaymentType, type SKUReturnSchema } from "@salut-mercado/octo-client";
 import { IconBarcode, IconReceipt } from "@tabler/icons-react";
 import { Clock, FilePlus2Icon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "wouter";
 import { CameraButton } from "~/components/composite/camera-button";
 import { DashboardPage } from "~/components/dashboard-page";
@@ -45,6 +46,7 @@ interface CheckItem {
 }
 
 const PosPage = () => {
+  const { t } = useTranslation();
   const { id: storeId } = useParams<{ id: string }>();
   const [barcodeInput, setBarcodeInput] = useState("");
   const [checkItems, setCheckItems] = useState<CheckItem[]>([]);
@@ -85,7 +87,7 @@ const PosPage = () => {
 
       const sku = findSkuByBarcode(trimmedBarcode);
       if (!sku) {
-        setError(`SKU not found for barcode: ${trimmedBarcode}`);
+        setError(t("stores.pos.skuNotFound", { barcode: trimmedBarcode }));
         return;
       }
 
@@ -176,7 +178,7 @@ const PosPage = () => {
       }, 1500);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to create store sale"
+        err instanceof Error ? err.message : t("stores.pos.createFailed")
       );
     }
   };
@@ -194,19 +196,19 @@ const PosPage = () => {
             <SheetTrigger asChild>
               <Button variant="ghost" className="gap-2" disabled>
                 <Clock className="size-4" />
-                History
+                {t("stores.pos.history")}
               </Button>
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Sales History</SheetTitle>
+                <SheetTitle>{t("stores.pos.salesHistory")}</SheetTitle>
                 <SheetDescription>
-                  View recent store sales transactions.
+                  {t("stores.pos.salesHistoryDescription")}
                 </SheetDescription>
               </SheetHeader>
               <div className="mt-4">
                 <div className="text-center text-muted-foreground py-8">
-                  No sales history available.
+                  {t("stores.pos.noSalesHistory")}
                 </div>
               </div>
             </SheetContent>
@@ -216,12 +218,12 @@ const PosPage = () => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           <Card className="md:col-span-3">
             <CardHeader>
-              <CardTitle>Check Summary</CardTitle>
+              <CardTitle>{t("stores.pos.checkSummary")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {checkItems.length === 0 ? (
                 <div className="text-center text-muted-foreground py-8">
-                  Scan first item to open a new check
+                  {t("stores.pos.scanFirstItem")}
                 </div>
               ) : (
                 <>
@@ -275,7 +277,7 @@ const PosPage = () => {
                   </div>
                   <div className="pt-2 border-t">
                     <div className="flex justify-between items-center font-medium">
-                      <span>Total Items</span>
+                      <span>{t("stores.pos.totalItems")}</span>
                       <span>{totalQuantity}</span>
                     </div>
                   </div>
@@ -288,7 +290,7 @@ const PosPage = () => {
                 disabled={checkItems.length === 0 || createStoreSale.isPending}
               >
                 <IconReceipt className="size-4" />
-                Checkout
+                {t("stores.pos.checkout")}
               </Button>
             </CardFooter>
           </Card>
@@ -297,13 +299,13 @@ const PosPage = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <IconBarcode className="size-5" />
-                  Barcode Scanner
+                  {t("stores.pos.barcodeScanner")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex flex-col gap-2">
                   <Input
-                    placeholder="Enter or scan barcode..."
+                    placeholder={t("stores.pos.enterOrScanBarcode")}
                     value={barcodeInput}
                     onChange={handleBarcodeInputChange}
                     onKeyDown={handleBarcodeInputKeyDown}
@@ -314,13 +316,13 @@ const PosPage = () => {
                       variant="secondary"
                     >
                       <FilePlus2Icon className="size-4" />
-                      Add
+                      {t("stores.pos.add")}
                     </Button>
                   ) : (
                     <CameraButton
                       variant="secondary"
-                      title="Scan Barcode"
-                      buttonLabel="Scan"
+                      title={t("stores.pos.scanBarcode")}
+                      buttonLabel={t("stores.pos.scanBarcode")}
                       icon={IconBarcode}
                       autoCloseOnBarcodeDetected
                       onBarcodeDetected={handleBarcodeDetected}
@@ -334,16 +336,16 @@ const PosPage = () => {
 
         {error && (
           <Alert variant="destructive">
-            <AlertTitle>Error</AlertTitle>
+            <AlertTitle>{t("stores.pos.error")}</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
 
         {success && (
           <Alert>
-            <AlertTitle>Success</AlertTitle>
+            <AlertTitle>{t("stores.pos.success")}</AlertTitle>
             <AlertDescription>
-              Store sale created successfully.
+              {t("stores.pos.storeSaleCreated")}
             </AlertDescription>
           </Alert>
         )}
@@ -358,14 +360,14 @@ const PosPage = () => {
       <AlertDialog open={itemToDelete !== null} onOpenChange={(open) => !open && setItemToDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Remove item?</AlertDialogTitle>
+            <AlertDialogTitle>{t("stores.pos.removeItem")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to remove this item from the check?
+              {t("stores.pos.removeItemDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteItem}>Remove</AlertDialogAction>
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteItem}>{t("stores.pos.remove")}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

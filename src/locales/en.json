@@ -319,6 +319,193 @@
       },
       "scanBarcode": "Scan Barcode"
     }
+  },
+  "stores": {
+    "addStore": "Add Store",
+    "createStore": "Create Store",
+    "editStore": "Edit Store",
+    "updateStore": "Update Store",
+    "form": {
+      "fields": {
+        "address": "Address",
+        "legalEntity": "Legal Entity",
+        "price": "Price",
+        "ip": "IP Address",
+        "salesArea": "Sales Area (m²)",
+        "totalArea": "Total Area (m²)",
+        "dateOfFirstSale": "First Sale Date",
+        "workingHours": "Working Hours",
+        "claster": "Cluster",
+        "contacts": "Contacts",
+        "assortmentMatrix": "Assortment Matrix",
+        "serviceProvider": "Service Provider"
+      },
+      "placeholders": {
+        "address": "123 Main St",
+        "legalEntity": "Legal Company Name",
+        "price": "0.00",
+        "ip": "192.168.1.1",
+        "salesArea": "0.00",
+        "totalArea": "0.00",
+        "workingHours": "9:00-18:00",
+        "claster": "A",
+        "contacts": "contact@store.com",
+        "assortmentMatrix": "Matrix ID",
+        "serviceProvider": "Provider Name"
+      },
+      "descriptions": {
+        "address": "Store physical address.",
+        "legalEntity": "Registered business name.",
+        "price": "Store pricing value.",
+        "ip": "Store network IP.",
+        "salesArea": "Sales floor area.",
+        "totalArea": "Total store area.",
+        "dateOfFirstSale": "Date of first sale.",
+        "workingHours": "Store operating hours.",
+        "claster": "Store cluster classification.",
+        "contacts": "Contact information.",
+        "assortmentMatrix": "Product assortment reference.",
+        "serviceProvider": "Service provider name."
+      }
+    },
+    "view": {
+      "edit": "Edit",
+      "error": "Error",
+      "errorLoading": "Unable to load store.",
+      "notFound": {
+        "title": "Store not found",
+        "description": "The store may have been removed."
+      },
+      "sections": {
+        "location": "Location",
+        "businessMetrics": "Business Metrics",
+        "operations": "Operations",
+        "network": "Network",
+        "classification": "Classification",
+        "contacts": "Contacts",
+        "assortmentService": "Assortment & Service",
+        "metadata": "Metadata"
+      },
+      "labels": {
+        "address": "Address",
+        "legalEntity": "Legal Entity",
+        "price": "Price",
+        "salesArea": "Sales Area",
+        "totalArea": "Total Area",
+        "firstSale": "First Sale",
+        "workingHours": "Working Hours",
+        "ipAddress": "IP Address",
+        "cluster": "Cluster",
+        "contactInfo": "Contact Info",
+        "assortmentMatrix": "Assortment Matrix",
+        "serviceProvider": "Service Provider",
+        "storeId": "Store ID",
+        "updated": "Updated",
+        "timestampsAndIds": "Timestamps and IDs"
+      }
+    },
+    "inventory": {
+      "title": "Inventory",
+      "scanArrivalDoc": "Scan arrival doc",
+      "manualAdd": "Manual add",
+      "error": "Error",
+      "errorLoading": "Failed to load inventory data. Please try again.",
+      "noWarehouse": {
+        "title": "No Warehouse",
+        "description": "No warehouse found for this store. Please create a warehouse first."
+      },
+      "columns": {
+        "name": "Name",
+        "barcode": "Barcode",
+        "quantity": "Quantity",
+        "view": "View"
+      },
+      "createInflow": {
+        "title": "Create Order Inflow",
+        "orderDetails": "Order Details",
+        "orderDescription": "Create a new order inflow for this store",
+        "supplier": "Supplier",
+        "selectSupplier": "Select a supplier",
+        "orderStatus": "Order Status",
+        "statusCreated": "Created",
+        "statusSent": "Sent",
+        "statusApproved": "Approved",
+        "statusRejected": "Rejected",
+        "statusChanged": "Changed",
+        "statusDelivered": "Delivered",
+        "items": "Items",
+        "itemsDescription": "Add SKUs to this order",
+        "sku": "SKU",
+        "selectSku": "Select SKU",
+        "quantity": "Quantity",
+        "remove": "Remove",
+        "addItem": "Add Item",
+        "cancel": "Cancel",
+        "createOrder": "Create Order",
+        "creating": "Creating...",
+        "errorSelectSupplier": "Please select a supplier",
+        "errorFillItems": "Please fill in all items with valid quantities",
+        "errorWarehouseRequired": "Warehouse is required for DELIVERED orders",
+        "errorCreateFailed": "Failed to create order inflow",
+        "errorOrderCreated": "Order created but failed to add items. Please try again."
+      },
+      "view": {
+        "error": "Error",
+        "errorLoading": "Failed to load inventory entry. Please try again.",
+        "notFound": {
+          "title": "SKU not found",
+          "description": "The inventory entry may have been removed."
+        },
+        "sections": {
+          "stockInformation": "Stock Information",
+          "skuDetails": "SKU Details",
+          "productInformation": "Product Information"
+        },
+        "labels": {
+          "quantity": "Quantity",
+          "warehouse": "Warehouse",
+          "skuId": "SKU ID",
+          "barcode": "Barcode",
+          "unit": "Unit",
+          "name": "Name",
+          "netWeight": "Net Weight",
+          "shelfLifetime": "Shelf Lifetime"
+        },
+        "days": "days"
+      }
+    },
+    "pos": {
+      "history": "History",
+      "salesHistory": "Sales History",
+      "salesHistoryDescription": "View recent store sales transactions.",
+      "noSalesHistory": "No sales history available.",
+      "checkSummary": "Check Summary",
+      "scanFirstItem": "Scan first item to open a new check",
+      "totalItems": "Total Items",
+      "checkout": "Checkout",
+      "barcodeScanner": "Barcode Scanner",
+      "enterOrScanBarcode": "Enter or scan barcode...",
+      "add": "Add",
+      "scanBarcode": "Scan Barcode",
+      "error": "Error",
+      "success": "Success",
+      "storeSaleCreated": "Store sale created successfully.",
+      "skuNotFound": "SKU not found for barcode: {{barcode}}",
+      "createFailed": "Failed to create store sale",
+      "removeItem": "Remove item?",
+      "removeItemDescription": "Are you sure you want to remove this item from the check?",
+      "remove": "Remove"
+    },
+    "actions": {
+      "pos": "POS",
+      "posDescription": "Point of Sale",
+      "inventory": "Inventory",
+      "inventoryDescription": "Stock Management",
+      "reports": "Reports",
+      "reportsDescription": "Sales & Analytics",
+      "staff": "Staff",
+      "staffDescription": "Employee Management"
+    }
   }
 }
 

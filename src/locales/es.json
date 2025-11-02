@@ -319,6 +319,193 @@
       },
       "scanBarcode": "Escanear Código de Barras"
     }
+  },
+  "stores": {
+    "addStore": "Añadir Tienda",
+    "createStore": "Crear Tienda",
+    "editStore": "Editar Tienda",
+    "updateStore": "Actualizar Tienda",
+    "form": {
+      "fields": {
+        "address": "Dirección",
+        "legalEntity": "Entidad Legal",
+        "price": "Precio",
+        "ip": "Dirección IP",
+        "salesArea": "Área de Ventas (m²)",
+        "totalArea": "Área Total (m²)",
+        "dateOfFirstSale": "Fecha de Primera Venta",
+        "workingHours": "Horario de Trabajo",
+        "claster": "Cluster",
+        "contacts": "Contactos",
+        "assortmentMatrix": "Matriz de Asortamiento",
+        "serviceProvider": "Proveedor de Servicios"
+      },
+      "placeholders": {
+        "address": "123 Calle Principal",
+        "legalEntity": "Nombre Legal de la Empresa",
+        "price": "0.00",
+        "ip": "192.168.1.1",
+        "salesArea": "0.00",
+        "totalArea": "0.00",
+        "workingHours": "9:00-18:00",
+        "claster": "A",
+        "contacts": "contacto@tienda.com",
+        "assortmentMatrix": "ID de Matriz",
+        "serviceProvider": "Nombre del Proveedor"
+      },
+      "descriptions": {
+        "address": "Dirección física de la tienda.",
+        "legalEntity": "Nombre comercial registrado.",
+        "price": "Valor de precio de la tienda.",
+        "ip": "IP de red de la tienda.",
+        "salesArea": "Área del piso de ventas.",
+        "totalArea": "Área total de la tienda.",
+        "dateOfFirstSale": "Fecha de primera venta.",
+        "workingHours": "Horario de funcionamiento de la tienda.",
+        "claster": "Clasificación de cluster de la tienda.",
+        "contacts": "Información de contacto.",
+        "assortmentMatrix": "Referencia de surtido de productos.",
+        "serviceProvider": "Nombre del proveedor de servicios."
+      }
+    },
+    "view": {
+      "edit": "Editar",
+      "error": "Error",
+      "errorLoading": "No se puede cargar la tienda.",
+      "notFound": {
+        "title": "Tienda no encontrada",
+        "description": "La tienda puede haber sido eliminada."
+      },
+      "sections": {
+        "location": "Ubicación",
+        "businessMetrics": "Métricas de Negocio",
+        "operations": "Operaciones",
+        "network": "Red",
+        "classification": "Clasificación",
+        "contacts": "Contactos",
+        "assortmentService": "Surtido y Servicio",
+        "metadata": "Metadatos"
+      },
+      "labels": {
+        "address": "Dirección",
+        "legalEntity": "Entidad Legal",
+        "price": "Precio",
+        "salesArea": "Área de Ventas",
+        "totalArea": "Área Total",
+        "firstSale": "Primera Venta",
+        "workingHours": "Horario de Trabajo",
+        "ipAddress": "Dirección IP",
+        "cluster": "Cluster",
+        "contactInfo": "Información de Contacto",
+        "assortmentMatrix": "Matriz de Asortamiento",
+        "serviceProvider": "Proveedor de Servicios",
+        "storeId": "ID de Tienda",
+        "updated": "Actualizado",
+        "timestampsAndIds": "Marcas de tiempo e IDs"
+      }
+    },
+    "inventory": {
+      "title": "Inventario",
+      "scanArrivalDoc": "Escanear documento de llegada",
+      "manualAdd": "Añadir manualmente",
+      "error": "Error",
+      "errorLoading": "Error al cargar los datos de inventario. Por favor, inténtelo de nuevo.",
+      "noWarehouse": {
+        "title": "Sin Almacén",
+        "description": "No se encontró almacén para esta tienda. Por favor, cree un almacén primero."
+      },
+      "columns": {
+        "name": "Nombre",
+        "barcode": "Código de Barras",
+        "quantity": "Cantidad",
+        "view": "Ver"
+      },
+      "createInflow": {
+        "title": "Crear Entrada de Pedido",
+        "orderDetails": "Detalles del Pedido",
+        "orderDescription": "Crear una nueva entrada de pedido para esta tienda",
+        "supplier": "Proveedor",
+        "selectSupplier": "Seleccionar un proveedor",
+        "orderStatus": "Estado del Pedido",
+        "statusCreated": "Creado",
+        "statusSent": "Enviado",
+        "statusApproved": "Aprobado",
+        "statusRejected": "Rechazado",
+        "statusChanged": "Modificado",
+        "statusDelivered": "Entregado",
+        "items": "Artículos",
+        "itemsDescription": "Añadir SKUs a este pedido",
+        "sku": "SKU",
+        "selectSku": "Seleccionar SKU",
+        "quantity": "Cantidad",
+        "remove": "Eliminar",
+        "addItem": "Añadir Artículo",
+        "cancel": "Cancelar",
+        "createOrder": "Crear Pedido",
+        "creating": "Creando...",
+        "errorSelectSupplier": "Por favor, seleccione un proveedor",
+        "errorFillItems": "Por favor, complete todos los artículos con cantidades válidas",
+        "errorWarehouseRequired": "Se requiere almacén para pedidos ENTREGADOS",
+        "errorCreateFailed": "Error al crear la entrada de pedido",
+        "errorOrderCreated": "Pedido creado pero falló al añadir artículos. Por favor, inténtelo de nuevo."
+      },
+      "view": {
+        "error": "Error",
+        "errorLoading": "Error al cargar la entrada de inventario. Por favor, inténtelo de nuevo.",
+        "notFound": {
+          "title": "SKU no encontrado",
+          "description": "La entrada de inventario puede haber sido eliminada."
+        },
+        "sections": {
+          "stockInformation": "Información de Stock",
+          "skuDetails": "Detalles del SKU",
+          "productInformation": "Información del Producto"
+        },
+        "labels": {
+          "quantity": "Cantidad",
+          "warehouse": "Almacén",
+          "skuId": "ID de SKU",
+          "barcode": "Código de Barras",
+          "unit": "Unidad",
+          "name": "Nombre",
+          "netWeight": "Peso Neto",
+          "shelfLifetime": "Vida Útil"
+        },
+        "days": "días"
+      }
+    },
+    "pos": {
+      "history": "Historial",
+      "salesHistory": "Historial de Ventas",
+      "salesHistoryDescription": "Ver transacciones de ventas recientes de la tienda.",
+      "noSalesHistory": "No hay historial de ventas disponible.",
+      "checkSummary": "Resumen de Venta",
+      "scanFirstItem": "Escanee el primer artículo para abrir una nueva venta",
+      "totalItems": "Total de Artículos",
+      "checkout": "Cobrar",
+      "barcodeScanner": "Escáner de Código de Barras",
+      "enterOrScanBarcode": "Introducir o escanear código de barras...",
+      "add": "Añadir",
+      "scanBarcode": "Escanear Código de Barras",
+      "error": "Error",
+      "success": "Éxito",
+      "storeSaleCreated": "Venta de tienda creada exitosamente.",
+      "skuNotFound": "SKU no encontrado para el código de barras: {{barcode}}",
+      "createFailed": "Error al crear la venta de tienda",
+      "removeItem": "¿Eliminar artículo?",
+      "removeItemDescription": "¿Está seguro de que desea eliminar este artículo de la venta?",
+      "remove": "Eliminar"
+    },
+    "actions": {
+      "pos": "TPV",
+      "posDescription": "Punto de Venta",
+      "inventory": "Inventario",
+      "inventoryDescription": "Gestión de Stock",
+      "reports": "Informes",
+      "reportsDescription": "Ventas y Análisis",
+      "staff": "Personal",
+      "staffDescription": "Gestión de Empleados"
+    }
   }
 }
 
