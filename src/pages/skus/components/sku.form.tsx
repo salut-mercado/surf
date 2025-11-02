@@ -516,7 +516,7 @@ export function SkuForm({
                 name={field.name}
                 type="number"
                 min={0}
-                step="0.01"
+                step="0.00001"
                 value={field.state.value ?? 0}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.valueAsNumber)}
