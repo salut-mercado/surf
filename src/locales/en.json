@@ -1,4 +1,532 @@
 {
-  "overviewPage": "Overview page"
+  "overviewPage": "Overview page",
+  "common": {
+    "cancel": "Cancel"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "overview": "Overview",
+    "suppliers": "Suppliers",
+    "producers": "Producers",
+    "categories": "Categories",
+    "skus": "SKUs",
+    "stores": "Stores",
+    "createStore": "Create Store",
+    "noStoresAssigned": "No stores assigned"
+  },
+  "user": {
+    "user": "User",
+    "logOut": "Log out",
+    "uiKit": "UI Kit"
+  },
+  "tenant": {
+    "organizations": "Organizations",
+    "selectTenant": "Select Tenant",
+    "loading": "loading..."
+  },
+  "suppliers": {
+    "addSupplier": "Add Supplier",
+    "createSupplier": "Create Supplier",
+    "editSupplier": "Edit Supplier",
+    "columns": {
+      "code": "Code",
+      "name": "Name",
+      "agent": "Agent",
+      "phone": "Phone",
+      "taxId": "Tax ID",
+      "delayDays": "Delay Days",
+      "blocked": "Blocked",
+      "view": "View"
+    },
+    "emptyState": {
+      "title": "No Suppliers Yet",
+      "description": "You haven't created any suppliers yet. Get started by creating your first supplier."
+    },
+    "errorState": {
+      "title": "Unable to load suppliers."
+    },
+    "form": {
+      "fields": {
+        "code": "Code",
+        "name": "Name",
+        "agent": "Agent",
+        "phone": "Phone",
+        "taxId": "Tax ID",
+        "delayDays": "Delay Days",
+        "comments": "Comments",
+        "blocked": "Blocked"
+      },
+      "placeholders": {
+        "code": "SUP-001",
+        "name": "Acme Supplies",
+        "agent": "Jane Doe",
+        "phone": "+1 555 123 4567",
+        "taxId": "PT123456789",
+        "delayDays": "30",
+        "comments": "Add any internal notes..."
+      },
+      "descriptions": {
+        "code": "Unique supplier code for quick lookup.",
+        "name": "Supplier display name.",
+        "agent": "Primary contact person at the supplier.",
+        "phone": "Contact phone incl. country code.",
+        "taxId": "Tax ID (NIF/VAT).",
+        "delayDays": "Default payment delay in days."
+      },
+      "blockedOptions": {
+        "active": "Active",
+        "activeDescription": "Supplier is usable",
+        "blocked": "Blocked",
+        "blockedDescription": "Prevent new transactions"
+      }
+    },
+    "view": {
+      "blocked": "Blocked",
+      "active": "Active",
+      "code": "Code",
+      "edit": "Edit",
+      "sections": {
+        "summary": "Summary",
+        "contact": "Contact",
+        "paymentTerms": "Payment Terms",
+        "notes": "Notes",
+        "tax": "Tax",
+        "banking": "Banking",
+        "otherInformation": "Other Information"
+      },
+      "labels": {
+        "supplierId": "Supplier ID",
+        "updated": "Updated",
+        "agent": "Agent",
+        "phone": "Phone",
+        "delayDays": "Delay Days",
+        "days": "days",
+        "comments": "Comments",
+        "noComments": "No comments",
+        "nifVat": "NIF / VAT"
+      },
+      "descriptions": {
+        "banking": "Bank details and payment methods",
+        "otherInformation": "Additional metadata and flags"
+      },
+      "plannedSection": "Planned section",
+      "toBeAdded": "To be added",
+      "notFound": {
+        "title": "Supplier not found",
+        "description": "The supplier may have been removed."
+      },
+      "error": "Error"
+    }
+  },
+  "producers": {
+    "addProducer": "Add Producer",
+    "createProducer": "Create Producer",
+    "editProducer": "Edit Producer",
+    "columns": {
+      "name": "Name",
+      "taxId": "Tax ID",
+      "minimumStock": "Minimum Stock",
+      "view": "View"
+    },
+    "emptyState": {
+      "title": "No Producers Yet",
+      "description": "You haven't created any producers yet. Get started by creating your first producer."
+    },
+    "errorState": {
+      "title": "Unable to load producers."
+    },
+    "form": {
+      "fields": {
+        "name": "Name",
+        "taxId": "Tax ID",
+        "minimumStock": "Minimum Stock"
+      },
+      "placeholders": {
+        "name": "Producer name",
+        "taxId": "PT123456789",
+        "minimumStock": "0"
+      },
+      "descriptions": {
+        "name": "Producer display name.",
+        "taxId": "Tax ID (NIF/VAT).",
+        "minimumStock": "Required minimum stock for this producer."
+      }
+    },
+    "view": {
+      "producer": "Producer",
+      "taxId": "Tax ID",
+      "edit": "Edit",
+      "sections": {
+        "summary": "Summary",
+        "inventory": "Inventory",
+        "otherInformation": "Other Information"
+      },
+      "labels": {
+        "producerId": "Producer ID",
+        "minimumStock": "Minimum Stock"
+      },
+      "descriptions": {
+        "otherInformation": "Additional metadata"
+      },
+      "plannedSection": "Planned section",
+      "toBeAdded": "To be added",
+      "notFound": {
+        "title": "Producer not found",
+        "description": "The producer may have been removed."
+      },
+      "error": "Error"
+    }
+  },
+  "categories": {
+    "addCategory": "Add Category",
+    "createCategory": "Create Category",
+    "editCategory": "Edit Category",
+    "emptyState": {
+      "title": "No Categories Yet",
+      "description": "You haven't created any categories yet. Get started by creating your first category."
+    },
+    "errorState": {
+      "title": "Unable to load categories."
+    },
+    "tree": {
+      "view": "View",
+      "addSubcategory": "Add Subcategory",
+      "move": "Move",
+      "moving": "Moving",
+      "cannotSelect": "Cannot select this category",
+      "clickToSelect": "Click to select as parent",
+      "movingCategory": "Moving: {{categoryName}}",
+      "cancel": "Cancel",
+      "makeRoot": "Make Root",
+      "movingInProgress": "Moving...",
+      "moveHere": "Move Here",
+      "makeRootHint": "Click \"Move Here\" to make this category a root category",
+      "moveUnderHint": "Click \"Move Here\" to move under: {{categoryName}}"
+    },
+    "table": {
+      "name": "Name",
+      "level": "Level",
+      "parent": "Parent",
+      "view": "View",
+      "none": "-"
+    },
+    "form": {
+      "parentCategory": "Parent Category",
+      "unknownParent": "Unknown parent",
+      "categoryName": "Category Name",
+      "saving": "Saving...",
+      "save": "Save"
+    },
+    "view": {
+      "edit": "Edit",
+      "categoryDetails": "Category details",
+      "id": "ID",
+      "parent": "Parent",
+      "level": "Level",
+      "none": "-"
+    }
+  },
+  "skus": {
+    "addSku": "Add SKU",
+    "createSku": "Create SKU",
+    "editSku": "Edit SKU",
+    "saveSku": "Save SKU",
+    "columns": {
+      "name": "Name",
+      "unit": "Unit",
+      "netWeight": "Net Weight",
+      "view": "View"
+    },
+    "emptyState": {
+      "title": "No SKUs Yet",
+      "description": "You haven't created any SKUs yet. Get started by creating your first SKU."
+    },
+    "errorState": {
+      "title": "Unable to load SKUs."
+    },
+    "view": {
+      "edit": "Edit",
+      "summary": "Summary",
+      "details": "Details",
+      "specifications": "Specifications",
+      "skuId": "SKU ID",
+      "category": "Category",
+      "supplier": "Supplier",
+      "producer": "Producer",
+      "unit": "Unit",
+      "shelfLife": "Shelf Life",
+      "netWeight": "Net Weight",
+      "vat": "VAT %",
+      "alcohol": "Alcohol %",
+      "naturalLoss": "Natural Loss %",
+      "maxOnCheckout": "Max on Checkout",
+      "measurementsAndConstraints": "Measurements and constraints",
+      "freeFormAttributes": "Free-form attributes",
+      "notFound": {
+        "title": "SKU not found",
+        "description": "The SKU may have been removed."
+      },
+      "error": "Error"
+    },
+    "form": {
+      "fields": {
+        "name": "Name",
+        "supplier": "Supplier",
+        "producer": "Producer",
+        "category": "Category",
+        "unit": "Unit",
+        "shelfLifetime": "Shelf Lifetime (days)",
+        "netWeight": "Net Weight",
+        "alcoholPercent": "Alcohol (%)",
+        "vat": "VAT (%)",
+        "naturalLossPercent": "Natural Loss (%)",
+        "maxOnCheckout": "Max on Checkout",
+        "barcode": "Barcode",
+        "wholesalePrice": "Wholesale Price",
+        "specifications": "Specifications"
+      },
+      "placeholders": {
+        "selectSupplier": "Select Supplier",
+        "selectProducer": "Select Producer",
+        "selectCategory": "Select Category",
+        "selectUnit": "Select Unit"
+      },
+      "descriptions": {
+        "name": "Product name displayed across the app.",
+        "supplier": "Supplier providing this SKU.",
+        "producer": "Producer or manufacturer.",
+        "category": "Classification/category for the SKU.",
+        "unit": "Measurement unit used for this SKU.",
+        "shelfLifetime": "How many days the item can be stored.",
+        "netWeight": "Weight excluding packaging.",
+        "alcoholPercent": "Alcohol by volume percent.",
+        "vat": "Value-added tax percent.",
+        "naturalLossPercent": "Expected natural loss percent.",
+        "maxOnCheckout": "Maximum quantity allowed per order.",
+        "barcode": "Barcode (EAN/UPC).",
+        "wholesalePrice": "Base wholesale unit price."
+      },
+      "unitMeasurement": {
+        "unit": "Unit",
+        "gramm": "Gramm",
+        "milliliter": "Milliliter"
+      },
+      "vat": {
+        "title": "VAT (%)",
+        "custom": "Custom",
+        "customDescription": "Custom VAT rate",
+        "presets": {
+          "0": {
+            "title": "0% (temporal)",
+            "description": "Staple food products, extended until end of 2025"
+          },
+          "4": {
+            "title": "4% Superreducido",
+            "description": "IVA Superreducido - Newspapers, books, prescription medicines"
+          },
+          "5": {
+            "title": "5% Reducido",
+            "description": "Oils and pasta, extended until end of 2025"
+          },
+          "10": {
+            "title": "10% Reducido",
+            "description": "Food, restaurants, hotels, transport, cultural events"
+          },
+          "21": {
+            "title": "21% General",
+            "description": "Base rate for most goods and services"
+          }
+        }
+      },
+      "scanBarcode": "Scan Barcode"
+    }
+  },
+  "stores": {
+    "addStore": "Add Store",
+    "createStore": "Create Store",
+    "editStore": "Edit Store",
+    "updateStore": "Update Store",
+    "form": {
+      "fields": {
+        "address": "Address",
+        "legalEntity": "Legal Entity",
+        "price": "Price",
+        "ip": "IP Address",
+        "salesArea": "Sales Area (m²)",
+        "totalArea": "Total Area (m²)",
+        "dateOfFirstSale": "First Sale Date",
+        "workingHours": "Working Hours",
+        "claster": "Cluster",
+        "contacts": "Contacts",
+        "assortmentMatrix": "Assortment Matrix",
+        "serviceProvider": "Service Provider"
+      },
+      "placeholders": {
+        "address": "123 Main St",
+        "legalEntity": "Legal Company Name",
+        "price": "0.00",
+        "ip": "192.168.1.1",
+        "salesArea": "0.00",
+        "totalArea": "0.00",
+        "workingHours": "9:00-18:00",
+        "claster": "A",
+        "contacts": "contact@store.com",
+        "assortmentMatrix": "Matrix ID",
+        "serviceProvider": "Provider Name"
+      },
+      "descriptions": {
+        "address": "Store physical address.",
+        "legalEntity": "Registered business name.",
+        "price": "Store pricing value.",
+        "ip": "Store network IP.",
+        "salesArea": "Sales floor area.",
+        "totalArea": "Total store area.",
+        "dateOfFirstSale": "Date of first sale.",
+        "workingHours": "Store operating hours.",
+        "claster": "Store cluster classification.",
+        "contacts": "Contact information.",
+        "assortmentMatrix": "Product assortment reference.",
+        "serviceProvider": "Service provider name."
+      }
+    },
+    "view": {
+      "edit": "Edit",
+      "error": "Error",
+      "errorLoading": "Unable to load store.",
+      "notFound": {
+        "title": "Store not found",
+        "description": "The store may have been removed."
+      },
+      "sections": {
+        "location": "Location",
+        "businessMetrics": "Business Metrics",
+        "operations": "Operations",
+        "network": "Network",
+        "classification": "Classification",
+        "contacts": "Contacts",
+        "assortmentService": "Assortment & Service",
+        "metadata": "Metadata"
+      },
+      "labels": {
+        "address": "Address",
+        "legalEntity": "Legal Entity",
+        "price": "Price",
+        "salesArea": "Sales Area",
+        "totalArea": "Total Area",
+        "firstSale": "First Sale",
+        "workingHours": "Working Hours",
+        "ipAddress": "IP Address",
+        "cluster": "Cluster",
+        "contactInfo": "Contact Info",
+        "assortmentMatrix": "Assortment Matrix",
+        "serviceProvider": "Service Provider",
+        "storeId": "Store ID",
+        "updated": "Updated",
+        "timestampsAndIds": "Timestamps and IDs"
+      }
+    },
+    "inventory": {
+      "title": "Inventory",
+      "scanArrivalDoc": "Scan arrival doc",
+      "manualAdd": "Manual add",
+      "error": "Error",
+      "errorLoading": "Failed to load inventory data. Please try again.",
+      "noWarehouse": {
+        "title": "No Warehouse",
+        "description": "No warehouse found for this store. Please create a warehouse first."
+      },
+      "columns": {
+        "name": "Name",
+        "barcode": "Barcode",
+        "quantity": "Quantity",
+        "view": "View"
+      },
+      "createInflow": {
+        "title": "Create Order Inflow",
+        "orderDetails": "Order Details",
+        "orderDescription": "Create a new order inflow for this store",
+        "supplier": "Supplier",
+        "selectSupplier": "Select a supplier",
+        "orderStatus": "Order Status",
+        "statusCreated": "Created",
+        "statusSent": "Sent",
+        "statusApproved": "Approved",
+        "statusRejected": "Rejected",
+        "statusChanged": "Changed",
+        "statusDelivered": "Delivered",
+        "items": "Items",
+        "itemsDescription": "Add SKUs to this order",
+        "sku": "SKU",
+        "selectSku": "Select SKU",
+        "quantity": "Quantity",
+        "remove": "Remove",
+        "addItem": "Add Item",
+        "cancel": "Cancel",
+        "createOrder": "Create Order",
+        "creating": "Creating...",
+        "errorSelectSupplier": "Please select a supplier",
+        "errorFillItems": "Please fill in all items with valid quantities",
+        "errorWarehouseRequired": "Warehouse is required for DELIVERED orders",
+        "errorCreateFailed": "Failed to create order inflow",
+        "errorOrderCreated": "Order created but failed to add items. Please try again."
+      },
+      "view": {
+        "error": "Error",
+        "errorLoading": "Failed to load inventory entry. Please try again.",
+        "notFound": {
+          "title": "SKU not found",
+          "description": "The inventory entry may have been removed."
+        },
+        "sections": {
+          "stockInformation": "Stock Information",
+          "skuDetails": "SKU Details",
+          "productInformation": "Product Information"
+        },
+        "labels": {
+          "quantity": "Quantity",
+          "warehouse": "Warehouse",
+          "skuId": "SKU ID",
+          "barcode": "Barcode",
+          "unit": "Unit",
+          "name": "Name",
+          "netWeight": "Net Weight",
+          "shelfLifetime": "Shelf Lifetime"
+        },
+        "days": "days"
+      }
+    },
+    "pos": {
+      "history": "History",
+      "salesHistory": "Sales History",
+      "salesHistoryDescription": "View recent store sales transactions.",
+      "noSalesHistory": "No sales history available.",
+      "checkSummary": "Check Summary",
+      "scanFirstItem": "Scan first item to open a new check",
+      "totalItems": "Total Items",
+      "checkout": "Checkout",
+      "barcodeScanner": "Barcode Scanner",
+      "enterOrScanBarcode": "Enter or scan barcode...",
+      "add": "Add",
+      "scanBarcode": "Scan Barcode",
+      "error": "Error",
+      "success": "Success",
+      "storeSaleCreated": "Store sale created successfully.",
+      "skuNotFound": "SKU not found for barcode: {{barcode}}",
+      "createFailed": "Failed to create store sale",
+      "removeItem": "Remove item?",
+      "removeItemDescription": "Are you sure you want to remove this item from the check?",
+      "remove": "Remove"
+    },
+    "actions": {
+      "pos": "POS",
+      "posDescription": "Point of Sale",
+      "inventory": "Inventory",
+      "inventoryDescription": "Stock Management",
+      "reports": "Reports",
+      "reportsDescription": "Sales & Analytics",
+      "staff": "Staff",
+      "staffDescription": "Employee Management"
+    }
+  }
 }
 

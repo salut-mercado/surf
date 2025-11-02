@@ -1,6 +1,7 @@
 import type { SupplierReturnSchema } from "@salut-mercado/octo-client";
 import { useForm } from "@tanstack/react-form";
 import { UserCheck2Icon, UserX2Icon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { BooleanCards } from "~/components/ui/boolean-cards";
 import { Button } from "~/components/ui/button";
 import { FieldDescription } from "~/components/ui/field";
@@ -35,8 +36,10 @@ export function SupplierForm({
   onSubmit,
   initialValues = defaultValues,
   isSubmitting = false,
-  submitLabel = "Create Supplier",
+  submitLabel,
 }: CreateSupplierFormProps) {
+  const { t } = useTranslation();
+  const defaultSubmitLabel = submitLabel || t("suppliers.createSupplier");
   const form = useForm({
     defaultValues: initialValues,
     onSubmit: async ({ value }) => {
@@ -79,17 +82,17 @@ export function SupplierForm({
           name="code"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Code</Label>
+              <Label htmlFor={field.name}>{t("suppliers.form.fields.code")}</Label>
               <Input
                 id={field.name}
                 name={field.name}
-                placeholder="SUP-001"
+                placeholder={t("suppliers.form.placeholders.code")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
               <FieldDescription>
-                Unique supplier code for quick lookup.
+                {t("suppliers.form.descriptions.code")}
               </FieldDescription>
             </div>
           )}
@@ -98,16 +101,16 @@ export function SupplierForm({
           name="name"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Name</Label>
+              <Label htmlFor={field.name}>{t("suppliers.form.fields.name")}</Label>
               <Input
                 id={field.name}
                 name={field.name}
-                placeholder="Acme Supplies"
+                placeholder={t("suppliers.form.placeholders.name")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>Supplier display name.</FieldDescription>
+              <FieldDescription>{t("suppliers.form.descriptions.name")}</FieldDescription>
             </div>
           )}
         />
@@ -115,17 +118,17 @@ export function SupplierForm({
           name="agent"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Agent</Label>
+              <Label htmlFor={field.name}>{t("suppliers.form.fields.agent")}</Label>
               <Input
                 id={field.name}
                 name={field.name}
-                placeholder="Jane Doe"
+                placeholder={t("suppliers.form.placeholders.agent")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
               <FieldDescription>
-                Primary contact person at the supplier.
+                {t("suppliers.form.descriptions.agent")}
               </FieldDescription>
             </div>
           )}
@@ -134,17 +137,17 @@ export function SupplierForm({
           name="phone"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Phone</Label>
+              <Label htmlFor={field.name}>{t("suppliers.form.fields.phone")}</Label>
               <Input
                 id={field.name}
                 name={field.name}
-                placeholder="+1 555 123 4567"
+                placeholder={t("suppliers.form.placeholders.phone")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
               <FieldDescription>
-                Contact phone incl. country code.
+                {t("suppliers.form.descriptions.phone")}
               </FieldDescription>
             </div>
           )}
@@ -153,16 +156,16 @@ export function SupplierForm({
           name="nif"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Tax ID</Label>
+              <Label htmlFor={field.name}>{t("suppliers.form.fields.taxId")}</Label>
               <Input
                 id={field.name}
                 name={field.name}
-                placeholder="PT123456789"
+                placeholder={t("suppliers.form.placeholders.taxId")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>Tax ID (NIF/VAT).</FieldDescription>
+              <FieldDescription>{t("suppliers.form.descriptions.taxId")}</FieldDescription>
             </div>
           )}
         />
@@ -170,18 +173,18 @@ export function SupplierForm({
           name="delayDays"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Delay Days</Label>
+              <Label htmlFor={field.name}>{t("suppliers.form.fields.delayDays")}</Label>
               <Input
                 id={field.name}
                 name={field.name}
                 type="number"
-                placeholder="30"
+                placeholder={t("suppliers.form.placeholders.delayDays")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.valueAsNumber)}
               />
               <FieldDescription>
-                Default payment delay in days.
+                {t("suppliers.form.descriptions.delayDays")}
               </FieldDescription>
             </div>
           )}
@@ -193,11 +196,11 @@ export function SupplierForm({
           name="comments"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Comments</Label>
+              <Label htmlFor={field.name}>{t("suppliers.form.fields.comments")}</Label>
               <Textarea
                 id={field.name}
                 name={field.name}
-                placeholder="Add any internal notes..."
+                placeholder={t("suppliers.form.placeholders.comments")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
@@ -209,21 +212,21 @@ export function SupplierForm({
           name="blocked"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>Blocked</Label>
+              <Label htmlFor={field.name}>{t("suppliers.form.fields.blocked")}</Label>
               <BooleanCards
                 value={field.state.value ? "true" : "false"}
                 onChange={(val) => field.handleChange(val === "true")}
                 options={[
                   {
                     value: "false",
-                    title: "Active",
-                    description: "Supplier is usable",
+                    title: t("suppliers.form.blockedOptions.active"),
+                    description: t("suppliers.form.blockedOptions.activeDescription"),
                     icon: <UserCheck2Icon className="size-6" />,
                   },
                   {
                     value: "true",
-                    title: "Blocked",
-                    description: "Prevent new transactions",
+                    title: t("suppliers.form.blockedOptions.blocked"),
+                    description: t("suppliers.form.blockedOptions.blockedDescription"),
                     icon: <UserX2Icon className="size-6" />,
                   },
                 ]}
@@ -267,7 +270,7 @@ export function SupplierForm({
             className="w-full"
             disabled={!canSubmit || isSubmitting}
           >
-            {isSubmitting ? <Spinner /> : submitLabel}
+            {isSubmitting ? <Spinner /> : defaultSubmitLabel}
           </Button>
         )}
       />

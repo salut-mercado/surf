@@ -1,6 +1,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { type VariantProps } from "class-variance-authority";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   Tooltip,
@@ -30,6 +31,7 @@ export function TenantSwitcher({
 }: {
   state?: "expanded" | "collapsed";
 }) {
+  const { t } = useTranslation();
   const isMobile = useIsMobile();
   const queryClient = useQueryClient();
   const tenantId = useTenantStore((s) => s.tenantId);
@@ -60,10 +62,10 @@ export function TenantSwitcher({
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
-                  {activeTenant?.name ?? "Select Tenant"}
+                  {activeTenant?.name ?? t("tenant.selectTenant")}
                 </span>
                 <span className="truncate text-xs">
-                  {activeTenant?.id ?? "loading..."}
+                  {activeTenant?.id ?? t("tenant.loading")}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
@@ -76,17 +78,17 @@ export function TenantSwitcher({
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-muted-foreground text-xs">
-              Organizations
+              {t("tenant.organizations")}
             </DropdownMenuLabel>
             {(() => {
               const list =
                 (tenants as TenantsResponse | undefined)?.items ?? [];
               return list;
-            })().map((t: TenantItem) => (
+            })().map((tenant: TenantItem) => (
               <DropdownMenuItem
-                key={t.id}
+                key={tenant.id}
                 onClick={() => {
-                  setTenantId(t.id);
+                  setTenantId(tenant.id);
                   queryClient.invalidateQueries({ predicate: () => true });
                 }}
                 className="gap-2 p-2"
@@ -94,7 +96,7 @@ export function TenantSwitcher({
                 <div className="flex size-6 items-center justify-center rounded-md border">
                   <IconBuildingFactory2 className="size-3.5 shrink-0" />
                 </div>
-                {t.name ?? t.id}
+                {tenant.name ?? tenant.id}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>

@@ -1,5 +1,6 @@
 import { skipToken } from "@tanstack/react-query";
 import { ChevronLeft } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link, useParams } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Badge } from "~/components/ui/badge";
@@ -15,6 +16,7 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { api } from "~/hooks/api";
 
 const ViewSkuPage = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const { data, isLoading, isError, error } = api.skus.useGetById(
     id ? { id } : skipToken
@@ -23,7 +25,7 @@ const ViewSkuPage = () => {
   return (
     <DashboardPage>
       {isLoading && <Skeleton className="h-10 w-full" />}
-      {isError && <div>{(error as Error)?.message ?? "Error"}</div>}
+      {isError && <div>{(error as Error)?.message ?? t("skus.view.error")}</div>}
       {!isLoading && !isError && data && (
         <div className="space-y-4">
           <div className="flex items-start justify-between">
@@ -39,63 +41,63 @@ const ViewSkuPage = () => {
               </div>
             </div>
             <Button asChild size="sm">
-              <Link href={`/${id}/edit`}>Edit</Link>
+              <Link href={`/${id}/edit`}>{t("skus.view.edit")}</Link>
             </Button>
           </div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <Card>
               <CardHeader>
-                <CardTitle>Summary</CardTitle>
+                <CardTitle>{t("skus.view.summary")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="text-sm text-muted-foreground">SKU ID</div>
+                <div className="text-sm text-muted-foreground">{t("skus.view.skuId")}</div>
                 <div className="font-mono text-sm break-all">{data.id}</div>
-                <div className="text-sm text-muted-foreground">Category</div>
+                <div className="text-sm text-muted-foreground">{t("skus.view.category")}</div>
                 <div className="font-medium break-all">{data.categoryId}</div>
-                <div className="text-sm text-muted-foreground">Supplier</div>
+                <div className="text-sm text-muted-foreground">{t("skus.view.supplier")}</div>
                 <div className="font-medium break-all">{data.supplierId}</div>
-                <div className="text-sm text-muted-foreground">Producer</div>
+                <div className="text-sm text-muted-foreground">{t("skus.view.producer")}</div>
                 <div className="font-medium break-all">{data.producerId}</div>
               </CardContent>
             </Card>
 
             <Card className="md:col-span-2">
               <CardHeader>
-                <CardTitle>Details</CardTitle>
-                <CardDescription>Measurements and constraints</CardDescription>
+                <CardTitle>{t("skus.view.details")}</CardTitle>
+                <CardDescription>{t("skus.view.measurementsAndConstraints")}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
-                    <div className="text-sm text-muted-foreground">Unit</div>
+                    <div className="text-sm text-muted-foreground">{t("skus.view.unit")}</div>
                     <div className="font-medium">{data.unitMeasurement}</div>
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">Shelf Life</div>
+                    <div className="text-sm text-muted-foreground">{t("skus.view.shelfLife")}</div>
                     <div className="font-medium">{data.shelfLifetime}</div>
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">Net Weight</div>
+                    <div className="text-sm text-muted-foreground">{t("skus.view.netWeight")}</div>
                     <div className="font-medium">{data.netWeight}</div>
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">VAT %</div>
+                    <div className="text-sm text-muted-foreground">{t("skus.view.vat")}</div>
                     <div className="font-medium">{data.vatPercent}</div>
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">Alcohol %</div>
+                    <div className="text-sm text-muted-foreground">{t("skus.view.alcohol")}</div>
                     <div className="font-medium">{data.alcoholPercent}</div>
                   </div>
                   <div>
                     <div className="text-sm text-muted-foreground">
-                      Natural Loss %
+                      {t("skus.view.naturalLoss")}
                     </div>
                     <div className="font-medium">{data.naturalLossPercent}</div>
                   </div>
                   <div>
                     <div className="text-sm text-muted-foreground">
-                      Max on Checkout
+                      {t("skus.view.maxOnCheckout")}
                     </div>
                     <div className="font-medium">{data.maxOnCheckout}</div>
                   </div>
@@ -105,8 +107,8 @@ const ViewSkuPage = () => {
 
             <Card className="md:col-span-3">
               <CardHeader>
-                <CardTitle>Specifications</CardTitle>
-                <CardDescription>Free-form attributes</CardDescription>
+                <CardTitle>{t("skus.view.specifications")}</CardTitle>
+                <CardDescription>{t("skus.view.freeFormAttributes")}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="font-medium whitespace-pre-wrap break-words">
@@ -120,8 +122,8 @@ const ViewSkuPage = () => {
       {!isLoading && !isError && !data && (
         <Card>
           <CardHeader>
-            <CardTitle>SKU not found</CardTitle>
-            <CardDescription>The SKU may have been removed.</CardDescription>
+            <CardTitle>{t("skus.view.notFound.title")}</CardTitle>
+            <CardDescription>{t("skus.view.notFound.description")}</CardDescription>
           </CardHeader>
         </Card>
       )}

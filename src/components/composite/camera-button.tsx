@@ -1,6 +1,7 @@
 import { IconCamera, type TablerIcon } from "@tabler/icons-react";
 import type { LucideIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -57,6 +58,7 @@ export const CameraButton = ({
   onBarcodeDetected,
   scanInterval = 200,
 }: CameraButtonProps) => {
+  const { t } = useTranslation();
   const preferredCameraDeviceId = useGlobalStore(
     (state) => state.preferredCameraDeviceId
   );
@@ -177,7 +179,7 @@ export const CameraButton = ({
           />
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

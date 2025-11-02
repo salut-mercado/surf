@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 import { Button } from "~/components/ui/button";
 import {
@@ -23,6 +24,7 @@ interface CategoriesTreeTableProps {
 }
 
 export function CategoriesTreeTable({ categories }: CategoriesTreeTableProps) {
+  const { t } = useTranslation();
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
   const toggleExpand = (id: string) => {
@@ -55,9 +57,9 @@ export function CategoriesTreeTable({ categories }: CategoriesTreeTableProps) {
   const rows = buildTree();
 
   const getParentName = (parentId?: string | null) => {
-    if (!parentId) return "-";
+    if (!parentId) return t("categories.table.none");
     const parent = categories.find((c) => c.id === parentId);
-    return parent?.categoryName ?? "-";
+    return parent?.categoryName ?? t("categories.table.none");
   };
 
   return (
@@ -66,9 +68,9 @@ export function CategoriesTreeTable({ categories }: CategoriesTreeTableProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Level</TableHead>
-              <TableHead className="pl-30">Parent</TableHead>
+              <TableHead>{t("categories.table.name")}</TableHead>
+              <TableHead>{t("categories.table.level")}</TableHead>
+              <TableHead className="pl-30">{t("categories.table.parent")}</TableHead>
               <TableHead />
             </TableRow>
           </TableHeader>
@@ -108,7 +110,7 @@ export function CategoriesTreeTable({ categories }: CategoriesTreeTableProps) {
                     <div className="inline-block">
                       <Button variant="ghost" asChild>
                         <Link href={`/${row.id}`}>
-                          View <ChevronRight className="size-4" />
+                          {t("categories.table.view")} <ChevronRight className="size-4" />
                         </Link>
                       </Button>
                     </div>

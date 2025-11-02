@@ -1,4 +1,5 @@
 import { Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Button } from "~/components/ui/button";
@@ -10,6 +11,7 @@ import { CategoryTree } from "./components/category-tree";
 import { Card, CardContent } from "~/components/ui/card";
 
 export default function CategoriesPage() {
+  const { t } = useTranslation();
   const categories = api.categories.useGetAll({ limit: 1000 });
 
   const list = categories.data ?? [];
@@ -27,7 +29,7 @@ export default function CategoriesPage() {
             <Button asChild>
               <Link href="/create">
                 <Plus className="size-4" />
-                Add Category
+                {t("categories.addCategory")}
               </Link>
             </Button>
           </div>

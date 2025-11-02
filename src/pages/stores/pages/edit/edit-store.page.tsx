@@ -1,4 +1,5 @@
 import { skipToken } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { useLocation, useParams } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Skeleton } from "~/components/ui/skeleton";
@@ -6,13 +7,14 @@ import { api } from "~/hooks/api";
 import { StoreForm } from "../../components/store.form";
 
 const EditStorePage = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const updateStore = api.stores.useUpdate();
   const [, setLocation] = useLocation();
   const store = api.stores.useGetById(id ? { id } : skipToken);
   if (store.isLoading) return <Skeleton className="h-10 w-full" />;
-  if (store.isError) return <div>Error</div>;
-  if (!store.data) return <div>Store not found</div>;
+  if (store.isError) return <div>{t("stores.view.error")}</div>;
+  if (!store.data) return <div>{t("stores.view.notFound.title")}</div>;
   return (
     <DashboardPage>
       <StoreForm
@@ -40,7 +42,7 @@ const EditStorePage = () => {
         }}
         isSubmitting={updateStore.isPending}
         initialValues={store.data}
-        submitLabel="Update Store"
+        submitLabel={t("stores.updateStore")}
       />
     </DashboardPage>
   );

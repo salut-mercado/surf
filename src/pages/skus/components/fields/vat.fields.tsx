@@ -1,6 +1,7 @@
 import { IconPencil } from "@tabler/icons-react";
 import type { AnyFieldApi } from "@tanstack/react-form";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "~/components/ui/button";
 import { FieldDescription, FieldError } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
@@ -10,12 +11,13 @@ import { cn } from "~/lib/utils";
 export const ALLOWED_VATS = [0, 4, 5, 10, 21] as const;
 
 export const VatField = <T extends AnyFieldApi>({ field }: { field: T }) => {
+  const { t } = useTranslation();
   const [custom, setCustom] = useState(
     !ALLOWED_VATS.includes(field.state.value) || false
   );
   return (
     <>
-      <Label htmlFor={field.name}>VAT (%)</Label>
+      <Label htmlFor={field.name}>{t("skus.form.vat.title")}</Label>
       <div
         className={cn(
           "w-full grid gap-2",
@@ -27,40 +29,40 @@ export const VatField = <T extends AnyFieldApi>({ field }: { field: T }) => {
             <VatPreset
               value={ALLOWED_VATS[0]}
               field={field}
-              title="0% (temporal)"
-              description="Staple food products, extended until end of 2025"
+              title={t("skus.form.vat.presets.0.title")}
+              description={t("skus.form.vat.presets.0.description")}
             />
             <VatPreset
               value={ALLOWED_VATS[1]}
               field={field}
-              title="4% Superreducido"
-              description="IVA Superreducido - Newspapers, books, prescription medicines"
+              title={t("skus.form.vat.presets.4.title")}
+              description={t("skus.form.vat.presets.4.description")}
             />
             <VatPreset
               value={ALLOWED_VATS[2]}
               field={field}
-              title="5% Reducido"
-              description="Oils and pasta, extended until end of 2025"
+              title={t("skus.form.vat.presets.5.title")}
+              description={t("skus.form.vat.presets.5.description")}
             />
             <VatPreset
               value={ALLOWED_VATS[3]}
               field={field}
-              title="10% Reducido"
-              description="Food, restaurants, hotels, transport, cultural events"
+              title={t("skus.form.vat.presets.10.title")}
+              description={t("skus.form.vat.presets.10.description")}
             />
             <VatPreset
               value={ALLOWED_VATS[4]}
               field={field}
-              title="21% General"
-              description="Base rate for most goods and services"
+              title={t("skus.form.vat.presets.21.title")}
+              description={t("skus.form.vat.presets.21.description")}
             />
           </>
         )}
         <VatPreset
           field={field}
           value={-1}
-          title="Custom"
-          description="Custom VAT rate"
+          title={t("skus.form.vat.custom")}
+          description={t("skus.form.vat.customDescription")}
           onClick={() =>
             setCustom((c) => {
               if (!c) {
@@ -90,7 +92,7 @@ export const VatField = <T extends AnyFieldApi>({ field }: { field: T }) => {
         className={custom ? undefined : "hidden"}
       />
       <FieldError errors={field.state.meta.isTouched ? field.state.meta.errors : undefined} />
-      <FieldDescription>Value-added tax percent.</FieldDescription>
+      <FieldDescription>{t("skus.form.descriptions.vat")}</FieldDescription>
     </>
   );
 };

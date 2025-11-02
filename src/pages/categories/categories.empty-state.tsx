@@ -1,4 +1,5 @@
 import { IconFolderPlus } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 
 import { Button } from "~/components/ui/button";
@@ -12,22 +13,22 @@ import {
 } from "~/components/ui/empty";
 
 export const CategoriesEmptyState = () => {
+  const { t } = useTranslation();
   return (
     <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <IconFolderPlus />
         </EmptyMedia>
-        <EmptyTitle>No Categories Yet</EmptyTitle>
+        <EmptyTitle>{t("categories.emptyState.title")}</EmptyTitle>
         <EmptyDescription>
-          You haven't created any categories yet. Get started by creating your
-          first category.
+          {t("categories.emptyState.description")}
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <div className="flex gap-2">
           <Button asChild>
-            <Link href="/create">Create Category</Link>
+            <Link href="/create">{t("categories.createCategory")}</Link>
           </Button>
         </div>
       </EmptyContent>
