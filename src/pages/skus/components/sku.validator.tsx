@@ -1,6 +1,5 @@
 import { UnitMeasurementEnum } from "@salut-mercado/octo-client";
 import { z } from "zod/v4";
-import { ALLOWED_VATS } from "./fields/vat.fields";
 
 export const skuSchema = z.object({
   id: z.string().optional(),
@@ -13,13 +12,7 @@ export const skuSchema = z.object({
   unitMeasurement: z.enum(UnitMeasurementEnum),
   shelfLifetime: z.number().min(0),
   netWeight: z.number().min(0),
-  vatPercent: z.union([
-    z.literal(ALLOWED_VATS[0]),
-    z.literal(ALLOWED_VATS[1]),
-    z.literal(ALLOWED_VATS[2]),
-    z.literal(ALLOWED_VATS[3]),
-    z.literal(ALLOWED_VATS[4]),
-  ]),
+  vatPercent: z.number().min(0).max(100).multipleOf(0.01),
   alcoholPercent: z.number().min(0).max(100),
   naturalLossPercent: z.number().min(0).max(100),
   maxOnCheckout: z.number().min(0),

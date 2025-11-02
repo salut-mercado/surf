@@ -2,7 +2,7 @@ import type { SKUReturnSchema, SKUSchema } from "@salut-mercado/octo-client";
 import { UnitMeasurementEnum } from "@salut-mercado/octo-client";
 import { useForm } from "@tanstack/react-form";
 import { Button } from "~/components/ui/button";
-import { FieldDescription } from "~/components/ui/field";
+import { FieldDescription, FieldError } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import {
@@ -79,8 +79,6 @@ export function SkuForm({
     onSubmit: async ({ value }) => onSubmit(value as SkuFormValues),
     validators: {
       onChange: skuSchema,
-      onMount: skuSchema,
-      onBlur: skuSchema,
     },
   });
 
@@ -107,6 +105,13 @@ export function SkuForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
+              <FieldError
+                errors={
+                  field.state.meta.isTouched
+                    ? field.state.meta.errors
+                    : undefined
+                }
+              />
               <FieldDescription>
                 Product name displayed across the app.
               </FieldDescription>
@@ -122,6 +127,9 @@ export function SkuForm({
               <Select
                 value={field.state.value ?? ""}
                 onValueChange={(v) => field.handleChange(v)}
+                onOpenChange={(open) => {
+                  if (!open) field.handleBlur();
+                }}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select Supplier" />
@@ -137,6 +145,13 @@ export function SkuForm({
                     ))}
                 </SelectContent>
               </Select>
+              <FieldError
+                errors={
+                  field.state.meta.isTouched
+                    ? field.state.meta.errors
+                    : undefined
+                }
+              />
               <FieldDescription>Supplier providing this SKU.</FieldDescription>
             </div>
           )}
@@ -150,6 +165,9 @@ export function SkuForm({
               <Select
                 value={field.state.value ?? ""}
                 onValueChange={(v) => field.handleChange(v)}
+                onOpenChange={(open) => {
+                  if (!open) field.handleBlur();
+                }}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select Producer" />
@@ -164,6 +182,13 @@ export function SkuForm({
                     ))}
                 </SelectContent>
               </Select>
+              <FieldError
+                errors={
+                  field.state.meta.isTouched
+                    ? field.state.meta.errors
+                    : undefined
+                }
+              />
               <FieldDescription>Producer or manufacturer.</FieldDescription>
             </div>
           )}
@@ -177,6 +202,9 @@ export function SkuForm({
               <Select
                 value={field.state.value ?? ""}
                 onValueChange={(v) => field.handleChange(v)}
+                onOpenChange={(open) => {
+                  if (!open) field.handleBlur();
+                }}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select Category" />
@@ -198,6 +226,13 @@ export function SkuForm({
                   ))}
                 </SelectContent>
               </Select>
+              <FieldError
+                errors={
+                  field.state.meta.isTouched
+                    ? field.state.meta.errors
+                    : undefined
+                }
+              />
               <FieldDescription>
                 Classification/category for the SKU.
               </FieldDescription>
@@ -215,6 +250,9 @@ export function SkuForm({
                 onValueChange={(v) =>
                   field.handleChange(v as UnitMeasurementEnum)
                 }
+                onOpenChange={(open) => {
+                  if (!open) field.handleBlur();
+                }}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select Unit" />
@@ -227,6 +265,13 @@ export function SkuForm({
                   ))}
                 </SelectContent>
               </Select>
+              <FieldError
+                errors={
+                  field.state.meta.isTouched
+                    ? field.state.meta.errors
+                    : undefined
+                }
+              />
               <FieldDescription>
                 Measurement unit used for this SKU.
               </FieldDescription>
@@ -247,6 +292,13 @@ export function SkuForm({
                 value={field.state.value ?? 0}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+              />
+              <FieldError
+                errors={
+                  field.state.meta.isTouched
+                    ? field.state.meta.errors
+                    : undefined
+                }
               />
               <FieldDescription>
                 How many days the item can be stored.
@@ -270,6 +322,13 @@ export function SkuForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.valueAsNumber)}
               />
+              <FieldError
+                errors={
+                  field.state.meta.isTouched
+                    ? field.state.meta.errors
+                    : undefined
+                }
+              />
               <FieldDescription>Weight excluding packaging.</FieldDescription>
             </div>
           )}
@@ -290,6 +349,13 @@ export function SkuForm({
                 value={field.state.value ?? 0}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+              />
+              <FieldError
+                errors={
+                  field.state.meta.isTouched
+                    ? field.state.meta.errors
+                    : undefined
+                }
               />
               <FieldDescription>Alcohol by volume percent.</FieldDescription>
             </div>
@@ -321,6 +387,13 @@ export function SkuForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.valueAsNumber)}
               />
+              <FieldError
+                errors={
+                  field.state.meta.isTouched
+                    ? field.state.meta.errors
+                    : undefined
+                }
+              />
               <FieldDescription>
                 Expected natural loss percent.
               </FieldDescription>
@@ -341,6 +414,13 @@ export function SkuForm({
                 value={field.state.value ?? 0}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+              />
+              <FieldError
+                errors={
+                  field.state.meta.isTouched
+                    ? field.state.meta.errors
+                    : undefined
+                }
               />
               <FieldDescription>
                 Maximum quantity allowed per order.
@@ -414,6 +494,13 @@ export function SkuForm({
                   variant="outline"
                 />
               </div>
+              <FieldError
+                errors={
+                  field.state.meta.isTouched
+                    ? field.state.meta.errors
+                    : undefined
+                }
+              />
               <FieldDescription>Barcode (EAN/UPC).</FieldDescription>
             </div>
           )}
@@ -434,6 +521,13 @@ export function SkuForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.valueAsNumber)}
               />
+              <FieldError
+                errors={
+                  field.state.meta.isTouched
+                    ? field.state.meta.errors
+                    : undefined
+                }
+              />
               <FieldDescription>Base wholesale unit price.</FieldDescription>
             </div>
           )}
@@ -452,6 +546,11 @@ export function SkuForm({
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
               className="min-h-[100px]"
+            />
+            <FieldError
+              errors={
+                field.state.meta.isTouched ? field.state.meta.errors : undefined
+              }
             />
           </div>
         )}

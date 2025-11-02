@@ -2,7 +2,7 @@ import { IconPencil } from "@tabler/icons-react";
 import type { AnyFieldApi } from "@tanstack/react-form";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
-import { FieldDescription } from "~/components/ui/field";
+import { FieldDescription, FieldError } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { cn } from "~/lib/utils";
@@ -89,6 +89,7 @@ export const VatField = <T extends AnyFieldApi>({ field }: { field: T }) => {
         onChange={(e) => field.handleChange(e.target.valueAsNumber)}
         className={custom ? undefined : "hidden"}
       />
+      <FieldError errors={field.state.meta.isTouched ? field.state.meta.errors : undefined} />
       <FieldDescription>Value-added tax percent.</FieldDescription>
     </>
   );
