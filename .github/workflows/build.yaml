@@ -5,21 +5,34 @@ on:
     branches:
       - release
 
-jobs:
-  generate-and-publish:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: read
 
+# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: "20"
+          cache: 'pnpm'
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v3
@@ -49,17 +62,22 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Cleanup auth files
+        run: rm -f .npmrc
+
       - name: Build
         run: pnpm build
         env:
           VITE_API_URL: ${{ env.VITE_API_URL }}
 
-      - name: Cleanup auth files
-        run: rm -f .npmrc
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: pages
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
