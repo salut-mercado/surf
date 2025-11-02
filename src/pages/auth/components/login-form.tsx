@@ -45,7 +45,7 @@ export function LoginForm({
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              loginWithPassword.mutate({ email, password });
+              loginWithPassword.mutateAsync({ email, password });
             }}
           >
             <FieldGroup>
