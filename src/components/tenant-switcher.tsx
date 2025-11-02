@@ -44,16 +44,13 @@ export function TenantSwitcher({
     return found ?? list[0];
   }, [tenants, tenantId]);
 
-  if (isLoading || !activeTenant) {
-    return null;
-  }
-
   return (
     <ul className="flex w-full min-w-0 flex-col gap-1">
       <li>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <MenuButton
+              disabled={isLoading || !activeTenant}
               size="lg"
               state={state}
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
@@ -63,10 +60,10 @@ export function TenantSwitcher({
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
-                  {activeTenant?.name ?? "Tenant"}
+                  {activeTenant?.name ?? "Select Tenant"}
                 </span>
                 <span className="truncate text-xs">
-                  {activeTenant?.id ?? ""}
+                  {activeTenant?.id ?? "loading..."}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto" />

@@ -28,6 +28,10 @@ export default defineConfig({
       workbox: {
         runtimeCaching: [
           {
+            urlPattern: /\/api\/auth\/.*/i,
+            handler: "NetworkOnly",
+          },
+          {
             urlPattern: /\/api\/.*/i,
             handler: "NetworkFirst",
             options: {

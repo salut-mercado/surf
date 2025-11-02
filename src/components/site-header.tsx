@@ -5,6 +5,7 @@ import { Link } from "wouter";
 import { Button } from "./ui/button";
 import { ChevronLeft } from "lucide-react";
 import { LanguageToggle } from "./common/language-toggle";
+import { OnlineIndicator } from "./common/online-indicator";
 
 export function SiteHeader() {
   const [isPos, storeId] = useIsPos();
@@ -21,6 +22,7 @@ export function SiteHeader() {
           <SidebarTrigger className="-ml-1" />
         )}
         <div className="ml-auto flex items-center gap-2">
+          <OnlineIndicator className="h-7" />
           <LanguageToggle variant="ghost" className="size-7" />
           <ThemeToggle variant="ghost" className="size-7" />
         </div>
