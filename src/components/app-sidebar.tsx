@@ -71,7 +71,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const navMain = React.useMemo(() => {
     if (!selectedTenant) {
-      return [];
+      return data.navMain;
     }
     const allStores = stores.data?.pages.flatMap((page) => page.items) ?? [];
     if (!stores.data) {
