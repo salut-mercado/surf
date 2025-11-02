@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
       refetchOnReconnect: false,
       refetchIntervalInBackground: false,
     },
-    mutations: { networkMode: "online" },
+    mutations: { networkMode: "offlineFirst" },
   },
 });
 
