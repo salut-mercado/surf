@@ -8,6 +8,7 @@ import {
   X,
   Check,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "~/components/ui/button";
 import { Badge } from "~/components/ui/badge";
 import type { CategoryReturnSchema } from "@salut-mercado/octo-client";
@@ -65,6 +66,7 @@ function CategoryTreeItem({
   onMoveStart?: (categoryId: string) => void;
   onParentSelect?: (parentId: string | null) => void;
 }) {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(true);
   const hasChildren = category.children.length > 0;
   const isSelected = selectedParentId === category.id;
@@ -101,22 +103,22 @@ function CategoryTreeItem({
             setIsExpanded(!isExpanded);
           }}
           disabled={!hasChildren}
-          className="h-6 w-6 p-0 hover:bg-accent-foreground/10"
+          className="size-6 p-0 hover:bg-accent-foreground/10"
         >
           {hasChildren ? (
             isExpanded ? (
-              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              <ChevronDown className="size-4 text-muted-foreground" />
             ) : (
-              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+              <ChevronRight className="size-4 text-muted-foreground" />
             )
           ) : (
-            <div className="h-4 w-4" />
+            <div className="size-4" />
           )}
         </Button>
 
         {isMoving && (
-          <div className="h-6 w-6 flex items-center justify-center">
-            {isSelected && <Check className="h-4 w-4 text-foreground" />}
+          <div className="size-6 flex items-center justify-center">
+            {isSelected && <Check className="size-4 text-foreground" />}
           </div>
         )}
 
@@ -134,7 +136,7 @@ function CategoryTreeItem({
           )}
           {isBeingMoved && (
             <Badge variant="destructive" className="h-5 px-2 text-xs">
-              Moving
+              {t("categories.tree.moving")}
             </Badge>
           )}
         </div>
@@ -148,8 +150,8 @@ function CategoryTreeItem({
               asChild
             >
               <Link href={`/${category.id}`}>
-                <Eye className="h-3.5 w-3.5" />
-                View
+                <Eye className="size-3.5" />
+                {t("categories.tree.view")}
               </Link>
             </Button>
             <Button
@@ -159,8 +161,8 @@ function CategoryTreeItem({
               asChild
             >
               <Link href={`/create?parent=${category.id}`}>
-                <Plus className="h-3.5 w-3.5" />
-                Add Subcategory
+                <Plus className="size-3.5" />
+                {t("categories.tree.addSubcategory")}
               </Link>
             </Button>
             <Button
@@ -172,8 +174,8 @@ function CategoryTreeItem({
                 onMoveStart?.(category.id);
               }}
             >
-              <Move className="h-3.5 w-3.5" />
-              Move
+              <Move className="size-3.5" />
+              {t("categories.tree.move")}
             </Button>
           </div>
         )}
@@ -181,8 +183,8 @@ function CategoryTreeItem({
         {isMoving && !isBeingMoved && (
           <div className="text-xs text-muted-foreground">
             {isDisabledAsParent
-              ? "Cannot select this category"
-              : "Click to select as parent"}
+              ? t("categories.tree.cannotSelect")
+              : t("categories.tree.clickToSelect")}
           </div>
         )}
       </div>
@@ -213,6 +215,7 @@ interface CategoryTreeProps {
 }
 
 export function CategoryTree({ categories }: CategoryTreeProps) {
+  const { t } = useTranslation();
   const [movingCategoryId, setMovingCategoryId] = useState<string | null>(null);
   const [selectedParentId, setSelectedParentId] = useState<string | null>(null);
   const [isMoving, setIsMoving] = useState(false);
@@ -298,9 +301,9 @@ export function CategoryTree({ categories }: CategoryTreeProps) {
         <div className="mb-4 p-3 bg-muted border rounded-md">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Move className="h-4 w-4 text-muted-foreground" />
+              <Move className="size-4 text-muted-foreground" />
               <span className="text-sm font-medium text-foreground">
-                Moving: {movingCategory?.categoryName}
+                {t("categories.tree.movingCategory", { categoryName: movingCategory?.categoryName })}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -311,7 +314,7 @@ export function CategoryTree({ categories }: CategoryTreeProps) {
                 className="text-xs"
               >
                 <X className="h-3 w-3 mr-1" />
-                Cancel
+                {t("categories.tree.cancel")}
               </Button>
               <ButtonGroup>
                 {selectedParentId !== null && (
@@ -321,7 +324,7 @@ export function CategoryTree({ categories }: CategoryTreeProps) {
                     onClick={() => handleParentSelect(null)}
                     className="text-xs"
                   >
-                    Make Root
+                    {t("categories.tree.makeRoot")}
                   </Button>
                 )}
                 <Button
@@ -335,15 +338,15 @@ export function CategoryTree({ categories }: CategoryTreeProps) {
                   className="text-xs"
                 >
                   <Check className="h-3 w-3 mr-1" />
-                  {isMoving ? "Moving..." : "Move Here"}
+                  {isMoving ? t("categories.tree.movingInProgress") : t("categories.tree.moveHere")}
                 </Button>
               </ButtonGroup>
             </div>
           </div>
           <p className="text-xs text-muted-foreground mt-2">
             {selectedParentId === null
-              ? 'Click "Move Here" to make this category a root category'
-              : `Click "Move Here" to move under: ${categories.find((c) => c.id === selectedParentId)?.categoryName ?? ""}`}
+              ? t("categories.tree.makeRootHint")
+              : t("categories.tree.moveUnderHint", { categoryName: categories.find((c) => c.id === selectedParentId)?.categoryName ?? "" })}
           </p>
         </div>
       )}

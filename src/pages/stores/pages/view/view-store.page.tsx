@@ -1,5 +1,6 @@
 import { skipToken } from "@tanstack/react-query";
 import { AlertCircleIcon, ChevronLeft } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link, useParams } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
@@ -17,6 +18,7 @@ import { ActionRow } from "./components/action-row";
 import { Separator } from "~/components/ui/separator";
 
 const ViewStorePage = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const { data, isLoading, isError, error } = api.stores.useGetById(
     id ? { id } : skipToken
@@ -27,9 +29,9 @@ const ViewStorePage = () => {
       {isError && (
         <Alert variant="destructive">
           <AlertCircleIcon />
-          <AlertTitle>Unable to load store.</AlertTitle>
+          <AlertTitle>{t("stores.view.errorLoading")}</AlertTitle>
           <AlertDescription>
-            <p>{(error as Error)?.message ?? "Error"}</p>
+            <p>{(error as Error)?.message ?? t("stores.view.error")}</p>
           </AlertDescription>
         </Alert>
       )}
@@ -48,7 +50,7 @@ const ViewStorePage = () => {
               <CardDescription>{data.legalEntity}</CardDescription>
             </div>
             <Button asChild size="sm">
-              <Link href={`/${id}/edit`}>Edit</Link>
+              <Link href={`/${id}/edit`}>{t("stores.view.edit")}</Link>
             </Button>
           </div>
           <ActionRow id={data.id} />
@@ -56,13 +58,13 @@ const ViewStorePage = () => {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <Card>
               <CardHeader>
-                <CardTitle>Location</CardTitle>
+                <CardTitle>{t("stores.view.sections.location")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="text-sm text-muted-foreground">Address</div>
+                <div className="text-sm text-muted-foreground">{t("stores.view.labels.address")}</div>
                 <div className="font-medium break-all">{data.address}</div>
                 <div className="text-sm text-muted-foreground">
-                  Legal Entity
+                  {t("stores.view.labels.legalEntity")}
                 </div>
                 <div className="font-medium break-all">{data.legalEntity}</div>
               </CardContent>
@@ -70,27 +72,27 @@ const ViewStorePage = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Business Metrics</CardTitle>
+                <CardTitle>{t("stores.view.sections.businessMetrics")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="text-sm text-muted-foreground">Price</div>
+                <div className="text-sm text-muted-foreground">{t("stores.view.labels.price")}</div>
                 <div className="font-medium">€{data.price.toFixed(2)}</div>
-                <div className="text-sm text-muted-foreground">Sales Area</div>
+                <div className="text-sm text-muted-foreground">{t("stores.view.labels.salesArea")}</div>
                 <div className="font-medium">{data.salesArea} m²</div>
-                <div className="text-sm text-muted-foreground">Total Area</div>
+                <div className="text-sm text-muted-foreground">{t("stores.view.labels.totalArea")}</div>
                 <div className="font-medium">{data.totalArea} m²</div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Operations</CardTitle>
+                <CardTitle>{t("stores.view.sections.operations")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="text-sm text-muted-foreground">First Sale</div>
+                <div className="text-sm text-muted-foreground">{t("stores.view.labels.firstSale")}</div>
                 <div className="font-medium">{data.dateOfFirstSale}</div>
                 <div className="text-sm text-muted-foreground">
-                  Working Hours
+                  {t("stores.view.labels.workingHours")}
                 </div>
                 <div className="font-medium">{data.workingHours}</div>
               </CardContent>
@@ -98,31 +100,31 @@ const ViewStorePage = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Network</CardTitle>
+                <CardTitle>{t("stores.view.sections.network")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="text-sm text-muted-foreground">IP Address</div>
+                <div className="text-sm text-muted-foreground">{t("stores.view.labels.ipAddress")}</div>
                 <div className="font-medium">{data.ip}</div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Classification</CardTitle>
+                <CardTitle>{t("stores.view.sections.classification")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="text-sm text-muted-foreground">Cluster</div>
+                <div className="text-sm text-muted-foreground">{t("stores.view.labels.cluster")}</div>
                 <div className="font-medium">{data.claster}</div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Contacts</CardTitle>
+                <CardTitle>{t("stores.view.sections.contacts")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="text-sm text-muted-foreground">
-                  Contact Info
+                  {t("stores.view.labels.contactInfo")}
                 </div>
                 <div className="font-medium">{data.contacts || "—"}</div>
               </CardContent>
@@ -130,17 +132,17 @@ const ViewStorePage = () => {
 
             <Card className="md:col-span-2">
               <CardHeader>
-                <CardTitle>Assortment & Service</CardTitle>
+                <CardTitle>{t("stores.view.sections.assortmentService")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="text-sm text-muted-foreground">
-                  Assortment Matrix
+                  {t("stores.view.labels.assortmentMatrix")}
                 </div>
                 <div className="font-medium">
                   {data.assortmentMatrix || "—"}
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  Service Provider
+                  {t("stores.view.labels.serviceProvider")}
                 </div>
                 <div className="font-medium">{data.serviceProvider || "—"}</div>
               </CardContent>
@@ -148,13 +150,13 @@ const ViewStorePage = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Metadata</CardTitle>
-                <CardDescription>Timestamps and IDs</CardDescription>
+                <CardTitle>{t("stores.view.sections.metadata")}</CardTitle>
+                <CardDescription>{t("stores.view.labels.timestampsAndIds")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="text-sm text-muted-foreground">Store ID</div>
+                <div className="text-sm text-muted-foreground">{t("stores.view.labels.storeId")}</div>
                 <div className="font-medium break-all text-xs">{data.id}</div>
-                <div className="text-sm text-muted-foreground">Updated</div>
+                <div className="text-sm text-muted-foreground">{t("stores.view.labels.updated")}</div>
                 <div className="font-medium">
                   {new Date(data.updatedAt).toLocaleString()}
                 </div>
@@ -166,8 +168,8 @@ const ViewStorePage = () => {
       {!isLoading && !isError && !data && (
         <Card>
           <CardHeader>
-            <CardTitle>Store not found</CardTitle>
-            <CardDescription>The store may have been removed.</CardDescription>
+            <CardTitle>{t("stores.view.notFound.title")}</CardTitle>
+            <CardDescription>{t("stores.view.notFound.description")}</CardDescription>
           </CardHeader>
         </Card>
       )}

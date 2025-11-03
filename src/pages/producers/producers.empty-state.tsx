@@ -1,4 +1,5 @@
 import { IconUserPlus } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 
 import { Button } from "~/components/ui/button";
@@ -12,22 +13,22 @@ import {
 } from "~/components/ui/empty";
 
 export const ProducersEmptyState = () => {
+  const { t } = useTranslation();
   return (
     <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <IconUserPlus />
         </EmptyMedia>
-        <EmptyTitle>No Producers Yet</EmptyTitle>
+        <EmptyTitle>{t("producers.emptyState.title")}</EmptyTitle>
         <EmptyDescription>
-          You haven&apos;t created any producers yet. Get started by creating your
-          first producer.
+          {t("producers.emptyState.description")}
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <div className="flex gap-2">
           <Button asChild>
-            <Link href="/create">Create Producer</Link>
+            <Link href="/create">{t("producers.createProducer")}</Link>
           </Button>
         </div>
       </EmptyContent>

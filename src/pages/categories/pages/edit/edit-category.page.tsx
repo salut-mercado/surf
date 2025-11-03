@@ -1,5 +1,6 @@
 import { skipToken } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation, useParams } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -7,6 +8,7 @@ import { api } from "~/hooks/api";
 import { CategoryForm } from "../../components/category.form";
 
 export default function EditCategoryPage() {
+  const { t } = useTranslation();
   const params = useParams();
   const id = params?.id;
   const category = api.categories.useGetById(
@@ -32,7 +34,7 @@ export default function EditCategoryPage() {
     <DashboardPage>
       <Card>
         <CardHeader>
-          <CardTitle>Edit Category</CardTitle>
+          <CardTitle>{t("categories.editCategory")}</CardTitle>
         </CardHeader>
         <CardContent>
           {current && (

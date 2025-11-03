@@ -1,4 +1,5 @@
 import { IconBarcode } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 
 import { Button } from "~/components/ui/button";
@@ -12,21 +13,22 @@ import {
 } from "~/components/ui/empty";
 
 export const SkusEmptyState = () => {
+  const { t } = useTranslation();
   return (
     <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <IconBarcode />
         </EmptyMedia>
-        <EmptyTitle>No SKUs Yet</EmptyTitle>
+        <EmptyTitle>{t("skus.emptyState.title")}</EmptyTitle>
         <EmptyDescription>
-          You haven&apos;t created any SKUs yet. Get started by creating your first SKU.
+          {t("skus.emptyState.description")}
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <div className="flex gap-2">
           <Button asChild>
-            <Link href="/create">Create SKU</Link>
+            <Link href="/create">{t("skus.createSku")}</Link>
           </Button>
         </div>
       </EmptyContent>

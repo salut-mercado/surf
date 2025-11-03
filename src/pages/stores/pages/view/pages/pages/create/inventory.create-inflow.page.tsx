@@ -1,6 +1,7 @@
 import { OrderStatusEnum } from "@salut-mercado/octo-client";
 import { AlertCircleIcon, ChevronLeft } from "lucide-react";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation, useParams } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
@@ -30,6 +31,7 @@ interface OrderItem {
 }
 
 const InventoryCreateInflowPage = () => {
+  const { t } = useTranslation();
   const { id: storeId } = useParams<{ id: string }>();
   const [, setLocation] = useLocation();
   const [supplierId, setSupplierId] = useState<string>("");
@@ -82,17 +84,17 @@ const InventoryCreateInflowPage = () => {
     setError(null);
 
     if (!supplierId) {
-      setError("Please select a supplier");
+      setError(t("stores.inventory.createInflow.errorSelectSupplier"));
       return;
     }
 
     if (items.some((item) => !item.skuId || item.quantity <= 0)) {
-      setError("Please fill in all items with valid quantities");
+      setError(t("stores.inventory.createInflow.errorFillItems"));
       return;
     }
 
     if (orderStatus === OrderStatusEnum.delivered && !warehouseId) {
-      setError("Warehouse is required for DELIVERED orders");
+      setError(t("stores.inventory.createInflow.errorWarehouseRequired"));
       return;
     }
 
@@ -120,7 +122,7 @@ const InventoryCreateInflowPage = () => {
           });
         } catch (err) {
           console.error("Failed to add SKU items:", err);
-          setError("Order created but failed to add items. Please try again.");
+          setError(t("stores.inventory.createInflow.errorOrderCreated"));
           return;
         }
       }
@@ -128,7 +130,7 @@ const InventoryCreateInflowPage = () => {
       setLocation(`~/stores/${storeId}/inventory`, { replace: true });
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to create order inflow"
+        err instanceof Error ? err.message : t("stores.inventory.createInflow.errorCreateFailed")
       );
     }
   };
@@ -152,23 +154,23 @@ const InventoryCreateInflowPage = () => {
               <ChevronLeft className="size-4" />
             </Link>
           </Button>
-          <h1 className="text-2xl font-semibold">Create Order Inflow</h1>
+          <h1 className="text-2xl font-semibold">{t("stores.inventory.createInflow.title")}</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Order Details</CardTitle>
+              <CardTitle>{t("stores.inventory.createInflow.orderDetails")}</CardTitle>
               <CardDescription>
-                Create a new order inflow for this store
+                {t("stores.inventory.createInflow.orderDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-2">
-                <Label htmlFor="supplier">Supplier</Label>
+                <Label htmlFor="supplier">{t("stores.inventory.createInflow.supplier")}</Label>
                 <Select value={supplierId} onValueChange={setSupplierId}>
                   <SelectTrigger id="supplier">
-                    <SelectValue placeholder="Select a supplier" />
+                    <SelectValue placeholder={t("stores.inventory.createInflow.selectSupplier")} />
                   </SelectTrigger>
                   <SelectContent>
                     {allSuppliers.map((supplier) => (
@@ -181,7 +183,7 @@ const InventoryCreateInflowPage = () => {
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="status">Order Status</Label>
+                <Label htmlFor="status">{t("stores.inventory.createInflow.orderStatus")}</Label>
                 <Select
                   value={orderStatus}
                   onValueChange={(value) =>
@@ -192,12 +194,12 @@ const InventoryCreateInflowPage = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="CREATED">Created</SelectItem>
-                    <SelectItem value="SENT">Sent</SelectItem>
-                    <SelectItem value="APPROVED">Approved</SelectItem>
-                    <SelectItem value="REJECTED">Rejected</SelectItem>
-                    <SelectItem value="CHANGED">Changed</SelectItem>
-                    <SelectItem value="DELIVERED">Delivered</SelectItem>
+                    <SelectItem value="CREATED">{t("stores.inventory.createInflow.statusCreated")}</SelectItem>
+                    <SelectItem value="SENT">{t("stores.inventory.createInflow.statusSent")}</SelectItem>
+                    <SelectItem value="APPROVED">{t("stores.inventory.createInflow.statusApproved")}</SelectItem>
+                    <SelectItem value="REJECTED">{t("stores.inventory.createInflow.statusRejected")}</SelectItem>
+                    <SelectItem value="CHANGED">{t("stores.inventory.createInflow.statusChanged")}</SelectItem>
+                    <SelectItem value="DELIVERED">{t("stores.inventory.createInflow.statusDelivered")}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -206,14 +208,14 @@ const InventoryCreateInflowPage = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>Items</CardTitle>
-              <CardDescription>Add SKUs to this order</CardDescription>
+              <CardTitle>{t("stores.inventory.createInflow.items")}</CardTitle>
+              <CardDescription>{t("stores.inventory.createInflow.itemsDescription")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {items.map((item, index) => (
                 <div key={index} className="flex gap-2 items-end">
                   <div className="flex-1 grid gap-2">
-                    <Label>SKU</Label>
+                    <Label>{t("stores.inventory.createInflow.sku")}</Label>
                     <Select
                       value={item.skuId}
                       onValueChange={(value) =>
@@ -221,7 +223,7 @@ const InventoryCreateInflowPage = () => {
                       }
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select SKU" />
+                        <SelectValue placeholder={t("stores.inventory.createInflow.selectSku")} />
                       </SelectTrigger>
                       <SelectContent>
                         {allSkus.map((sku) => (
@@ -233,7 +235,7 @@ const InventoryCreateInflowPage = () => {
                     </Select>
                   </div>
                   <div className="w-32 grid gap-2">
-                    <Label>Quantity</Label>
+                    <Label>{t("stores.inventory.createInflow.quantity")}</Label>
                     <Input
                       type="number"
                       min="1"
@@ -253,12 +255,12 @@ const InventoryCreateInflowPage = () => {
                     onClick={() => handleRemoveItem(index)}
                     disabled={items.length === 1}
                   >
-                    Remove
+                    {t("stores.inventory.createInflow.remove")}
                   </Button>
                 </div>
               ))}
               <Button type="button" variant="outline" onClick={handleAddItem}>
-                Add Item
+                {t("stores.inventory.createInflow.addItem")}
               </Button>
             </CardContent>
           </Card>
@@ -266,23 +268,23 @@ const InventoryCreateInflowPage = () => {
           {error && (
             <Alert variant="destructive">
               <AlertCircleIcon />
-              <AlertTitle>Error</AlertTitle>
+              <AlertTitle>{t("stores.inventory.error")}</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
 
           <div className="flex justify-end gap-2">
             <Button type="button" variant="outline" asChild>
-              <Link href={`~/stores/${storeId}/inventory`}>Cancel</Link>
+              <Link href={`~/stores/${storeId}/inventory`}>{t("stores.inventory.createInflow.cancel")}</Link>
             </Button>
             <Button type="submit" disabled={createInflow.isPending}>
               {createInflow.isPending ? (
                 <>
                   <Spinner className="mr-2" />
-                  Creating...
+                  {t("stores.inventory.createInflow.creating")}
                 </>
               ) : (
-                "Create Order"
+                t("stores.inventory.createInflow.createOrder")
               )}
             </Button>
           </div>

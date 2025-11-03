@@ -1,35 +1,37 @@
 import { IconLink } from "@tabler/icons-react";
 import { BarChart3, CreditCard, Package, Users } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 import { Card, CardContent } from "~/components/ui/card";
 import { cn } from "~/lib/utils";
 
 export const ActionRow = ({ id }: { id: string }) => {
+  const { t } = useTranslation();
   const actions = [
     {
       href: `/${id}/pos`,
       icon: CreditCard,
-      label: "POS",
-      description: "Point of Sale",
+      label: t("stores.actions.pos"),
+      description: t("stores.actions.posDescription"),
     },
     {
       href: `/${id}/inventory`,
       icon: Package,
-      label: "Inventory",
-      description: "Stock Management",
+      label: t("stores.actions.inventory"),
+      description: t("stores.actions.inventoryDescription"),
     },
     {
       href: `/${id}/reports`,
       icon: BarChart3,
-      label: "Reports",
-      description: "Sales & Analytics",
+      label: t("stores.actions.reports"),
+      description: t("stores.actions.reportsDescription"),
       disabled: true,
     },
     {
       href: `/${id}/staff`,
       icon: Users,
-      label: "Staff",
-      description: "Employee Management",
+      label: t("stores.actions.staff"),
+      description: t("stores.actions.staffDescription"),
       disabled: true,
     },
   ];

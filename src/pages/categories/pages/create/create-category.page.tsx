@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation, useSearch } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -6,6 +7,7 @@ import { api } from "~/hooks/api";
 import { CategoryForm } from "../../components/category.form";
 
 export default function CreateCategoryPage() {
+  const { t } = useTranslation();
   const categories = api.categories.useGetAll({ limit: 1000 });
   const create = api.categories.useCreate();
   const [, setLocation] = useLocation();
@@ -30,7 +32,7 @@ export default function CreateCategoryPage() {
     <DashboardPage>
       <Card>
         <CardHeader>
-          <CardTitle>Create Category</CardTitle>
+          <CardTitle>{t("categories.createCategory")}</CardTitle>
         </CardHeader>
         <CardContent>
           <CategoryForm

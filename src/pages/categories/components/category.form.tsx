@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -30,6 +31,7 @@ export function CategoryForm({
   onSubmit: (values: CategoryFormValues & { level: number }) => void;
   submitting?: boolean;
 }) {
+  const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
   const [values, setValues] = useState<InternalFormValues>({
     categoryName: initial?.categoryName ?? "",
@@ -57,14 +59,14 @@ export function CategoryForm({
     <div className="space-y-4 py-2">
       {initial?.parentCategoryId && (
         <div className="space-y-2">
-          <Label>Parent Category</Label>
+          <Label>{t("categories.form.parentCategory")}</Label>
           <div className="p-3 bg-muted rounded-md text-sm">
-            {byId.get(initial.parentCategoryId)?.categoryName || "Unknown parent"}
+            {byId.get(initial.parentCategoryId)?.categoryName || t("categories.form.unknownParent")}
           </div>
         </div>
       )}
       <div className="space-y-2">
-        <Label>Category Name</Label>
+        <Label>{t("categories.form.categoryName")}</Label>
         <Input
           value={values.categoryName}
           onChange={(e) => {
@@ -74,7 +76,7 @@ export function CategoryForm({
         />
       </div>
       <Button onClick={handleSubmit} disabled={submitting}>
-        {submitting ? "Saving..." : "Save"}
+        {submitting ? t("categories.form.saving") : t("categories.form.save")}
       </Button>
       {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
     </div>

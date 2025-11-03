@@ -3,6 +3,7 @@ import {
   IconDotsVertical,
   IconLogout,
 } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
@@ -26,13 +27,14 @@ import { Badge } from "./ui/badge";
 import { APP_VERSION } from "~/lib/utils/get-app-version";
 
 export function NavUser() {
+  const { t } = useTranslation();
   const { isMobile } = useSidebar();
   const { logout } = useAuth();
   const { data } = api.auth.useMe();
 
   const email = data?.user?.email || "";
-  const nameFromEmail = email ? email.split("@")[0] : "User";
-  const displayName = nameFromEmail || "User";
+  const nameFromEmail = email ? email.split("@")[0] : t("user.user");
+  const displayName = nameFromEmail || t("user.user");
   const initials = displayName.charAt(0).toUpperCase() || "U";
 
   return (
@@ -90,7 +92,7 @@ export function NavUser() {
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
                     <IconDotsCircleHorizontal />
-                    UI Kit
+                    {t("user.uiKit")}
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </>
@@ -98,7 +100,7 @@ export function NavUser() {
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={logout}>
               <IconLogout />
-              Log out
+              {t("user.logOut")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

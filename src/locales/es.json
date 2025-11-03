@@ -1,4 +1,544 @@
 {
-  "overviewPage": "Página de resumen"
+  "overviewPage": "Página de resumen",
+  "common": {
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "archive": "Archivar",
+    "history": "Historial",
+    "n/a": "N/D"
+  },
+  "navigation": {
+    "dashboard": "Panel",
+    "overview": "Resumen",
+    "suppliers": "Proveedores",
+    "producers": "Productores",
+    "categories": "Categorías",
+    "skus": "SKUs",
+    "stores": "Tiendas",
+    "createStore": "Crear Tienda",
+    "noStoresAssigned": "No hay tiendas asignadas"
+  },
+  "user": {
+    "user": "Usuario",
+    "logOut": "Cerrar sesión",
+    "uiKit": "Kit de UI"
+  },
+  "tenant": {
+    "organizations": "Organizaciones",
+    "selectTenant": "Seleccionar Organización",
+    "loading": "cargando..."
+  },
+  "suppliers": {
+    "addSupplier": "Añadir Proveedor",
+    "createSupplier": "Crear Proveedor",
+    "editSupplier": "Editar Proveedor",
+    "columns": {
+      "code": "Código",
+      "name": "Nombre",
+      "agent": "Agente",
+      "phone": "Teléfono",
+      "taxId": "ID Fiscal",
+      "delayDays": "Días de Retraso",
+      "blocked": "Bloqueado",
+      "view": "Ver"
+    },
+    "emptyState": {
+      "title": "Aún No Hay Proveedores",
+      "description": "Aún no has creado ningún proveedor. Comienza creando tu primer proveedor."
+    },
+    "errorState": {
+      "title": "No se pueden cargar los proveedores."
+    },
+    "form": {
+      "fields": {
+        "code": "Código",
+        "name": "Nombre",
+        "agent": "Agente",
+        "phone": "Teléfono",
+        "taxId": "ID Fiscal",
+        "delayDays": "Días de Retraso",
+        "comments": "Comentarios",
+        "blocked": "Bloqueado"
+      },
+      "placeholders": {
+        "code": "SUP-001",
+        "name": "Suministros Acme",
+        "agent": "Jane Doe",
+        "phone": "+1 555 123 4567",
+        "taxId": "PT123456789",
+        "delayDays": "30",
+        "comments": "Añade notas internas..."
+      },
+      "descriptions": {
+        "code": "Código único del proveedor para búsqueda rápida.",
+        "name": "Nombre de visualización del proveedor.",
+        "agent": "Persona de contacto principal en el proveedor.",
+        "phone": "Teléfono de contacto incl. código de país.",
+        "taxId": "ID Fiscal (NIF/IVA).",
+        "delayDays": "Retraso de pago predeterminado en días."
+      },
+      "blockedOptions": {
+        "active": "Activo",
+        "activeDescription": "El proveedor está disponible",
+        "blocked": "Bloqueado",
+        "blockedDescription": "Prevenir nuevas transacciones"
+      }
+    },
+    "view": {
+      "blocked": "Bloqueado",
+      "active": "Activo",
+      "code": "Código",
+      "edit": "Editar",
+      "sections": {
+        "summary": "Resumen",
+        "contact": "Contacto",
+        "paymentTerms": "Términos de Pago",
+        "notes": "Notas",
+        "tax": "Impuestos",
+        "banking": "Banca",
+        "otherInformation": "Otra Información"
+      },
+      "labels": {
+        "supplierId": "ID del Proveedor",
+        "updated": "Actualizado",
+        "agent": "Agente",
+        "phone": "Teléfono",
+        "delayDays": "Días de Retraso",
+        "days": "días",
+        "comments": "Comentarios",
+        "noComments": "Sin comentarios",
+        "nifVat": "NIF / IVA"
+      },
+      "descriptions": {
+        "banking": "Detalles bancarios y métodos de pago",
+        "otherInformation": "Metadatos adicionales y banderas"
+      },
+      "plannedSection": "Sección planificada",
+      "toBeAdded": "Por añadir",
+      "notFound": {
+        "title": "Proveedor no encontrado",
+        "description": "El proveedor puede haber sido eliminado."
+      },
+      "error": "Error"
+    }
+  },
+  "producers": {
+    "addProducer": "Añadir Productor",
+    "createProducer": "Crear Productor",
+    "editProducer": "Editar Productor",
+    "columns": {
+      "name": "Nombre",
+      "taxId": "ID Fiscal",
+      "minimumStock": "Stock Mínimo",
+      "view": "Ver"
+    },
+    "emptyState": {
+      "title": "Aún No Hay Productores",
+      "description": "Aún no has creado ningún productor. Comienza creando tu primer productor."
+    },
+    "errorState": {
+      "title": "No se pueden cargar los productores."
+    },
+    "form": {
+      "fields": {
+        "name": "Nombre",
+        "taxId": "ID Fiscal",
+        "minimumStock": "Stock Mínimo"
+      },
+      "placeholders": {
+        "name": "Nombre del productor",
+        "taxId": "PT123456789",
+        "minimumStock": "0"
+      },
+      "descriptions": {
+        "name": "Nombre de visualización del productor.",
+        "taxId": "ID Fiscal (NIF/IVA).",
+        "minimumStock": "Stock mínimo requerido para este productor."
+      }
+    },
+    "view": {
+      "producer": "Productor",
+      "taxId": "ID Fiscal",
+      "edit": "Editar",
+      "sections": {
+        "summary": "Resumen",
+        "inventory": "Inventario",
+        "otherInformation": "Otra Información"
+      },
+      "labels": {
+        "producerId": "ID del Productor",
+        "minimumStock": "Stock Mínimo"
+      },
+      "descriptions": {
+        "otherInformation": "Metadatos adicionales"
+      },
+      "plannedSection": "Sección planificada",
+      "toBeAdded": "Por añadir",
+      "notFound": {
+        "title": "Productor no encontrado",
+        "description": "El productor puede haber sido eliminado."
+      },
+      "error": "Error"
+    }
+  },
+  "categories": {
+    "addCategory": "Añadir Categoría",
+    "createCategory": "Crear Categoría",
+    "editCategory": "Editar Categoría",
+    "emptyState": {
+      "title": "Aún No Hay Categorías",
+      "description": "Aún no has creado ninguna categoría. Comienza creando tu primera categoría."
+    },
+    "errorState": {
+      "title": "No se pueden cargar las categorías."
+    },
+    "tree": {
+      "view": "Ver",
+      "addSubcategory": "Añadir Subcategoría",
+      "move": "Mover",
+      "moving": "Moviendo",
+      "cannotSelect": "No se puede seleccionar esta categoría",
+      "clickToSelect": "Haz clic para seleccionar como padre",
+      "movingCategory": "Moviendo: {{categoryName}}",
+      "cancel": "Cancelar",
+      "makeRoot": "Hacer Raíz",
+      "movingInProgress": "Moviendo...",
+      "moveHere": "Mover Aquí",
+      "makeRootHint": "Haz clic en \"Mover Aquí\" para hacer esta categoría una categoría raíz",
+      "moveUnderHint": "Haz clic en \"Mover Aquí\" para mover bajo: {{categoryName}}"
+    },
+    "table": {
+      "name": "Nombre",
+      "level": "Nivel",
+      "parent": "Padre",
+      "view": "Ver",
+      "none": "-"
+    },
+    "form": {
+      "parentCategory": "Categoría Padre",
+      "unknownParent": "Padre desconocido",
+      "categoryName": "Nombre de Categoría",
+      "saving": "Guardando...",
+      "save": "Guardar"
+    },
+    "view": {
+      "edit": "Editar",
+      "categoryDetails": "Detalles de la categoría",
+      "id": "ID",
+      "parent": "Padre",
+      "level": "Nivel",
+      "none": "-"
+    }
+  },
+  "skus": {
+    "addSku": "Añadir SKU",
+    "createSku": "Crear SKU",
+    "editSku": "Editar SKU",
+    "saveSku": "Guardar SKU",
+    "columns": {
+      "name": "Nombre",
+      "unit": "Unidad",
+      "netWeight": "Peso Neto",
+      "view": "Ver"
+    },
+    "emptyState": {
+      "title": "Aún No Hay SKUs",
+      "description": "Aún no has creado ningún SKU. Comienza creando tu primer SKU."
+    },
+    "errorState": {
+      "title": "No se pueden cargar los SKUs."
+    },
+    "view": {
+      "edit": "Editar",
+      "summary": "Resumen",
+      "details": "Detalles",
+      "specifications": "Especificaciones",
+      "financialInformation": "Información Financiera",
+      "productInformation": "Información del Producto",
+      "additionalDetails": "Detalles Adicionales",
+      "wholesalePrice": "Precio Mayorista",
+      "skuId": "ID de SKU",
+      "category": "Categoría",
+      "supplier": "Proveedor",
+      "producer": "Productor",
+      "unit": "Unidad",
+      "shelfLife": "Vida Útil",
+      "netWeight": "Peso Neto",
+      "vat": "IVA %",
+      "alcohol": "Alcohol %",
+      "naturalLoss": "Pérdida Natural %",
+      "maxOnCheckout": "Máx. en Caja",
+      "measurementsAndSpecifications": "Medidas y Especificaciones",
+      "measurementsAndConstraints": "Medidas y restricciones",
+      "freeFormAttributes": "Atributos de forma libre",
+      "shelfLifetime": "Vida Útil",
+      "unitMeasurement": "Unidad de Medida",
+      "days": "días",
+      "units": "unidades",
+      "notFound": {
+        "title": "SKU no encontrado",
+        "description": "El SKU puede haber sido eliminado."
+      },
+      "error": "Error"
+    },
+    "form": {
+      "fields": {
+        "name": "Nombre",
+        "supplier": "Proveedor",
+        "producer": "Productor",
+        "category": "Categoría",
+        "unit": "Unidad",
+        "shelfLifetime": "Vida Útil (días)",
+        "netWeight": "Peso Neto",
+        "alcoholPercent": "Alcohol (%)",
+        "vat": "IVA (%)",
+        "naturalLossPercent": "Pérdida Natural (%)",
+        "maxOnCheckout": "Máx. en Caja",
+        "barcode": "Código de Barras",
+        "wholesalePrice": "Precio Mayorista",
+        "specifications": "Especificaciones"
+      },
+      "placeholders": {
+        "selectSupplier": "Seleccionar Proveedor",
+        "selectProducer": "Seleccionar Productor",
+        "selectCategory": "Seleccionar Categoría",
+        "selectUnit": "Seleccionar Unidad"
+      },
+      "descriptions": {
+        "name": "Nombre del producto mostrado en toda la aplicación.",
+        "supplier": "Proveedor que suministra este SKU.",
+        "producer": "Productor o fabricante.",
+        "category": "Clasificación/categoría del SKU.",
+        "unit": "Unidad de medida utilizada para este SKU.",
+        "shelfLifetime": "Cantidad de días que el artículo puede almacenarse.",
+        "netWeight": "Peso excluyendo el empaque.",
+        "alcoholPercent": "Porcentaje de alcohol por volumen.",
+        "vat": "Porcentaje de impuesto sobre el valor añadido.",
+        "naturalLossPercent": "Porcentaje de pérdida natural esperada.",
+        "maxOnCheckout": "Cantidad máxima permitida por pedido.",
+        "barcode": "Código de barras (EAN/UPC).",
+        "wholesalePrice": "Precio unitario mayorista base."
+      },
+      "unitMeasurement": {
+        "unit": "Unidad",
+        "gramm": "Gramo",
+        "milliliter": "Mililitro"
+      },
+      "vat": {
+        "title": "IVA (%)",
+        "custom": "Personalizado",
+        "customDescription": "Tasa de IVA personalizada",
+        "presets": {
+          "0": {
+            "title": "0% (temporal)",
+            "description": "Productos alimenticios básicos, extendido hasta finales de 2025"
+          },
+          "4": {
+            "title": "4% Superreducido",
+            "description": "IVA Superreducido - Periódicos, libros, medicamentos con receta"
+          },
+          "5": {
+            "title": "5% Reducido",
+            "description": "Aceites y pasta, extendido hasta finales de 2025"
+          },
+          "10": {
+            "title": "10% Reducido",
+            "description": "Alimentos, restaurantes, hoteles, transporte, eventos culturales"
+          },
+          "21": {
+            "title": "21% General",
+            "description": "Tasa base para la mayoría de bienes y servicios"
+          }
+        }
+      },
+      "scanBarcode": "Escanear Código de Barras"
+    }
+  },
+  "stores": {
+    "addStore": "Añadir Tienda",
+    "createStore": "Crear Tienda",
+    "editStore": "Editar Tienda",
+    "updateStore": "Actualizar Tienda",
+    "form": {
+      "fields": {
+        "address": "Dirección",
+        "legalEntity": "Entidad Legal",
+        "price": "Precio",
+        "ip": "Dirección IP",
+        "salesArea": "Área de Ventas (m²)",
+        "totalArea": "Área Total (m²)",
+        "dateOfFirstSale": "Fecha de Primera Venta",
+        "workingHours": "Horario de Trabajo",
+        "claster": "Cluster",
+        "contacts": "Contactos",
+        "assortmentMatrix": "Matriz de Asortamiento",
+        "serviceProvider": "Proveedor de Servicios"
+      },
+      "placeholders": {
+        "address": "123 Calle Principal",
+        "legalEntity": "Nombre Legal de la Empresa",
+        "price": "0.00",
+        "ip": "192.168.1.1",
+        "salesArea": "0.00",
+        "totalArea": "0.00",
+        "workingHours": "9:00-18:00",
+        "claster": "A",
+        "contacts": "contacto@tienda.com",
+        "assortmentMatrix": "ID de Matriz",
+        "serviceProvider": "Nombre del Proveedor"
+      },
+      "descriptions": {
+        "address": "Dirección física de la tienda.",
+        "legalEntity": "Nombre comercial registrado.",
+        "price": "Valor de precio de la tienda.",
+        "ip": "IP de red de la tienda.",
+        "salesArea": "Área del piso de ventas.",
+        "totalArea": "Área total de la tienda.",
+        "dateOfFirstSale": "Fecha de primera venta.",
+        "workingHours": "Horario de funcionamiento de la tienda.",
+        "claster": "Clasificación de cluster de la tienda.",
+        "contacts": "Información de contacto.",
+        "assortmentMatrix": "Referencia de surtido de productos.",
+        "serviceProvider": "Nombre del proveedor de servicios."
+      }
+    },
+    "view": {
+      "edit": "Editar",
+      "error": "Error",
+      "errorLoading": "No se puede cargar la tienda.",
+      "notFound": {
+        "title": "Tienda no encontrada",
+        "description": "La tienda puede haber sido eliminada."
+      },
+      "sections": {
+        "location": "Ubicación",
+        "businessMetrics": "Métricas de Negocio",
+        "operations": "Operaciones",
+        "network": "Red",
+        "classification": "Clasificación",
+        "contacts": "Contactos",
+        "assortmentService": "Surtido y Servicio",
+        "metadata": "Metadatos"
+      },
+      "labels": {
+        "address": "Dirección",
+        "legalEntity": "Entidad Legal",
+        "price": "Precio",
+        "salesArea": "Área de Ventas",
+        "totalArea": "Área Total",
+        "firstSale": "Primera Venta",
+        "workingHours": "Horario de Trabajo",
+        "ipAddress": "Dirección IP",
+        "cluster": "Cluster",
+        "contactInfo": "Información de Contacto",
+        "assortmentMatrix": "Matriz de Asortamiento",
+        "serviceProvider": "Proveedor de Servicios",
+        "storeId": "ID de Tienda",
+        "updated": "Actualizado",
+        "timestampsAndIds": "Marcas de tiempo e IDs"
+      }
+    },
+    "inventory": {
+      "title": "Inventario",
+      "scanArrivalDoc": "Escanear documento de llegada",
+      "manualAdd": "Añadir manualmente",
+      "error": "Error",
+      "errorLoading": "Error al cargar los datos de inventario. Por favor, inténtelo de nuevo.",
+      "noWarehouse": {
+        "title": "Sin Almacén",
+        "description": "No se encontró almacén para esta tienda. Por favor, cree un almacén primero."
+      },
+      "columns": {
+        "name": "Nombre",
+        "barcode": "Código de Barras",
+        "quantity": "Cantidad",
+        "view": "Ver"
+      },
+      "createInflow": {
+        "title": "Crear Entrada de Pedido",
+        "orderDetails": "Detalles del Pedido",
+        "orderDescription": "Crear una nueva entrada de pedido para esta tienda",
+        "supplier": "Proveedor",
+        "selectSupplier": "Seleccionar un proveedor",
+        "orderStatus": "Estado del Pedido",
+        "statusCreated": "Creado",
+        "statusSent": "Enviado",
+        "statusApproved": "Aprobado",
+        "statusRejected": "Rechazado",
+        "statusChanged": "Modificado",
+        "statusDelivered": "Entregado",
+        "items": "Artículos",
+        "itemsDescription": "Añadir SKUs a este pedido",
+        "sku": "SKU",
+        "selectSku": "Seleccionar SKU",
+        "quantity": "Cantidad",
+        "remove": "Eliminar",
+        "addItem": "Añadir Artículo",
+        "cancel": "Cancelar",
+        "createOrder": "Crear Pedido",
+        "creating": "Creando...",
+        "errorSelectSupplier": "Por favor, seleccione un proveedor",
+        "errorFillItems": "Por favor, complete todos los artículos con cantidades válidas",
+        "errorWarehouseRequired": "Se requiere almacén para pedidos ENTREGADOS",
+        "errorCreateFailed": "Error al crear la entrada de pedido",
+        "errorOrderCreated": "Pedido creado pero falló al añadir artículos. Por favor, inténtelo de nuevo."
+      },
+      "view": {
+        "error": "Error",
+        "errorLoading": "Error al cargar la entrada de inventario. Por favor, inténtelo de nuevo.",
+        "notFound": {
+          "title": "SKU no encontrado",
+          "description": "La entrada de inventario puede haber sido eliminada."
+        },
+        "sections": {
+          "stockInformation": "Información de Stock",
+          "skuDetails": "Detalles del SKU",
+          "productInformation": "Información del Producto"
+        },
+        "labels": {
+          "quantity": "Cantidad",
+          "warehouse": "Almacén",
+          "skuId": "ID de SKU",
+          "barcode": "Código de Barras",
+          "unit": "Unidad",
+          "name": "Nombre",
+          "netWeight": "Peso Neto",
+          "shelfLifetime": "Vida Útil"
+        },
+        "days": "días"
+      }
+    },
+    "pos": {
+      "history": "Historial",
+      "salesHistory": "Historial de Ventas",
+      "salesHistoryDescription": "Ver transacciones de ventas recientes de la tienda.",
+      "noSalesHistory": "No hay historial de ventas disponible.",
+      "checkSummary": "Resumen de Venta",
+      "scanFirstItem": "Escanee el primer artículo para abrir una nueva venta",
+      "totalItems": "Total de Artículos",
+      "checkout": "Cobrar",
+      "barcodeScanner": "Escáner de Código de Barras",
+      "enterOrScanBarcode": "Introducir o escanear código de barras...",
+      "add": "Añadir",
+      "scanBarcode": "Escanear Código de Barras",
+      "error": "Error",
+      "success": "Éxito",
+      "storeSaleCreated": "Venta de tienda creada exitosamente.",
+      "skuNotFound": "SKU no encontrado para el código de barras: {{barcode}}",
+      "createFailed": "Error al crear la venta de tienda",
+      "removeItem": "¿Eliminar artículo?",
+      "removeItemDescription": "¿Está seguro de que desea eliminar este artículo de la venta?",
+      "remove": "Eliminar"
+    },
+    "actions": {
+      "pos": "TPV",
+      "posDescription": "Punto de Venta",
+      "inventory": "Inventario",
+      "inventoryDescription": "Gestión de Stock",
+      "reports": "Informes",
+      "reportsDescription": "Ventas y Análisis",
+      "staff": "Personal",
+      "staffDescription": "Gestión de Empleados"
+    }
+  }
 }
-
