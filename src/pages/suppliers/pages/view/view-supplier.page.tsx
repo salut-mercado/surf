@@ -26,7 +26,7 @@ const ViewSupplierPage = () => {
     <DashboardPage>
       {isLoading && <SupplierViewSkeleton />}
       {isError && (
-        <SuppliersErrorState message={(error as Error)?.message ?? "Error"} />
+        <SuppliersErrorState message={(error as Error)?.message ?? t("suppliers.view.error")} />
       )}
       {!isLoading && !isError && data && (
         <div className="space-y-4">
@@ -40,27 +40,27 @@ const ViewSupplierPage = () => {
                 </Button>
                 <span className="text-xl font-semibold">{data.name}</span>
                 {data.blocked ? (
-                  <Badge variant="destructive">Blocked</Badge>
+                  <Badge variant="destructive">{t("suppliers.view.blocked")}</Badge>
                 ) : (
-                  <Badge variant="secondary">Active</Badge>
+                  <Badge variant="secondary">{t("suppliers.view.active")}</Badge>
                 )}
               </div>
-              <CardDescription>Code: {data.code}</CardDescription>
+              <CardDescription>{t("suppliers.view.code")}: {data.code}</CardDescription>
             </div>
             <Button asChild size="sm">
-              <Link href={`/${id}/edit`}>Edit</Link>
+              <Link href={`/${id}/edit`}>{t("suppliers.view.edit")}</Link>
             </Button>
           </div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <Card>
               <CardHeader>
-                <CardTitle>Summary</CardTitle>
+                <CardTitle>{t("suppliers.view.sections.summary")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="text-sm text-muted-foreground">Supplier ID</div>
+                <div className="text-sm text-muted-foreground">{t("suppliers.view.labels.supplierId")}</div>
                 <div className="font-medium break-all">{data.id}</div>
-                <div className="text-sm text-muted-foreground">Updated</div>
+                <div className="text-sm text-muted-foreground">{t("suppliers.view.labels.updated")}</div>
                 <div className="font-medium">
                   {data.updatedAt.toLocaleString()}
                 </div>
@@ -69,73 +69,73 @@ const ViewSupplierPage = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Contact</CardTitle>
+                <CardTitle>{t("suppliers.view.sections.contact")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="text-sm text-muted-foreground">Agent</div>
-                <div className="font-medium">{data.agent || "—"}</div>
-                <div className="text-sm text-muted-foreground">Phone</div>
-                <div className="font-medium">{data.phone || "—"}</div>
+                <div className="text-sm text-muted-foreground">{t("suppliers.view.labels.agent")}</div>
+                <div className="font-medium">{data.agent || t("common.n/a")}</div>
+                <div className="text-sm text-muted-foreground">{t("suppliers.view.labels.phone")}</div>
+                <div className="font-medium">{data.phone || t("common.n/a")}</div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Payment Terms</CardTitle>
+                <CardTitle>{t("suppliers.view.sections.paymentTerms")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="text-sm text-muted-foreground">Delay Days</div>
-                <div className="font-medium">{data.delayDays} days</div>
+                <div className="text-sm text-muted-foreground">{t("suppliers.view.labels.delayDays")}</div>
+                <div className="font-medium">{data.delayDays} {t("suppliers.view.labels.days")}</div>
               </CardContent>
             </Card>
 
             <Card className="md:col-span-2">
               <CardHeader>
-                <CardTitle>Notes</CardTitle>
+                <CardTitle>{t("suppliers.view.sections.notes")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="text-sm text-muted-foreground">Comments</div>
+                <div className="text-sm text-muted-foreground">{t("suppliers.view.labels.comments")}</div>
                 <div className="font-medium whitespace-pre-wrap">
-                  {data.comments || "No comments"}
+                  {data.comments || t("suppliers.view.labels.noComments")}
                 </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Tax</CardTitle>
+                <CardTitle>{t("suppliers.view.sections.tax")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="text-sm text-muted-foreground">NIF / VAT</div>
-                <div className="font-medium">{data.nif || "—"}</div>
+                <div className="text-sm text-muted-foreground">{t("suppliers.view.labels.nifVat")}</div>
+                <div className="font-medium">{data.nif || t("common.n/a")}</div>
               </CardContent>
             </Card>
 
             <Card className="md:col-span-2">
               <CardHeader>
-                <CardTitle>Banking</CardTitle>
+                <CardTitle>{t("suppliers.view.sections.banking")}</CardTitle>
                 <CardDescription>
-                  Bank details and payment methods
+                  {t("suppliers.view.descriptions.banking")}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="text-sm text-muted-foreground">
-                  Planned section
+                  {t("suppliers.view.plannedSection")}
                 </div>
-                <div className="font-medium">To be added</div>
+                <div className="font-medium">{t("suppliers.view.toBeAdded")}</div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Other Information</CardTitle>
-                <CardDescription>Additional metadata and flags</CardDescription>
+                <CardTitle>{t("suppliers.view.sections.otherInformation")}</CardTitle>
+                <CardDescription>{t("suppliers.view.descriptions.otherInformation")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="text-sm text-muted-foreground">
-                  Planned section
+                  {t("suppliers.view.plannedSection")}
                 </div>
-                <div className="font-medium">To be added</div>
+                <div className="font-medium">{t("suppliers.view.toBeAdded")}</div>
               </CardContent>
             </Card>
           </div>
@@ -144,9 +144,9 @@ const ViewSupplierPage = () => {
       {!isLoading && !isError && !data && (
         <Card>
           <CardHeader>
-            <CardTitle>Supplier not found</CardTitle>
+            <CardTitle>{t("suppliers.view.notFound.title")}</CardTitle>
             <CardDescription>
-              The supplier may have been removed.
+              {t("suppliers.view.notFound.description")}
             </CardDescription>
           </CardHeader>
         </Card>
