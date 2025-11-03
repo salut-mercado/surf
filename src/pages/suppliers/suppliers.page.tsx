@@ -22,7 +22,7 @@ export default function SuppliersPage() {
       {suppliers.isError && (
         <SuppliersErrorState message={suppliers.error.message} />
       )}
-      {allSuppliers.length === 0 && <SuppliersEmptyState />}
+      {allSuppliers.length === 0 && !suppliers.isLoading && <SuppliersEmptyState />}
       {suppliers.isSuccess && allSuppliers.length > 0 && (
         <>
           <div className="mb-2 justify-end flex w-full">

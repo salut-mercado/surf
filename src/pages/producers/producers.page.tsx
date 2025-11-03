@@ -21,7 +21,7 @@ export default function ProducersPage() {
       {producers.isError && (
         <ProducersErrorState message={producers.error.message} />
       )}
-      {items.length === 0 && <ProducersEmptyState />}
+      {items.length === 0 && !producers.isLoading && <ProducersEmptyState />}
       {producers.isSuccess && items.length > 0 && (
         <>
           <div className="mb-2 justify-end flex w-full">

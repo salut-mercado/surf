@@ -22,7 +22,7 @@ export default function CategoriesPage() {
       {categories.isError && (
         <CategoriesErrorState message={categories.error.message} />
       )}
-      {categories.isSuccess && list.length === 0 && <CategoriesEmptyState />}
+      {categories.isSuccess && list.length === 0 && !categories.isLoading && <CategoriesEmptyState />}
       {categories.isSuccess && list.length > 0 && (
         <>
           <div className="mb-2 justify-end flex w-full">

@@ -29,7 +29,7 @@ export default function SkusPage() {
     <DashboardPage>
       {skus.isLoading && <SkusSkeleton />}
       {skus.isError && <SkusErrorState message={skus.error.message} />}
-      {allSkus.length === 0 && <SkusEmptyState />}
+      {allSkus.length === 0 && !skus.isLoading && <SkusEmptyState />}
       {skus.isSuccess && allSkus.length > 0 && (
         <>
           <div className="mb-2 justify-end flex w-full">
