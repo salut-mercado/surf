@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { AuthProvider } from "~/hooks/use-auth";
 import { ThemeProvider } from "./components/common/theme-provider";
 import { useInjectNavigate } from "./hooks/use-inject-navigate";
@@ -17,6 +18,25 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       refetchIntervalInBackground: false,
+      retry(failureCount, error) {
+        if (
+          "response" in error &&
+          typeof error.response === "object" &&
+          error.response !== null &&
+          "status" in error.response &&
+          typeof error.response.status === "number" &&
+          error.response.status === 404
+        ) {
+          return false;
+        }
+        if (error instanceof AxiosError && error.response?.status === 404) {
+          return false;
+        }
+        if (error.message === "Not found") {
+          return false;
+        }
+        return failureCount < 3;
+      },
     },
     mutations: { networkMode: "offlineFirst" },
   },
