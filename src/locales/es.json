@@ -1,7 +1,11 @@
 {
   "overviewPage": "Página de resumen",
   "common": {
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "archive": "Archivar",
+    "history": "Historial",
+    "n/a": "N/D"
   },
   "navigation": {
     "dashboard": "Panel",
@@ -249,6 +253,10 @@
       "summary": "Resumen",
       "details": "Detalles",
       "specifications": "Especificaciones",
+      "financialInformation": "Información Financiera",
+      "productInformation": "Información del Producto",
+      "additionalDetails": "Detalles Adicionales",
+      "wholesalePrice": "Precio Mayorista",
       "skuId": "ID de SKU",
       "category": "Categoría",
       "supplier": "Proveedor",
@@ -260,8 +268,13 @@
       "alcohol": "Alcohol %",
       "naturalLoss": "Pérdida Natural %",
       "maxOnCheckout": "Máx. en Caja",
+      "measurementsAndSpecifications": "Medidas y Especificaciones",
       "measurementsAndConstraints": "Medidas y restricciones",
       "freeFormAttributes": "Atributos de forma libre",
+      "shelfLifetime": "Vida Útil",
+      "unitMeasurement": "Unidad de Medida",
+      "days": "días",
+      "units": "unidades",
       "notFound": {
         "title": "SKU no encontrado",
         "description": "El SKU puede haber sido eliminado."
@@ -529,4 +542,3 @@
     }
   }
 }
-

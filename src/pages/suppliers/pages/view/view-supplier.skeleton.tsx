@@ -17,7 +17,7 @@ export const SupplierViewSkeleton = () => {
             <Skeleton className="h-5 w-28" />
           </CardHeader>
           <CardContent className="space-y-2">
-            <Skeleton className="h-4 w-40" />
+            <Skeleton className="size-40" />
             <Skeleton className="h-4 w-24" />
             <Skeleton className="h-4 w-32" />
           </CardContent>
@@ -36,8 +36,8 @@ export const SupplierViewSkeleton = () => {
             <Skeleton className="h-5 w-36" />
           </CardHeader>
           <CardContent className="space-y-2">
-            <Skeleton className="h-4 w-44" />
-            <Skeleton className="h-4 w-40" />
+            <Skeleton className="size-44" />
+            <Skeleton className="size-40" />
           </CardContent>
         </Card>
         <Card className="md:col-span-2">
@@ -55,7 +55,7 @@ export const SupplierViewSkeleton = () => {
             <Skeleton className="h-5 w-32" />
           </CardHeader>
           <CardContent className="space-y-2">
-            <Skeleton className="h-4 w-40" />
+            <Skeleton className="size-40" />
             <Skeleton className="h-4 w-32" />
           </CardContent>
         </Card>

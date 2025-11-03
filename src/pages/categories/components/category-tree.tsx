@@ -103,22 +103,22 @@ function CategoryTreeItem({
             setIsExpanded(!isExpanded);
           }}
           disabled={!hasChildren}
-          className="h-6 w-6 p-0 hover:bg-accent-foreground/10"
+          className="size-6 p-0 hover:bg-accent-foreground/10"
         >
           {hasChildren ? (
             isExpanded ? (
-              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              <ChevronDown className="size-4 text-muted-foreground" />
             ) : (
-              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+              <ChevronRight className="size-4 text-muted-foreground" />
             )
           ) : (
-            <div className="h-4 w-4" />
+            <div className="size-4" />
           )}
         </Button>
 
         {isMoving && (
-          <div className="h-6 w-6 flex items-center justify-center">
-            {isSelected && <Check className="h-4 w-4 text-foreground" />}
+          <div className="size-6 flex items-center justify-center">
+            {isSelected && <Check className="size-4 text-foreground" />}
           </div>
         )}
 
@@ -150,7 +150,7 @@ function CategoryTreeItem({
               asChild
             >
               <Link href={`/${category.id}`}>
-                <Eye className="h-3.5 w-3.5" />
+                <Eye className="size-3.5" />
                 {t("categories.tree.view")}
               </Link>
             </Button>
@@ -161,7 +161,7 @@ function CategoryTreeItem({
               asChild
             >
               <Link href={`/create?parent=${category.id}`}>
-                <Plus className="h-3.5 w-3.5" />
+                <Plus className="size-3.5" />
                 {t("categories.tree.addSubcategory")}
               </Link>
             </Button>
@@ -174,7 +174,7 @@ function CategoryTreeItem({
                 onMoveStart?.(category.id);
               }}
             >
-              <Move className="h-3.5 w-3.5" />
+              <Move className="size-3.5" />
               {t("categories.tree.move")}
             </Button>
           </div>
@@ -301,7 +301,7 @@ export function CategoryTree({ categories }: CategoryTreeProps) {
         <div className="mb-4 p-3 bg-muted border rounded-md">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Move className="h-4 w-4 text-muted-foreground" />
+              <Move className="size-4 text-muted-foreground" />
               <span className="text-sm font-medium text-foreground">
                 {t("categories.tree.movingCategory", { categoryName: movingCategory?.categoryName })}
               </span>
