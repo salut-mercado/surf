@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table";
 
 import {
   Table,
@@ -16,31 +10,16 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { DataTablePagination, type PaginationConfig } from "./pagination";
+import { DataTablePagination } from "./pagination";
+import type { UseDataTableResult } from "./use-data-table";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  pagination?: PaginationConfig;
+interface DataTableProps<TData> {
+  table: UseDataTableResult<TData>;
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-  pagination,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    initialState: {
-      pagination: {
-        pageSize: pagination?.pageSize ?? 10,
-      },
-    },
-  });
-
+export function DataTable<TData>({
+  table: { table, pageSizes },
+}: DataTableProps<TData>) {
   return (
     <div>
       <div className="overflow-hidden rounded-md border">
@@ -83,7 +62,7 @@ export function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={table.getAllColumns().length}
                   className="h-24 text-center"
                 >
                   No results.
@@ -93,7 +72,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} pagination={pagination} />
+      <DataTablePagination<TData> table={table} pageSizes={pageSizes} />
     </div>
   );
 }

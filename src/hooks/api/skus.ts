@@ -6,12 +6,7 @@ import type {
   SKUReturnSchema,
   UpdateSkuHandlerApiSkusIdPutRequest,
 } from "@salut-mercado/octo-client";
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  skipToken,
-} from "@tanstack/react-query";
+import { skipToken, useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "~/lib/api";
 
 export const skus = {
@@ -19,24 +14,12 @@ export const skus = {
   useGetAll: (
     args: Omit<GetSkusHandlerApiSkusGetRequest, "skip"> | typeof skipToken
   ) =>
-    useInfiniteQuery<SKUPaginatedResponseSchema>({
-      getNextPageParam: (lastPage: SKUPaginatedResponseSchema) => {
-        if (lastPage.items.length < (lastPage.limit ?? 1)) {
-          return undefined;
-        }
-        return (lastPage.skip ?? 0) + (lastPage.limit ?? 0);
-      },
-      initialPageParam: 0,
+    useQuery<SKUPaginatedResponseSchema>({
       queryKey: ["skus", "getAll", JSON.stringify(args)],
       queryFn:
         args !== skipToken
-          ? ({ pageParam }) =>
-              api.sku.getSkusHandlerApiSkusGet({
-                ...(args as GetSkusHandlerApiSkusGetRequest),
-                skip: pageParam as number,
-                limit: (args as GetSkusHandlerApiSkusGetRequest).limit ?? 10,
-              })
-          : (skipToken as unknown as () => Promise<SKUPaginatedResponseSchema>),
+          ? () => api.sku.getSkusHandlerApiSkusGet(args)
+          : skipToken,
     }),
   useGetById: (args: GetSkuHandlerApiSkusIdGetRequest | typeof skipToken) =>
     useQuery<SKUReturnSchema>({
@@ -44,7 +27,7 @@ export const skus = {
       queryFn:
         args !== skipToken
           ? () => api.sku.getSkuHandlerApiSkusIdGet(args)
-          : (skipToken as unknown as () => Promise<SKUReturnSchema>),
+          : skipToken,
     }),
 
   // Mutations

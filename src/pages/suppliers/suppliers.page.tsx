@@ -1,20 +1,30 @@
 import { Plus } from "lucide-react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
+import { DataTable } from "~/components/composite/data-table";
+import { useDataTable } from "~/components/composite/data-table/use-data-table";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Button } from "~/components/ui/button";
-import { DataTable } from "~/components/ui/data-table";
 import { api } from "~/hooks/api";
-import { getColumns } from "./columns";
 import { SuppliersEmptyState } from "./suppliers.empty-state";
 import { SuppliersErrorState } from "./suppliers.error-state";
 import { SuppliersSkeleton } from "./suppliers.skeleton";
+import { useColumns } from "./use-columns";
 
 export default function SuppliersPage() {
   const { t } = useTranslation();
   const suppliers = api.suppliers.useGetAll({ limit: 1000 });
-  const allSuppliers =
-    suppliers.data?.pages.flatMap((page) => page.items) ?? [];
+  const columns = useColumns();
+  const allSuppliers = useMemo(
+    () => suppliers.data?.pages.flatMap((page) => page.items) ?? [],
+    [suppliers.data]
+  );
+
+  const table = useDataTable({
+    data: allSuppliers,
+    columns,
+  });
 
   return (
     <DashboardPage>
@@ -22,7 +32,9 @@ export default function SuppliersPage() {
       {suppliers.isError && (
         <SuppliersErrorState message={suppliers.error.message} />
       )}
-      {allSuppliers.length === 0 && !suppliers.isLoading && <SuppliersEmptyState />}
+      {allSuppliers.length === 0 && !suppliers.isLoading && (
+        <SuppliersEmptyState />
+      )}
       {suppliers.isSuccess && allSuppliers.length > 0 && (
         <>
           <div className="mb-2 justify-end flex w-full">
@@ -33,7 +45,7 @@ export default function SuppliersPage() {
               </Link>
             </Button>
           </div>
-          <DataTable data={allSuppliers} columns={getColumns(t)} />
+          <DataTable table={table} />
         </>
       )}
     </DashboardPage>

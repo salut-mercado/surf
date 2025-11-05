@@ -5,13 +5,13 @@ import { ThemeProvider } from "./components/common/theme-provider";
 import { useInjectNavigate } from "./hooks/use-inject-navigate";
 import "./lib/i18n";
 
-const TEN_SECONDS = 1000 * 10;
-const CACHE_TIME = 1000 * 60 * 60 * 24; // 24 hours
+const ONE_MINUTE = 1000 * 5;
+const CACHE_TIME = ONE_MINUTE * 60 * 24; // 24 hours
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchInterval: TEN_SECONDS,
+      refetchInterval: ONE_MINUTE,
       networkMode: "online",
       staleTime: CACHE_TIME,
       gcTime: CACHE_TIME,

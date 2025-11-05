@@ -60,14 +60,12 @@ const PosPage = () => {
   });
 
   const skusMap = useMemo(() => {
-    if (!skusData?.pages) return new Map<string, SKUReturnSchema>();
+    if (!skusData?.items) return new Map<string, SKUReturnSchema>();
     const map = new Map<string, SKUReturnSchema>();
-    skusData.pages.forEach((page) => {
-      page.items.forEach((sku) => {
-        if (sku.barcode) {
-          map.set(sku.barcode, sku);
-        }
-      });
+    skusData.items.forEach((sku) => {
+      if (sku.barcode) {
+        map.set(sku.barcode, sku);
+      }
     });
     return map;
   }, [skusData]);
@@ -131,22 +129,21 @@ const PosPage = () => {
     }
   };
 
-  const handleQuantityChange = useCallback(
-    (barcode: string, delta: number) => {
-      setCheckItems((prev) =>
-        prev.map((item) =>
-          item.barcode === barcode
-            ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-            : item
-        )
-      );
-    },
-    []
-  );
+  const handleQuantityChange = useCallback((barcode: string, delta: number) => {
+    setCheckItems((prev) =>
+      prev.map((item) =>
+        item.barcode === barcode
+          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+          : item
+      )
+    );
+  }, []);
 
   const handleDeleteItem = useCallback(() => {
     if (!itemToDelete) return;
-    setCheckItems((prev) => prev.filter((item) => item.barcode !== itemToDelete));
+    setCheckItems((prev) =>
+      prev.filter((item) => item.barcode !== itemToDelete)
+    );
     setItemToDelete(null);
   }, [itemToDelete]);
 
@@ -252,7 +249,9 @@ const PosPage = () => {
                               <Button
                                 variant="outline"
                                 size="icon-sm"
-                                onClick={() => handleQuantityChange(item.barcode, -1)}
+                                onClick={() =>
+                                  handleQuantityChange(item.barcode, -1)
+                                }
                               >
                                 −
                               </Button>
@@ -263,7 +262,9 @@ const PosPage = () => {
                             <Button
                               variant="outline"
                               size="icon-sm"
-                              onClick={() => handleQuantityChange(item.barcode, 1)}
+                              onClick={() =>
+                                handleQuantityChange(item.barcode, 1)
+                              }
                             >
                               +
                             </Button>
@@ -357,7 +358,10 @@ const PosPage = () => {
         )}
       </div>
 
-      <AlertDialog open={itemToDelete !== null} onOpenChange={(open) => !open && setItemToDelete(null)}>
+      <AlertDialog
+        open={itemToDelete !== null}
+        onOpenChange={(open) => !open && setItemToDelete(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{t("stores.pos.removeItem")}</AlertDialogTitle>
@@ -367,7 +371,9 @@ const PosPage = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteItem}>{t("stores.pos.remove")}</AlertDialogAction>
+            <AlertDialogAction onClick={handleDeleteItem}>
+              {t("stores.pos.remove")}
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

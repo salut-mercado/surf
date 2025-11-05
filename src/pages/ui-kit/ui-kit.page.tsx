@@ -5,6 +5,7 @@ import { CameraButton } from "~/components/composite/camera-button";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Badge } from "~/components/ui/badge";
 import { api } from "~/hooks/api";
+import { Table } from "./data-table";
 
 const UiKitPage = () => {
   const suppliers = api.suppliers.useGetAll({ limit: 1000 });
@@ -44,6 +45,8 @@ const UiKitPage = () => {
         autoCloseOnBarcodeDetected
       />
       <pre>{JSON.stringify({ detectedBarcode }, null, 2)}</pre>
+
+      <Table />
     </DashboardPage>
   );
 };

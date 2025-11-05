@@ -25,6 +25,7 @@ import { api } from "~/hooks/api";
 import { useAuth } from "~/hooks/use-auth";
 import { Badge } from "./ui/badge";
 import { APP_VERSION } from "~/lib/utils/get-app-version";
+import { Link } from "wouter";
 
 export function NavUser() {
   const { t } = useTranslation();
@@ -90,9 +91,11 @@ export function NavUser() {
               <>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <IconDotsCircleHorizontal />
-                    {t("user.uiKit")}
+                  <DropdownMenuItem asChild>
+                    <Link href="/ui-kit">
+                      <IconDotsCircleHorizontal />
+                      {t("user.uiKit")}
+                    </Link>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </>

@@ -59,7 +59,7 @@ const InventoryCreateInflowPage = () => {
 
   const allSuppliers =
     suppliers.data?.pages.flatMap((page) => page.items) ?? [];
-  const allSkus = skus.data?.pages.flatMap((page) => page.items) ?? [];
+  const allSkus = skus.data?.items ?? [];
 
   const handleAddItem = () => {
     setItems([...items, { skuId: "", quantity: 1 }]);
@@ -130,7 +130,9 @@ const InventoryCreateInflowPage = () => {
       setLocation(`~/stores/${storeId}/inventory`, { replace: true });
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : t("stores.inventory.createInflow.errorCreateFailed")
+        err instanceof Error
+          ? err.message
+          : t("stores.inventory.createInflow.errorCreateFailed")
       );
     }
   };
@@ -154,23 +156,33 @@ const InventoryCreateInflowPage = () => {
               <ChevronLeft className="size-4" />
             </Link>
           </Button>
-          <h1 className="text-2xl font-semibold">{t("stores.inventory.createInflow.title")}</h1>
+          <h1 className="text-2xl font-semibold">
+            {t("stores.inventory.createInflow.title")}
+          </h1>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>{t("stores.inventory.createInflow.orderDetails")}</CardTitle>
+              <CardTitle>
+                {t("stores.inventory.createInflow.orderDetails")}
+              </CardTitle>
               <CardDescription>
                 {t("stores.inventory.createInflow.orderDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-2">
-                <Label htmlFor="supplier">{t("stores.inventory.createInflow.supplier")}</Label>
+                <Label htmlFor="supplier">
+                  {t("stores.inventory.createInflow.supplier")}
+                </Label>
                 <Select value={supplierId} onValueChange={setSupplierId}>
                   <SelectTrigger id="supplier">
-                    <SelectValue placeholder={t("stores.inventory.createInflow.selectSupplier")} />
+                    <SelectValue
+                      placeholder={t(
+                        "stores.inventory.createInflow.selectSupplier"
+                      )}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     {allSuppliers.map((supplier) => (
@@ -183,7 +195,9 @@ const InventoryCreateInflowPage = () => {
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="status">{t("stores.inventory.createInflow.orderStatus")}</Label>
+                <Label htmlFor="status">
+                  {t("stores.inventory.createInflow.orderStatus")}
+                </Label>
                 <Select
                   value={orderStatus}
                   onValueChange={(value) =>
@@ -194,12 +208,24 @@ const InventoryCreateInflowPage = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="CREATED">{t("stores.inventory.createInflow.statusCreated")}</SelectItem>
-                    <SelectItem value="SENT">{t("stores.inventory.createInflow.statusSent")}</SelectItem>
-                    <SelectItem value="APPROVED">{t("stores.inventory.createInflow.statusApproved")}</SelectItem>
-                    <SelectItem value="REJECTED">{t("stores.inventory.createInflow.statusRejected")}</SelectItem>
-                    <SelectItem value="CHANGED">{t("stores.inventory.createInflow.statusChanged")}</SelectItem>
-                    <SelectItem value="DELIVERED">{t("stores.inventory.createInflow.statusDelivered")}</SelectItem>
+                    <SelectItem value="CREATED">
+                      {t("stores.inventory.createInflow.statusCreated")}
+                    </SelectItem>
+                    <SelectItem value="SENT">
+                      {t("stores.inventory.createInflow.statusSent")}
+                    </SelectItem>
+                    <SelectItem value="APPROVED">
+                      {t("stores.inventory.createInflow.statusApproved")}
+                    </SelectItem>
+                    <SelectItem value="REJECTED">
+                      {t("stores.inventory.createInflow.statusRejected")}
+                    </SelectItem>
+                    <SelectItem value="CHANGED">
+                      {t("stores.inventory.createInflow.statusChanged")}
+                    </SelectItem>
+                    <SelectItem value="DELIVERED">
+                      {t("stores.inventory.createInflow.statusDelivered")}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -209,7 +235,9 @@ const InventoryCreateInflowPage = () => {
           <Card>
             <CardHeader>
               <CardTitle>{t("stores.inventory.createInflow.items")}</CardTitle>
-              <CardDescription>{t("stores.inventory.createInflow.itemsDescription")}</CardDescription>
+              <CardDescription>
+                {t("stores.inventory.createInflow.itemsDescription")}
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {items.map((item, index) => (
@@ -223,7 +251,11 @@ const InventoryCreateInflowPage = () => {
                       }
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder={t("stores.inventory.createInflow.selectSku")} />
+                        <SelectValue
+                          placeholder={t(
+                            "stores.inventory.createInflow.selectSku"
+                          )}
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {allSkus.map((sku) => (
@@ -275,7 +307,9 @@ const InventoryCreateInflowPage = () => {
 
           <div className="flex justify-end gap-2">
             <Button type="button" variant="outline" asChild>
-              <Link href={`~/stores/${storeId}/inventory`}>{t("stores.inventory.createInflow.cancel")}</Link>
+              <Link href={`~/stores/${storeId}/inventory`}>
+                {t("stores.inventory.createInflow.cancel")}
+              </Link>
             </Button>
             <Button type="submit" disabled={createInflow.isPending}>
               {createInflow.isPending ? (
