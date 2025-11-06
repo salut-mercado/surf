@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table";
+import { useTranslation } from "react-i18next";
 
 import {
   Table,
@@ -16,33 +11,26 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { DataTablePagination, type PaginationConfig } from "./pagination";
+import { DataTablePagination } from "./pagination";
+import type { UseDataTableResult } from "./use-data-table";
+import { DataTableFilter } from "./filter";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  pagination?: PaginationConfig;
+interface DataTableProps<TData> {
+  table: UseDataTableResult<TData>;
+  topExtra?: React.ReactNode;
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-  pagination,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    initialState: {
-      pagination: {
-        pageSize: pagination?.pageSize ?? 10,
-      },
-    },
-  });
-
+export function DataTable<TData>({
+  table: { table, pageSizes },
+  topExtra,
+}: DataTableProps<TData>) {
+  const { t } = useTranslation();
   return (
     <div>
+      <div className="flex items-center mb-2">
+        <DataTableFilter<TData> table={table} />
+        {topExtra}
+      </div>
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>
@@ -83,17 +71,19 @@ export function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={table.getAllColumns().length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {t("dataTable.noResults")}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} pagination={pagination} />
+      <div className="flex items-center justify-end mt-2">
+        <DataTablePagination<TData> table={table} pageSizes={pageSizes} />
+      </div>
     </div>
   );
 }

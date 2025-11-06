@@ -1,29 +1,27 @@
 import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 import { Link } from "wouter";
+import { DataTable } from "~/components/composite/data-table";
+import { useDataTable } from "~/components/composite/data-table/use-data-table";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Button } from "~/components/ui/button";
-import { DataTable } from "~/components/ui/data-table";
 import { api } from "~/hooks/api";
-import { getColumns } from "./columns";
 import { SkusEmptyState } from "./skus.empty-state";
 import { SkusErrorState } from "./skus.error-state";
 import { SkusSkeleton } from "./skus.skeleton";
-import { useEffect } from "react";
+import { useColumns } from "./use-columns";
 
 export default function SkusPage() {
   const { t } = useTranslation();
   const skus = api.skus.useGetAll({ limit: 1000 });
-  const allSkus = skus.data?.pages.flatMap((page) => page.items) ?? [];
+  const columns = useColumns();
+  const allSkus = useMemo(() => skus.data?.items ?? [], [skus.data]);
 
-  useEffect(() => {
-    const iv = setInterval(async () => {
-      if (skus.hasNextPage) {
-        await skus.fetchNextPage();
-      }
-    }, 100);
-    return () => clearInterval(iv);
-  }, [skus]);
+  const table = useDataTable({
+    data: allSkus,
+    columns,
+  });
 
   return (
     <DashboardPage>
@@ -32,15 +30,19 @@ export default function SkusPage() {
       {allSkus.length === 0 && !skus.isLoading && <SkusEmptyState />}
       {skus.isSuccess && allSkus.length > 0 && (
         <>
-          <div className="mb-2 justify-end flex w-full">
-            <Button asChild>
-              <Link href="/create">
-                <Plus className="size-4" />
-                {t("skus.addSku")}
-              </Link>
-            </Button>
-          </div>
-          <DataTable data={allSkus} columns={getColumns(t)} />
+          <DataTable
+            table={table}
+            topExtra={
+              <div className="ml-auto flex">
+                <Button asChild>
+                  <Link href="/create">
+                    <Plus className="size-4" />
+                    {t("skus.addSku")}
+                  </Link>
+                </Button>
+              </div>
+            }
+          />
         </>
       )}
     </DashboardPage>
