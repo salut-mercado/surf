@@ -47,8 +47,10 @@ export function DataTableFilter<TData>({
 
   useEffect(() => {
     if (filterColumn) {
+      table.setGlobalFilter(undefined);
       table.setColumnFilters([{ id: filterColumn, value: filter }]);
     } else {
+      table.setGlobalFilter(filter);
       table.setColumnFilters([]);
     }
   }, [filterColumn, filter, table]);

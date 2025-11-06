@@ -31,6 +31,7 @@ export function useDataTable<TData, TColumnDef extends ColumnDef<TData>>({
   filter,
 }: UseDataTableOptions<TData, TColumnDef>): UseDataTableResult<TData> {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = useState<string | undefined>("");
 
   const paginationMemo = useMemo(() => {
     if (!pagination)
@@ -81,13 +82,15 @@ export function useDataTable<TData, TColumnDef extends ColumnDef<TData>>({
     if (!filterMemo.disabled) {
       options.getFilteredRowModel = getFilteredRowModel();
       options.onColumnFiltersChange = setColumnFilters;
+      options.onGlobalFilterChange = setGlobalFilter;
       options.state = {
         ...options.state,
         columnFilters,
+        globalFilter,
       };
     }
     return options;
-  }, [data, columns, paginationMemo, filterMemo, columnFilters]);
+  }, [data, columns, paginationMemo, filterMemo, columnFilters, globalFilter]);
 
   const table = useReactTable(options);
 
