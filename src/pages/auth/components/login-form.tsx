@@ -98,9 +98,7 @@ export function LoginForm({
                 </div>
                 {loginWithPassword.isError && (
                   <FieldDescription className="text-red-600">
-                    {(
-                      loginWithPassword.error as unknown as { message?: string }
-                    )?.message || "Login failed"}
+                    {loginWithPassword.error?.message || "Login failed"}
                   </FieldDescription>
                 )}
               </Field>

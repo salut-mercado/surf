@@ -1,9 +1,9 @@
 import type {
-  AddWarehouseHandlerApiWarehousePostRequest,
-  GetWarehouseByIdHandlerApiWarehouseIdGetRequest,
-  GetWarehousesHandlerApiWarehouseGetRequest,
-  UpdateWarehouseHandlerApiWarehouseIdPutRequest,
-  WareHousePaginatedResponseSchema,
+  WarehouseApiAddWarehouseHandlerApiWarehousePostRequest,
+  WarehouseApiGetWarehouseByIdHandlerApiWarehouseIdGetRequest,
+  WarehouseApiGetWarehousesHandlerApiWarehouseGetRequest,
+  WarehouseApiUpdateWarehouseHandlerApiWarehouseIdPutRequest,
+  WareHousePaginatedResponseSchema
 } from "@salut-mercado/octo-client";
 import {
   skipToken,
@@ -17,7 +17,7 @@ export const warehouse = {
   // Queries
   useGetAll: (
     args:
-      | Omit<GetWarehousesHandlerApiWarehouseGetRequest, "skip">
+      | Omit<WarehouseApiGetWarehousesHandlerApiWarehouseGetRequest, "skip">
       | typeof skipToken
   ) =>
     useInfiniteQuery({
@@ -33,10 +33,11 @@ export const warehouse = {
                 skip: pageParam,
                 limit: args.limit ?? 1000,
               })
+              .then((res) => res.data)
           : skipToken,
     }),
   useGetById: (
-    args: GetWarehouseByIdHandlerApiWarehouseIdGetRequest | typeof skipToken
+    args: WarehouseApiGetWarehouseByIdHandlerApiWarehouseIdGetRequest | typeof skipToken
   ) =>
     useQuery({
       queryKey: ["warehouse", "getById", JSON.stringify(args)],
@@ -50,13 +51,13 @@ export const warehouse = {
   useCreate: () =>
     useMutation({
       mutationKey: ["warehouse", "create"],
-      mutationFn: (args: AddWarehouseHandlerApiWarehousePostRequest) =>
+      mutationFn: (args: WarehouseApiAddWarehouseHandlerApiWarehousePostRequest) =>
         api.warehouse.addWarehouseHandlerApiWarehousePost(args),
     }),
   useUpdate: () =>
     useMutation({
       mutationKey: ["warehouse", "update"],
-      mutationFn: (args: UpdateWarehouseHandlerApiWarehouseIdPutRequest) =>
+      mutationFn: (args: WarehouseApiUpdateWarehouseHandlerApiWarehouseIdPutRequest) =>
         api.warehouse.updateWarehouseHandlerApiWarehouseIdPut(args),
     }),
 };

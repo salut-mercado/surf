@@ -1,9 +1,9 @@
 import type {
-  AddStoreHandlerApiStoresPostRequest,
-  GetStoreHandlerApiStoresIdGetRequest,
-  GetStoresHandlerApiStoresGetRequest,
+  StoresApiAddStoreHandlerApiStoresPostRequest,
+  StoresApiGetStoreHandlerApiStoresIdGetRequest,
+  StoresApiGetStoresHandlerApiStoresGetRequest,
   StorePaginatedResponseSchema,
-  UpdateStoreHandlerApiStoresIdPutRequest,
+  StoresApiUpdateStoreHandlerApiStoresIdPutRequest,
 } from "@salut-mercado/octo-client";
 import {
   skipToken,
@@ -17,7 +17,7 @@ export const stores = {
   // Queries
   useGetAll: (
     args:
-      | Omit<GetStoresHandlerApiStoresGetRequest, "skip">
+      | Omit<StoresApiGetStoresHandlerApiStoresGetRequest, "skip">
       | typeof skipToken
   ) =>
     useInfiniteQuery({
@@ -28,21 +28,26 @@ export const stores = {
       queryFn:
         args !== skipToken
           ? ({ pageParam }) =>
-              api.stores.getStoresHandlerApiStoresGet({
-                ...args,
-                skip: pageParam,
-                limit: args.limit ?? 1000,
-              })
+              api.stores
+                .getStoresHandlerApiStoresGet({
+                  ...args,
+                  skip: pageParam,
+                  limit: args.limit ?? 1000,
+                })
+                .then((res) => res.data)
           : skipToken,
     }),
   useGetById: (
-    args: GetStoreHandlerApiStoresIdGetRequest | typeof skipToken
+    args: StoresApiGetStoreHandlerApiStoresIdGetRequest | typeof skipToken
   ) =>
     useQuery({
       queryKey: ["stores", "getById", JSON.stringify(args)],
       queryFn:
         args !== skipToken
-          ? () => api.stores.getStoreHandlerApiStoresIdGet(args)
+          ? () =>
+              api.stores
+                .getStoreHandlerApiStoresIdGet(args)
+                .then((res) => res.data)
           : skipToken,
     }),
 
@@ -50,13 +55,13 @@ export const stores = {
   useCreate: () =>
     useMutation({
       mutationKey: ["stores", "create"],
-      mutationFn: (args: AddStoreHandlerApiStoresPostRequest) =>
+      mutationFn: (args: StoresApiAddStoreHandlerApiStoresPostRequest) =>
         api.stores.addStoreHandlerApiStoresPost(args),
     }),
   useUpdate: () =>
     useMutation({
       mutationKey: ["stores", "update"],
-      mutationFn: (args: UpdateStoreHandlerApiStoresIdPutRequest) =>
+      mutationFn: (args: StoresApiUpdateStoreHandlerApiStoresIdPutRequest) =>
         api.stores.updateStoreHandlerApiStoresIdPut(args),
     }),
 };

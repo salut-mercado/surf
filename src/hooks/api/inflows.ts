@@ -1,6 +1,6 @@
 import type {
-  AddSkuOrderInflowHandlerApiOrderInflowSkuOrderInflowPostRequest,
-  CreateOrderInflowHandlerApiOrderInflowPostRequest,
+  OrderInflowApiCreateOrderInflowHandlerApiOrderInflowPostRequest,
+  OrderInflowApiAddSkuOrderInflowHandlerApiOrderInflowSkuOrderInflowPostRequest,
 } from "@salut-mercado/octo-client";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "~/lib/api";
@@ -9,8 +9,9 @@ export const inflows = {
   useCreate: () =>
     useMutation({
       mutationKey: ["inflows", "create"],
-      mutationFn: (args: CreateOrderInflowHandlerApiOrderInflowPostRequest) =>
-        api.inflows.createOrderInflowHandlerApiOrderInflowPost(args),
+      mutationFn: (
+        args: OrderInflowApiCreateOrderInflowHandlerApiOrderInflowPostRequest
+      ) => api.inflows.createOrderInflowHandlerApiOrderInflowPost(args),
     }),
   useAddSkuItems: () =>
     useMutation({
@@ -19,8 +20,8 @@ export const inflows = {
         orderInflowId,
         items,
       }: {
-        orderInflowId: AddSkuOrderInflowHandlerApiOrderInflowSkuOrderInflowPostRequest["orderInflowId"];
-        items: AddSkuOrderInflowHandlerApiOrderInflowSkuOrderInflowPostRequest["sKUOrderInflowScheme"];
+        orderInflowId: OrderInflowApiAddSkuOrderInflowHandlerApiOrderInflowSkuOrderInflowPostRequest["orderInflowId"];
+        items: OrderInflowApiAddSkuOrderInflowHandlerApiOrderInflowSkuOrderInflowPostRequest["sKUOrderInflowScheme"];
       }) =>
         api.inflows.addSkuOrderInflowHandlerApiOrderInflowSkuOrderInflowPost({
           orderInflowId,

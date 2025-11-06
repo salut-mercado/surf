@@ -13,7 +13,7 @@ export const useColumns = (): ColumnDef<FirmsProducerReturnSchema>[] => {
       { accessorKey: "name", header: t("producers.columns.name") },
       { accessorKey: "nif", header: t("producers.columns.taxId") },
       {
-        accessorKey: "minimumStock",
+        accessorKey: "minimum_stock",
         header: t("producers.columns.minimumStock"),
       },
       {
@@ -23,7 +23,7 @@ export const useColumns = (): ColumnDef<FirmsProducerReturnSchema>[] => {
           <ActionRow id={row.original.id} text={t("producers.columns.view")} />
         ),
       },
-    ],
+    ] satisfies ColumnDef<FirmsProducerReturnSchema>[],
     [t]
   );
 };

@@ -16,7 +16,7 @@ const CreateProducerPage = () => {
             firmsProducerSchema: data,
           });
           if (created) {
-            setLocation(`~/producers/${created.id}`, { replace: true });
+            setLocation(`~/producers/${created.data.id}`, { replace: true });
           }
         }}
         isSubmitting={createProducer.isPending}

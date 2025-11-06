@@ -18,7 +18,7 @@ interface ProducerFormProps {
 const defaultValues: FirmsProducerSchema = {
   name: "",
   nif: "",
-  minimumStock: 0,
+  minimum_stock: 0,
 };
 
 export function ProducerForm({
@@ -35,13 +35,11 @@ export function ProducerForm({
       onSubmit({
         name: value.name,
         nif: value.nif,
-        minimumStock: value.minimumStock,
+        minimum_stock: value.minimum_stock,
       });
     },
     validators: {
       onChange: producerSchema,
-      onMount: producerSchema,
-      onBlur: producerSchema,
     },
   });
 
@@ -99,7 +97,7 @@ export function ProducerForm({
           )}
         />
         <form.Field
-          name="minimumStock"
+          name="minimum_stock"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>
@@ -130,7 +128,7 @@ export function ProducerForm({
             className="w-full"
             disabled={!canSubmit || isSubmitting}
           >
-            {isSubmitting ? <Spinner /> : submitLabel ?? defaultSubmitLabel}
+            {isSubmitting ? <Spinner /> : (submitLabel ?? defaultSubmitLabel)}
           </Button>
         )}
       />

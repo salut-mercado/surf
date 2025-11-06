@@ -27,19 +27,19 @@ export const ProductInfo = ({
         <DetailItem
           icon={FolderTreeIcon}
           label={t("skus.view.category")}
-          value={sku.categoryId}
+          value={sku.category_id}
         />
         <Separator />
         <DetailItem
           icon={Building2Icon}
           label={t("skus.view.supplier")}
-          value={sku.supplierId}
+          value={sku.supplier_id}
         />
         <Separator />
         <DetailItem
           icon={FactoryIcon}
           label={t("skus.view.producer")}
-          value={sku.producerId}
+          value={sku.producer_id}
         />
       </CardContent>
     </Card>

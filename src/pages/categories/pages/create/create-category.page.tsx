@@ -18,12 +18,12 @@ export default function CreateCategoryPage() {
   const options = useMemo(() => {
     const list = (categories.data ?? []) as {
       id: string;
-      categoryName: string;
+      category_name: string;
       level: number;
     }[];
     return list.map((c) => ({
       id: c.id,
-      categoryName: c.categoryName,
+      category_name: c.category_name,
       level: c.level,
     }));
   }, [categories.data]);
@@ -41,13 +41,13 @@ export default function CreateCategoryPage() {
             onSubmit={async (vals) => {
               const res = await create.mutateAsync({
                 categorySchema: {
-                  categoryName: vals.categoryName,
-                  parentCategoryId: parentId ?? undefined,
+                  category_name: vals.categoryName,
+                  parent_category_id: parentId ?? undefined,
                   level: vals.level,
                 },
               });
-              if (res && (res as { id?: string }).id) {
-                setLocation(`/${(res as { id: string }).id}`, {
+              if (res) {
+                setLocation(`/${res.data.id}`, {
                   replace: true,
                 });
               } else {

@@ -36,10 +36,10 @@ export function buildCategoryTree(categories: CategoryReturnSchema[]): CategoryN
   // Build the tree structure
   categories.forEach((category) => {
     const node = categoryMap.get(category.id)!;
-    if (category.parentCategoryId == null) {
+    if (category.parent_category_id == null) {
       rootCategories.push(node);
     } else {
-      const parent = categoryMap.get(category.parentCategoryId);
+      const parent = categoryMap.get(category.parent_category_id);
       if (parent) {
         parent.children.push(node);
       }
@@ -127,7 +127,7 @@ function CategoryTreeItem({
           <span
             className={`font-medium ${isBeingMoved ? "text-muted-foreground" : "text-foreground"}`}
           >
-            {category.categoryName}
+            {category.category_name}
           </span>
           {hasChildren && (
             <Badge variant="secondary" className="h-5 px-2 text-xs">
@@ -231,7 +231,7 @@ export function CategoryTree({ categories }: CategoryTreeProps) {
   // Build parent->children adjacency for descendant checks
   const childrenByParent = new Map<string, string[]>();
   categories.forEach((c) => {
-    const key = c.parentCategoryId ?? "__root__";
+    const key = c.parent_category_id ?? "__root__";
     const list = childrenByParent.get(key) ?? [];
     list.push(c.id);
     childrenByParent.set(key, list);
@@ -268,14 +268,14 @@ export function CategoryTree({ categories }: CategoryTreeProps) {
   const handleMoveConfirm = async () => {
     if (
       movingCategoryId &&
-      selectedParentId !== movingCategory?.parentCategoryId
+      selectedParentId !== movingCategory?.parent_category_id
     ) {
       setIsMoving(true);
       try {
         await updateCategory.mutateAsync({
           categoriesId: movingCategoryId,
           categoryUpdateSchema: {
-            parentCategoryId: selectedParentId ?? null,
+            parent_category_id: selectedParentId ?? null,
           },
         });
 
@@ -303,7 +303,7 @@ export function CategoryTree({ categories }: CategoryTreeProps) {
             <div className="flex items-center gap-2">
               <Move className="size-4 text-muted-foreground" />
               <span className="text-sm font-medium text-foreground">
-                {t("categories.tree.movingCategory", { categoryName: movingCategory?.categoryName })}
+                {t("categories.tree.movingCategory", { categoryName: movingCategory?.category_name })}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -332,7 +332,7 @@ export function CategoryTree({ categories }: CategoryTreeProps) {
                   size="sm"
                   onClick={handleMoveConfirm}
                   disabled={
-                    selectedParentId === movingCategory?.parentCategoryId ||
+                    selectedParentId === movingCategory?.parent_category_id ||
                     isMoving
                   }
                   className="text-xs"
@@ -346,7 +346,7 @@ export function CategoryTree({ categories }: CategoryTreeProps) {
           <p className="text-xs text-muted-foreground mt-2">
             {selectedParentId === null
               ? t("categories.tree.makeRootHint")
-              : t("categories.tree.moveUnderHint", { categoryName: categories.find((c) => c.id === selectedParentId)?.categoryName ?? "" })}
+              : t("categories.tree.moveUnderHint", { categoryName: categories.find((c) => c.id === selectedParentId)?.category_name ?? "" })}
           </p>
         </div>
       )}

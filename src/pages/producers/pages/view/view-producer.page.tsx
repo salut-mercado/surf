@@ -69,7 +69,7 @@ const ViewProducerPage = () => {
                 <div className="text-sm text-muted-foreground">
                   {t("producers.view.labels.minimumStock")}
                 </div>
-                <div className="font-medium">{data.minimumStock}</div>
+                <div className="font-medium">{data.minimum_stock}</div>
               </CardContent>
             </Card>
 

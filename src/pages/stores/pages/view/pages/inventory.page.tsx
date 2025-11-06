@@ -25,7 +25,7 @@ const InventoryPage = () => {
     if (!warehouses.data?.pages) return null;
     const allWarehouses = warehouses.data.pages.flatMap((page) => page.items);
     const storeWarehouses = allWarehouses.filter(
-      (wh) => wh.storeId === storeId
+      (wh) => wh.store_id === storeId
     );
     return storeWarehouses[0] || null;
   }, [warehouses.data, storeId]);

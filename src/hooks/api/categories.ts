@@ -1,8 +1,8 @@
 import type {
-  GetCategoriesHandlerApiCategoriesGetRequest,
-  GetCategoryHandlerApiCategoriesCategoriesIdGetRequest,
-  CreateCategoryHandlerApiCategoriesPostRequest,
-  UpdateCategoryHandlerApiCategoriesCategoriesIdPutRequest,
+  CategoriesApiCreateCategoryHandlerApiCategoriesPostRequest,
+  CategoriesApiGetCategoriesHandlerApiCategoriesGetRequest,
+  CategoriesApiGetCategoryHandlerApiCategoriesCategoriesIdGetRequest,
+  CategoriesApiUpdateCategoryHandlerApiCategoriesCategoriesIdPutRequest,
 } from "@salut-mercado/octo-client";
 import { skipToken, useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "~/lib/api";
@@ -10,18 +10,20 @@ import { api } from "~/lib/api";
 export const categories = {
   // Queries
   useGetAll: (
-    args: GetCategoriesHandlerApiCategoriesGetRequest | typeof skipToken
+    args:
+      | CategoriesApiGetCategoriesHandlerApiCategoriesGetRequest
+      | typeof skipToken
   ) =>
     useQuery({
       queryKey: ["categories", "getAll", JSON.stringify(args)],
       queryFn:
         args !== skipToken
-          ? () => api.categories.getCategoriesHandlerApiCategoriesGet(args)
+          ? () => api.categories.getCategoriesHandlerApiCategoriesGet(args).then((res) => res.data)
           : skipToken,
     }),
   useGetById: (
     args:
-      | GetCategoryHandlerApiCategoriesCategoriesIdGetRequest
+      | CategoriesApiGetCategoryHandlerApiCategoriesCategoriesIdGetRequest
       | typeof skipToken
   ) =>
     useQuery({
@@ -31,7 +33,7 @@ export const categories = {
           ? () =>
               api.categories.getCategoryHandlerApiCategoriesCategoriesIdGet(
                 args
-              )
+              ).then((res) => res.data)
           : skipToken,
     }),
 
@@ -39,16 +41,16 @@ export const categories = {
   useCreate: () =>
     useMutation({
       mutationKey: ["categories", "create"],
-      mutationFn: (args: CreateCategoryHandlerApiCategoriesPostRequest) =>
-        api.categories.createCategoryHandlerApiCategoriesPost(args),
+      mutationFn: (
+        args: CategoriesApiCreateCategoryHandlerApiCategoriesPostRequest
+      ) => api.categories.createCategoryHandlerApiCategoriesPost(args),
     }),
   useUpdate: () =>
     useMutation({
       mutationKey: ["categories", "update"],
       mutationFn: (
-        args: UpdateCategoryHandlerApiCategoriesCategoriesIdPutRequest
-      ) => api.categories.updateCategoryHandlerApiCategoriesCategoriesIdPut(args),
+        args: CategoriesApiUpdateCategoryHandlerApiCategoriesCategoriesIdPutRequest
+      ) =>
+        api.categories.updateCategoryHandlerApiCategoriesCategoriesIdPut(args),
     }),
 };
-
-

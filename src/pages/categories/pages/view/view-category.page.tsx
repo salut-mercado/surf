@@ -38,7 +38,7 @@ export default function ViewCategoryPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle>{data.categoryName}</CardTitle>
+              <CardTitle>{data.category_name}</CardTitle>
             </div>
             <CardDescription>{t("categories.view.categoryDetails")}</CardDescription>
           </CardHeader>
@@ -50,7 +50,7 @@ export default function ViewCategoryPage() {
               </div>
               <div>
                 <span className="text-sm text-muted-foreground">{t("categories.view.parent")}</span>
-                <div className="text-sm">{data.parentCategoryId ?? t("categories.view.none")}</div>
+                <div className="text-sm">{data.parent_category_id ?? t("categories.view.none")}</div>
               </div>
               <div>
                 <span className="text-sm text-muted-foreground">{t("categories.view.level")}</span>

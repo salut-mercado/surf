@@ -16,7 +16,7 @@ const CreateSkuPage = () => {
         isSubmitting={createSku.isPending}
         onSubmit={async (data) => {
           const created = await createSku.mutateAsync({ sKUSchema: data });
-          if (created?.id) setLocation(`/${created.id}`, { replace: true });
+          if (created?.data?.id) setLocation(`/${created.data.id}`, { replace: true });
         }}
       />
     </DashboardPage>

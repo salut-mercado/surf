@@ -29,21 +29,21 @@ export const FinancialInfo = ({
             {t("skus.view.wholesalePrice")}
           </label>
           <p className="text-4xl font-bold mt-2 text-primary">
-            {sku.wholesalePrice != null
-              ? `€${sku.wholesalePrice}`
+            {sku.wholesale_price != null
+              ? `€${sku.wholesale_price}`
               : t("common.n/a")}
           </p>
         </div>
         <Separator />
         <div className="space-y-4">
-          <PercentageItem label={t("skus.view.vat")} value={sku.vatPercent} />
+          <PercentageItem label={t("skus.view.vat")} value={sku.vat_percent} />
           <PercentageItem
             label={t("skus.view.alcohol")}
-            value={sku.alcoholPercent}
+            value={sku.alcohol_percent}
           />
           <PercentageItem
             label={t("skus.view.naturalLoss")}
-            value={sku.naturalLossPercent}
+            value={sku.natural_loss_percent}
           />
         </div>
       </CardContent>

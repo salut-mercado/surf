@@ -23,21 +23,21 @@ export const Specifications = ({
         <div className="grid grid-cols-2 gap-6">
           <MetricCard
             label={t("skus.view.netWeight")}
-            value={sku.netWeight.toLocaleString()}
-            unit={sku.unitMeasurement.toLowerCase()}
+            value={sku.net_weight.toLocaleString()}
+            unit={sku.unit_measurement.toLowerCase()}
           />
           <MetricCard
             label={t("skus.view.shelfLifetime")}
-            value={sku.shelfLifetime.toString()}
+            value={sku.shelf_lifetime.toString()}
             unit={t("skus.view.days")}
           />
           <MetricCard
             label={t("skus.view.unitMeasurement")}
-            value={sku.unitMeasurement}
+            value={sku.unit_measurement}
           />
           <MetricCard
             label={t("skus.view.maxOnCheckout")}
-            value={sku.maxOnCheckout.toString()}
+            value={sku.max_on_checkout.toString()}
             unit={t("skus.view.units")}
           />
         </div>

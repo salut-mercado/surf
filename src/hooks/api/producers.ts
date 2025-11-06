@@ -1,8 +1,8 @@
 import type {
-  CreateFirmProducerHandlerApiFirmsProducerPostRequest,
-  GetFirmProducerHandlerApiFirmsProducerIdGetRequest,
-  GetFirmsProducerHandlerApiFirmsProducerGetRequest,
-  UpdateFirmProducerHandlerApiFirmsProducerIdPutRequest,
+  FirmsProducerApiGetFirmsProducerHandlerApiFirmsProducerGetRequest,
+  FirmsProducerApiGetFirmProducerHandlerApiFirmsProducerIdGetRequest,
+  FirmsProducerApiCreateFirmProducerHandlerApiFirmsProducerPostRequest,
+  FirmsProducerApiUpdateFirmProducerHandlerApiFirmsProducerIdPutRequest,
 } from "@salut-mercado/octo-client";
 import { skipToken, useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "~/lib/api";
@@ -10,24 +10,28 @@ import { api } from "~/lib/api";
 export const producers = {
   // Queries
   useGetAll: (
-    args: GetFirmsProducerHandlerApiFirmsProducerGetRequest | typeof skipToken
+    args:
+      | FirmsProducerApiGetFirmsProducerHandlerApiFirmsProducerGetRequest
+      | typeof skipToken
   ) =>
     useQuery({
       queryKey: ["producers", "getAll", JSON.stringify(args)],
       queryFn:
         args !== skipToken
-          ? () => api.producers.getFirmsProducerHandlerApiFirmsProducerGet(args)
+          ? () => api.producers.getFirmsProducerHandlerApiFirmsProducerGet(args).then((res) => res.data)
           : skipToken,
     }),
   useGetById: (
-    args: GetFirmProducerHandlerApiFirmsProducerIdGetRequest | typeof skipToken
+    args:
+      | FirmsProducerApiGetFirmProducerHandlerApiFirmsProducerIdGetRequest
+      | typeof skipToken
   ) =>
     useQuery({
       queryKey: ["producers", "getById", JSON.stringify(args)],
       queryFn:
         args !== skipToken
           ? () =>
-              api.producers.getFirmProducerHandlerApiFirmsProducerIdGet(args)
+              api.producers.getFirmProducerHandlerApiFirmsProducerIdGet(args).then((res) => res.data)
           : skipToken,
     }),
 
@@ -36,14 +40,14 @@ export const producers = {
     useMutation({
       mutationKey: ["producers", "create"],
       mutationFn: (
-        args: CreateFirmProducerHandlerApiFirmsProducerPostRequest
+        args: FirmsProducerApiCreateFirmProducerHandlerApiFirmsProducerPostRequest
       ) => api.producers.createFirmProducerHandlerApiFirmsProducerPost(args),
     }),
   useUpdate: () =>
     useMutation({
       mutationKey: ["producers", "update"],
       mutationFn: (
-        args: UpdateFirmProducerHandlerApiFirmsProducerIdPutRequest
+        args: FirmsProducerApiUpdateFirmProducerHandlerApiFirmsProducerIdPutRequest
       ) => api.producers.updateFirmProducerHandlerApiFirmsProducerIdPut(args),
     }),
 };

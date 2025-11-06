@@ -14,7 +14,7 @@ const CreateSupplierPage = () => {
             supplierSchema: data,
           });
           if (created) {
-            setLocation(`~/suppliers/${created.id}`, { replace: true });
+            setLocation(`~/suppliers/${created.data.id}`, { replace: true });
           }
         }}
         isSubmitting={createSupplier.isPending}
