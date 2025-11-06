@@ -131,8 +131,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       verifyOtp,
       logout,
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- loginWithPassword and verifyOtp are not dependent on other values
-    [step, pendingToken, isAuthenticated, logout]
+    [step, pendingToken, isAuthenticated, loginWithPassword, verifyOtp, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
