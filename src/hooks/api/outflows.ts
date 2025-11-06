@@ -1,8 +1,8 @@
 import {
   OutflowEnum,
-  type AddOutflowSpoiledApiOutflowsSpoiledPostRequest,
-  type AddOutflowStoreSalesApiOutflowsStoreSalesPostRequest,
-  type AddOutflowTheftApiOutflowsTheftPostRequest,
+  type OutflowsApiAddOutflowSpoiledApiOutflowsSpoiledPostRequest,
+  type OutflowsApiAddOutflowTheftApiOutflowsTheftPostRequest,
+  type OutflowsApiAddOutflowStoreSalesApiOutflowsStoreSalesPostRequest,
 } from "@salut-mercado/octo-client";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "~/lib/api";
@@ -13,14 +13,14 @@ export const outflows = {
       mutationKey: ["outflows", "create", "spoiled"],
       mutationFn: (
         outflow: Omit<
-          AddOutflowSpoiledApiOutflowsSpoiledPostRequest["spoiledOutflowSchema"],
+          OutflowsApiAddOutflowSpoiledApiOutflowsSpoiledPostRequest["spoiledOutflowSchema"],
           "outflow_type"
         >
       ) =>
         api.outflows.addOutflowSpoiledApiOutflowsSpoiledPost({
           spoiledOutflowSchema: {
             ...outflow,
-            outflowType: OutflowEnum.spoiled,
+            outflow_type: OutflowEnum.spoiled,
           },
         }),
     }),
@@ -29,14 +29,14 @@ export const outflows = {
       mutationKey: ["outflows", "create", "theft"],
       mutationFn: (
         outflow: Omit<
-          AddOutflowTheftApiOutflowsTheftPostRequest["theftOutflowSchema"],
+          OutflowsApiAddOutflowTheftApiOutflowsTheftPostRequest["theftOutflowSchema"],
           "outflow_type"
         >
       ) =>
         api.outflows.addOutflowTheftApiOutflowsTheftPost({
           theftOutflowSchema: {
             ...outflow,
-            outflowType: OutflowEnum.theft,
+            outflow_type: OutflowEnum.theft,
           },
         }),
     }),
@@ -45,14 +45,14 @@ export const outflows = {
       mutationKey: ["outflows", "create", "storeSale"],
       mutationFn: (
         outflow: Omit<
-          AddOutflowStoreSalesApiOutflowsStoreSalesPostRequest["storeSalesOutflowSchema"],
+          OutflowsApiAddOutflowStoreSalesApiOutflowsStoreSalesPostRequest["storeSalesOutflowSchema"],
           "outflow_type"
         >
       ) =>
         api.outflows.addOutflowStoreSalesApiOutflowsStoreSalesPost({
           storeSalesOutflowSchema: {
             ...outflow,
-            outflowType: OutflowEnum.storesales,
+            outflow_type: OutflowEnum.storesales,
           },
         }),
     }),

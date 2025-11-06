@@ -17,7 +17,7 @@ export const useColumns = (): ColumnDef<SupplierReturnSchema>[] => {
         { accessorKey: "agent", header: t("suppliers.columns.agent") },
         { accessorKey: "phone", header: t("suppliers.columns.phone") },
         { accessorKey: "nif", header: t("suppliers.columns.taxId") },
-        { accessorKey: "delayDays", header: t("suppliers.columns.delayDays") },
+        { accessorKey: "delay_days", header: t("suppliers.columns.delayDays") },
         {
           accessorKey: "blocked",
           header: t("suppliers.columns.blocked"),
@@ -33,7 +33,7 @@ export const useColumns = (): ColumnDef<SupplierReturnSchema>[] => {
             />
           ),
         },
-      ] as ColumnDef<SupplierReturnSchema>[],
+      ] satisfies ColumnDef<SupplierReturnSchema>[],
     [t]
   );
 };

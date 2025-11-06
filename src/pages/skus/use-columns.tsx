@@ -17,8 +17,8 @@ export const useColumns = (): ColumnDef<SKUReturnSchema>[] => {
         filterFn: "includesString",
         enableColumnFilter: true,
       },
-      { accessorKey: "unitMeasurement", header: t("skus.columns.unit") },
-      { accessorKey: "netWeight", header: t("skus.columns.netWeight") },
+      { accessorKey: "unit_measurement", header: t("skus.columns.unit") },
+      { accessorKey: "net_weight", header: t("skus.columns.netWeight") },
       {
         id: "actions",
         size: 40,
@@ -26,7 +26,7 @@ export const useColumns = (): ColumnDef<SKUReturnSchema>[] => {
           <ActionRow id={row.original.id} text={t("skus.columns.view")} />
         ),
       },
-    ],
+    ] satisfies ColumnDef<SKUReturnSchema>[],
     [t]
   );
 

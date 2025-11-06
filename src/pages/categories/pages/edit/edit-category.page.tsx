@@ -22,7 +22,7 @@ export default function EditCategoryPage() {
     () =>
       list.map((c) => ({
         id: c.id,
-        categoryName: c.categoryName,
+        category_name: c.category_name,
         level: c.level,
       })),
     [list]
@@ -41,19 +41,19 @@ export default function EditCategoryPage() {
             <CategoryForm
               categories={options}
               initial={{
-                categoryName: current.categoryName,
-                parentCategoryId: current.parentCategoryId ?? null,
+                categoryName: current.category_name,
+                parentCategoryId: current.parent_category_id ?? null,
               }}
               onSubmit={async (vals) => {
                 const updated = await update.mutateAsync({
                   categoriesId: id!,
                   categoryUpdateSchema: {
-                    categoryName: vals.categoryName,
-                    parentCategoryId: vals.parentCategoryId ?? undefined,
+                    category_name: vals.categoryName,
+                    parent_category_id: vals.parentCategoryId ?? undefined,
                   },
                 });
                 if (updated) {
-                  setLocation(`/${updated.id}`, { replace: true });
+                  setLocation(`/${updated.data.id}`, { replace: true });
                 }
               }}
               submitting={update.isPending}

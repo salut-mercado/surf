@@ -1,15 +1,13 @@
 import type {
-  AddSupplierHandlerApiSuppliersPostRequest,
-  GetSupplierBankInfoHandlerApiSuppliersBankInfoIdGetRequest,
-  GetSupplierByIdHandlerApiSuppliersIdGetRequest,
-  GetSupplierHandlerApiSuppliersGetRequest,
-  GetSuppliersBankInfoHandlerApiSuppliersBankInfoGetRequest,
-  SupplierBankInfoPaginatedResponseSchema,
-  SupplierBankInfoReturnSchema,
-  SupplierBankInfoSchema,
-  SupplierBankInfoUpdateSchema,
+  SuppliersApiGetSuppliersBankInfoHandlerApiSuppliersBankInfoGetRequest,
+  SuppliersApiGetSupplierBankInfoHandlerApiSuppliersBankInfoIdGetRequest,
+  SuppliersApiGetSupplierByIdHandlerApiSuppliersIdGetRequest,
+  SuppliersApiGetSupplierHandlerApiSuppliersGetRequest,
   SupplierPaginatedResponseSchema,
-  UpdateSupplierHandlerApiSuppliersIdPutRequest,
+  SuppliersApiAddSupplierHandlerApiSuppliersPostRequest,
+  SuppliersApiUpdateSupplierHandlerApiSuppliersIdPutRequest,
+  SuppliersApiUpdateSupplierBankInfoHandlerApiSuppliersBankInfoIdPutRequest,
+  SuppliersApiAddSupplierBankInfoHandlerApiSuppliersBankInfoPostRequest,
 } from "@salut-mercado/octo-client";
 import {
   skipToken,
@@ -24,7 +22,7 @@ export const suppliers = {
   // Queries
   useGetAll: (
     args:
-      | Omit<GetSupplierHandlerApiSuppliersGetRequest, "skip">
+      | Omit<SuppliersApiGetSupplierHandlerApiSuppliersGetRequest, "skip">
       | typeof skipToken
   ) =>
     useInfiniteQuery({
@@ -35,26 +33,33 @@ export const suppliers = {
       queryFn:
         args !== skipToken
           ? ({ pageParam }) =>
-              api.suppliers.getSupplierHandlerApiSuppliersGet({
-                ...args,
-                skip: pageParam,
-                limit: args.limit ?? 10,
-              })
+              api.suppliers
+                .getSupplierHandlerApiSuppliersGet({
+                  ...args,
+                  skip: pageParam,
+                  limit: args.limit ?? 10,
+                })
+                .then((res) => res.data)
           : skipToken,
     }),
   useGetById: (
-    args: GetSupplierByIdHandlerApiSuppliersIdGetRequest | typeof skipToken
+    args:
+      | SuppliersApiGetSupplierByIdHandlerApiSuppliersIdGetRequest
+      | typeof skipToken
   ) =>
     useQuery({
       queryKey: ["suppliers", "getById", JSON.stringify(args)],
       queryFn:
         args !== skipToken
-          ? () => api.suppliers.getSupplierByIdHandlerApiSuppliersIdGet(args)
+          ? () =>
+              api.suppliers
+                .getSupplierByIdHandlerApiSuppliersIdGet(args)
+                .then((res) => res.data)
           : skipToken,
     }),
   useBankingInfo: (
     args:
-      | GetSupplierBankInfoHandlerApiSuppliersBankInfoIdGetRequest
+      | SuppliersApiGetSupplierBankInfoHandlerApiSuppliersBankInfoIdGetRequest
       | typeof skipToken
   ) =>
     useQuery({
@@ -62,55 +67,78 @@ export const suppliers = {
       queryFn:
         args !== skipToken
           ? () =>
-              api.suppliers.getSupplierBankInfoHandlerApiSuppliersBankInfoIdGet(
-                args
-              )
+              api.suppliers
+                .getSupplierBankInfoHandlerApiSuppliersBankInfoIdGet(args)
+                .then((res) => res.data)
           : skipToken,
     }),
 
   useBankingList: (
     args:
-      | GetSuppliersBankInfoHandlerApiSuppliersBankInfoGetRequest
+      | SuppliersApiGetSuppliersBankInfoHandlerApiSuppliersBankInfoGetRequest
       | typeof skipToken
   ) =>
-    useQuery<SupplierBankInfoPaginatedResponseSchema>({
+    useQuery({
       queryKey: ["suppliers", "bankingList", JSON.stringify(args)],
       queryFn:
         args !== skipToken
           ? () =>
-              api.suppliers.getSuppliersBankInfoHandlerApiSuppliersBankInfoGet(
-                args
-              )
+              api.suppliers
+                .getSuppliersBankInfoHandlerApiSuppliersBankInfoGet(args)
+                .then((res) => res.data)
           : skipToken,
       enabled: args !== skipToken,
     }),
 
   // Mutations
-  useCreate: () =>
-    useMutation({
+  useCreate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["suppliers", "create"],
-      mutationFn: (args: AddSupplierHandlerApiSuppliersPostRequest) =>
-        api.suppliers.addSupplierHandlerApiSuppliersPost(args),
-    }),
-  useUpdate: () =>
-    useMutation({
+      mutationFn: (
+        args: SuppliersApiAddSupplierHandlerApiSuppliersPostRequest
+      ) => api.suppliers.addSupplierHandlerApiSuppliersPost(args),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["suppliers", "getAll"],
+        });
+      },
+    });
+  },
+  useUpdate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["suppliers", "update"],
-      mutationFn: (args: UpdateSupplierHandlerApiSuppliersIdPutRequest) =>
-        api.suppliers.updateSupplierHandlerApiSuppliersIdPut(args),
-    }),
+      mutationFn: (
+        args: SuppliersApiUpdateSupplierHandlerApiSuppliersIdPutRequest
+      ) => api.suppliers.updateSupplierHandlerApiSuppliersIdPut(args),
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: ["suppliers", "getAll"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["suppliers", "getById", data.data.id],
+        });
+      },
+    });
+  },
 
   useCreateBankInfo: () => {
     const queryClient = useQueryClient();
     return useMutation({
       mutationKey: ["suppliers", "banking", "create"],
-      mutationFn: (args: { supplierBankInfoSchema: SupplierBankInfoSchema }) =>
-        api.suppliers.addSupplierBankInfoHandlerApiSuppliersBankInfoPost(args),
-      onSuccess: (created: SupplierBankInfoReturnSchema) => {
+      mutationFn: (
+        args: SuppliersApiAddSupplierBankInfoHandlerApiSuppliersBankInfoPostRequest
+      ) =>
+        api.suppliers
+          .addSupplierBankInfoHandlerApiSuppliersBankInfoPost(args)
+          .then((res) => res.data),
+      onSuccess: (created) => {
         // Invalidate lists and the specific bank info
         queryClient.invalidateQueries({
           queryKey: ["suppliers", "bankingList"],
         });
-        if (created?.id) {
+        if (created.id) {
           queryClient.invalidateQueries({
             queryKey: [
               "suppliers",
@@ -127,14 +155,13 @@ export const suppliers = {
     const queryClient = useQueryClient();
     return useMutation({
       mutationKey: ["suppliers", "banking", "update"],
-      mutationFn: (args: {
-        id: string;
-        supplierBankInfoUpdateSchema: SupplierBankInfoUpdateSchema;
-      }) =>
-        api.suppliers.updateSupplierBankInfoHandlerApiSuppliersBankInfoIdPut(
-          args
-        ),
-      onSuccess: (updated: SupplierBankInfoReturnSchema) => {
+      mutationFn: (
+        args: SuppliersApiUpdateSupplierBankInfoHandlerApiSuppliersBankInfoIdPutRequest
+      ) =>
+        api.suppliers
+          .updateSupplierBankInfoHandlerApiSuppliersBankInfoIdPut(args)
+          .then((res) => res.data),
+      onSuccess: (updated) => {
         queryClient.invalidateQueries({
           queryKey: ["suppliers", "bankingList"],
         });

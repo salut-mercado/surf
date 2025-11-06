@@ -1,15 +1,16 @@
 import type {
-  AddWarehouseHandlerApiWarehousePostRequest,
-  GetWarehouseByIdHandlerApiWarehouseIdGetRequest,
-  GetWarehousesHandlerApiWarehouseGetRequest,
-  UpdateWarehouseHandlerApiWarehouseIdPutRequest,
-  WareHousePaginatedResponseSchema,
+  WarehouseApiAddWarehouseHandlerApiWarehousePostRequest,
+  WarehouseApiGetWarehouseByIdHandlerApiWarehouseIdGetRequest,
+  WarehouseApiGetWarehousesHandlerApiWarehouseGetRequest,
+  WarehouseApiUpdateWarehouseHandlerApiWarehouseIdPutRequest,
+  WareHousePaginatedResponseSchema
 } from "@salut-mercado/octo-client";
 import {
   skipToken,
   useInfiniteQuery,
   useMutation,
   useQuery,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { api } from "~/lib/api";
 
@@ -17,7 +18,7 @@ export const warehouse = {
   // Queries
   useGetAll: (
     args:
-      | Omit<GetWarehousesHandlerApiWarehouseGetRequest, "skip">
+      | Omit<WarehouseApiGetWarehousesHandlerApiWarehouseGetRequest, "skip">
       | typeof skipToken
   ) =>
     useInfiniteQuery({
@@ -33,10 +34,11 @@ export const warehouse = {
                 skip: pageParam,
                 limit: args.limit ?? 1000,
               })
+              .then((res) => res.data)
           : skipToken,
     }),
   useGetById: (
-    args: GetWarehouseByIdHandlerApiWarehouseIdGetRequest | typeof skipToken
+    args: WarehouseApiGetWarehouseByIdHandlerApiWarehouseIdGetRequest | typeof skipToken
   ) =>
     useQuery({
       queryKey: ["warehouse", "getById", JSON.stringify(args)],
@@ -47,16 +49,33 @@ export const warehouse = {
     }),
 
   // Mutations
-  useCreate: () =>
-    useMutation({
+  useCreate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["warehouse", "create"],
-      mutationFn: (args: AddWarehouseHandlerApiWarehousePostRequest) =>
+      mutationFn: (args: WarehouseApiAddWarehouseHandlerApiWarehousePostRequest) =>
         api.warehouse.addWarehouseHandlerApiWarehousePost(args),
-    }),
-  useUpdate: () =>
-    useMutation({
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["warehouse", "getAll"],
+        });
+      },
+    });
+  },
+  useUpdate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["warehouse", "update"],
-      mutationFn: (args: UpdateWarehouseHandlerApiWarehouseIdPutRequest) =>
+      mutationFn: (args: WarehouseApiUpdateWarehouseHandlerApiWarehouseIdPutRequest) =>
         api.warehouse.updateWarehouseHandlerApiWarehouseIdPut(args),
-    }),
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: ["warehouse", "getAll"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["warehouse", "getById", data.data.id],
+        });
+      },
+    });
+  },
 };

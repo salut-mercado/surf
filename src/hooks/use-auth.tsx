@@ -1,5 +1,6 @@
 import type { ResponseLoginApiAuthLoginPost } from "@salut-mercado/octo-client";
 import { useMutation } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import {
   createContext,
   useCallback,
@@ -9,6 +10,7 @@ import {
 } from "react";
 import { useLocation, useSearchParams } from "wouter";
 import { api } from "~/lib/api";
+import { getTenantStore } from "~/store/tenant.store";
 
 export type AuthStep = "password" | "otp";
 
@@ -68,12 +70,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const loginWithPassword = useMutation({
     mutationFn: async (input: LoginWithPasswordInput) => {
-      // Use Raw to inspect HTTP status for 202 next step
-      const res = await api.auth.loginApiAuthLoginPostRaw({
-        loginRequest: { email: input.email, password: input.password },
-      });
-      const json = await res.value();
-      return { httpStatus: res.raw.status, json } as const;
+      try {
+        // Use Raw to inspect HTTP status for 202 next step
+        const res = await api.auth.loginApiAuthLoginPost({
+          loginRequest: { email: input.email, password: input.password },
+        });
+
+        // Check if response is an error
+        if (!res.status && res.status >= 400) {
+          const errorBody = res.request;
+          const errorMessage =
+            errorBody?.detail ||
+            errorBody?.message ||
+            `Request failed with status ${res.status}`;
+          throw new Error(errorMessage);
+        }
+
+        const json = res.data;
+        return { httpStatus: res.status, json } as const;
+      } catch (error) {
+        // Extract error message from API response body'
+        if (isAxiosError(error)) {
+          console.dir(error.response, { depth: null });
+          const errorMessage =
+            error.response?.data?.detail ||
+            error.response?.data?.message ||
+            error.message ||
+            "Login failed";
+          throw new Error(errorMessage);
+        }
+        // If it's already an Error with a message, re-throw it
+        if (error instanceof Error) {
+          throw error;
+        }
+        throw new Error("Login failed");
+      }
     },
     onSuccess: ({ httpStatus, json }) => {
       if (json?.token) {
@@ -82,10 +113,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       if (
         (httpStatus === 202 ||
-          json?.nextStep === "email_verification_required") &&
-        json?.pendingAuthenticationToken
+          json?.next_step === "email_verification_required") &&
+        json?.pending_authentication_token
       ) {
-        setPendingToken(json.pendingAuthenticationToken);
+        setPendingToken(json.pending_authentication_token);
         setStep("otp");
         return;
       }
@@ -96,14 +127,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const verifyOtp = useMutation({
     mutationFn: async (input: VerifyOtpInput) => {
       if (!pendingToken) throw new Error("No pending token");
-      const res = await api.auth.loginApiAuthLoginPostRaw({
-        loginRequest: {
-          code: input.code,
-          pendingAuthenticationToken: pendingToken,
-        },
-      });
-      const json = await res.value();
-      return { httpStatus: res.raw.status, json } as const;
+      try {
+        const res = await api.auth.loginApiAuthLoginPost({
+          loginRequest: {
+            code: input.code,
+            pending_authentication_token: pendingToken,
+          },
+        });
+
+        // Check if response is an error
+        if (!res.status && res.status >= 400) {
+          const errorBody = res.data as { detail?: string; message?: string };
+          const errorMessage =
+            errorBody?.detail ||
+            errorBody?.message ||
+            `Request failed with status ${res.status}`;
+          throw new Error(errorMessage);
+        }
+
+        const json = res.data;
+        return { httpStatus: res.status, json } as const;
+      } catch (error) {
+        // Extract error message from API response body
+        if (isAxiosError(error)) {
+          const errorMessage =
+            error.response?.data?.detail ||
+            error.response?.data?.message ||
+            error.message ||
+            "Verification failed";
+          throw new Error(errorMessage);
+        }
+        // If it's already an Error with a message, re-throw it
+        if (error instanceof Error) {
+          throw error;
+        }
+        throw new Error("Verification failed");
+      }
     },
     onSuccess: ({ json }) => {
       if (json?.token) finalizeLogin(json.token);
@@ -117,6 +176,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // ignore logout network errors
     } finally {
       localStorage.removeItem("token");
+      getTenantStore().markUnassigned(true);
+      getTenantStore().setTenantId(null);
       setIsAuthenticated(false);
       setLocation("/auth/login");
     }
@@ -131,8 +192,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       verifyOtp,
       logout,
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- loginWithPassword and verifyOtp are not dependent on other values
-    [step, pendingToken, isAuthenticated, logout]
+    [step, pendingToken, isAuthenticated, loginWithPassword, verifyOtp, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

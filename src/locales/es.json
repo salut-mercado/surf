@@ -23,6 +23,27 @@
     "logOut": "Cerrar sesión",
     "uiKit": "Kit de UI"
   },
+  "auth": {
+    "login": {
+      "title": "Iniciar sesión en tu cuenta",
+      "description": "Ingresa tu correo electrónico para iniciar sesión",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña",
+      "submit": "Iniciar sesión",
+      "failed": "Error al iniciar sesión"
+    },
+    "otp": {
+      "title": "Ingresa el código de verificación",
+      "description": "Enviamos un código de 6 dígitos a tu correo electrónico.",
+      "verificationCode": "Código de verificación",
+      "descriptionText": "Ingresa el código de 6 dígitos enviado a tu correo electrónico.",
+      "verify": "Verificar",
+      "verifying": "Verificando...",
+      "failed": "Error en la verificación"
+    }
+  },
   "tenant": {
     "organizations": "Organizaciones",
     "selectTenant": "Seleccionar Organización",

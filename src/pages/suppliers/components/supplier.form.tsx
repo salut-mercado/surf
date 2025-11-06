@@ -1,5 +1,5 @@
 import type { SupplierReturnSchema } from "@salut-mercado/octo-client";
-import { useForm } from "@tanstack/react-form";
+import { useForm, type FormValidateOrFn } from "@tanstack/react-form";
 import { UserCheck2Icon, UserX2Icon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { BooleanCards } from "~/components/ui/boolean-cards";
@@ -18,15 +18,15 @@ interface CreateSupplierFormProps {
   submitLabel?: string;
 }
 
-const defaultValues: SupplierReturnSchema = {
+const defaultValues = {
   id: "emptyid",
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
   code: "",
   name: "",
   agent: "",
   phone: "",
-  delayDays: 1,
+  delay_days: 1,
   nif: "",
   blocked: true,
   comments: "",
@@ -45,23 +45,21 @@ export function SupplierForm({
     onSubmit: async ({ value }) => {
       onSubmit({
         id: value.id,
-        createdAt: value.createdAt,
-        updatedAt: value.updatedAt,
+        created_at: value.created_at,
+        updated_at: value.updated_at,
         code: value.code,
         name: value.name,
         agent: value.agent,
         phone: value.phone,
-        delayDays: value.delayDays,
+        delay_days: value.delay_days,
         nif: value.nif,
         blocked: value.blocked,
         comments: value.comments,
       });
     },
     validators: {
-      onChange: supplierSchema,
-      onMount: supplierSchema,
-      onBlur: supplierSchema,
-    }
+      onChange: supplierSchema as FormValidateOrFn<SupplierReturnSchema>,
+    },
   });
 
   console.log("form.state.values", form.state.values);
@@ -82,7 +80,9 @@ export function SupplierForm({
           name="code"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("suppliers.form.fields.code")}</Label>
+              <Label htmlFor={field.name}>
+                {t("suppliers.form.fields.code")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -101,7 +101,9 @@ export function SupplierForm({
           name="name"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("suppliers.form.fields.name")}</Label>
+              <Label htmlFor={field.name}>
+                {t("suppliers.form.fields.name")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -110,7 +112,9 @@ export function SupplierForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>{t("suppliers.form.descriptions.name")}</FieldDescription>
+              <FieldDescription>
+                {t("suppliers.form.descriptions.name")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -118,7 +122,9 @@ export function SupplierForm({
           name="agent"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("suppliers.form.fields.agent")}</Label>
+              <Label htmlFor={field.name}>
+                {t("suppliers.form.fields.agent")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -137,7 +143,9 @@ export function SupplierForm({
           name="phone"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("suppliers.form.fields.phone")}</Label>
+              <Label htmlFor={field.name}>
+                {t("suppliers.form.fields.phone")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -156,7 +164,9 @@ export function SupplierForm({
           name="nif"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("suppliers.form.fields.taxId")}</Label>
+              <Label htmlFor={field.name}>
+                {t("suppliers.form.fields.taxId")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -165,15 +175,19 @@ export function SupplierForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>{t("suppliers.form.descriptions.taxId")}</FieldDescription>
+              <FieldDescription>
+                {t("suppliers.form.descriptions.taxId")}
+              </FieldDescription>
             </div>
           )}
         />
         <form.Field
-          name="delayDays"
+          name="delay_days"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("suppliers.form.fields.delayDays")}</Label>
+              <Label htmlFor={field.name}>
+                {t("suppliers.form.fields.delayDays")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -196,7 +210,9 @@ export function SupplierForm({
           name="comments"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("suppliers.form.fields.comments")}</Label>
+              <Label htmlFor={field.name}>
+                {t("suppliers.form.fields.comments")}
+              </Label>
               <Textarea
                 id={field.name}
                 name={field.name}
@@ -212,7 +228,9 @@ export function SupplierForm({
           name="blocked"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("suppliers.form.fields.blocked")}</Label>
+              <Label htmlFor={field.name}>
+                {t("suppliers.form.fields.blocked")}
+              </Label>
               <BooleanCards
                 value={field.state.value ? "true" : "false"}
                 onChange={(val) => field.handleChange(val === "true")}
@@ -220,13 +238,17 @@ export function SupplierForm({
                   {
                     value: "false",
                     title: t("suppliers.form.blockedOptions.active"),
-                    description: t("suppliers.form.blockedOptions.activeDescription"),
+                    description: t(
+                      "suppliers.form.blockedOptions.activeDescription"
+                    ),
                     icon: <UserCheck2Icon className="size-6" />,
                   },
                   {
                     value: "true",
                     title: t("suppliers.form.blockedOptions.blocked"),
-                    description: t("suppliers.form.blockedOptions.blockedDescription"),
+                    description: t(
+                      "suppliers.form.blockedOptions.blockedDescription"
+                    ),
                     icon: <UserX2Icon className="size-6" />,
                   },
                 ]}

@@ -16,21 +16,21 @@ const CreateStorePage = () => {
           const created = await createStore.mutateAsync({
             storeSchema: {
               address: data.address,
-              legalEntity: data.legalEntity,
+              legal_entity: data.legal_entity,
               price: data.price,
               ip: data.ip,
-              salesArea: data.salesArea,
-              totalArea: data.totalArea,
-              dateOfFirstSale: data.dateOfFirstSale,
-              workingHours: data.workingHours,
+              sales_area: data.sales_area,
+              total_area: data.total_area,
+              date_of_first_sale: data.date_of_first_sale,
+              working_hours: data.working_hours,
               claster: data.claster,
               contacts: data.contacts,
-              assortmentMatrix: data.assortmentMatrix,
-              serviceProvider: data.serviceProvider,
+              assortment_matrix: data.assortment_matrix,
+              service_provider: data.service_provider,
             },
           });
           if (created) {
-            setLocation(`~/stores/${created.id}`, { replace: true });
+            setLocation(`~/stores/${created.data.id}`, { replace: true });
           }
         }}
         isSubmitting={createStore.isPending}

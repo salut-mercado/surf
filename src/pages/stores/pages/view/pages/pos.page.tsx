@@ -160,13 +160,13 @@ const PosPage = () => {
     if (!storeId || checkItems.length === 0) return;
     try {
       await createStoreSale.mutateAsync({
-        storeId: storeId,
-        skuOutflow: checkItems.map((item) => ({
+        store_id: storeId,
+        sku_outflow: checkItems.map((item) => ({
           barcode: item.barcode,
           quantity: item.quantity,
         })),
-        additionalInformation: {
-          paymentType: PaymentType.cash,
+        additional_information: {
+          payment_type: PaymentType.cash,
         },
       });
       setSuccess(true);

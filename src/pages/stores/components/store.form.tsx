@@ -1,5 +1,5 @@
 import type { StoreReturnSchema } from "@salut-mercado/octo-client";
-import { useForm } from "@tanstack/react-form";
+import { useForm, type FormValidateOrFn } from "@tanstack/react-form";
 import { useTranslation } from "react-i18next";
 import { Button } from "~/components/ui/button";
 import { FieldDescription } from "~/components/ui/field";
@@ -17,20 +17,20 @@ interface StoreFormProps {
 
 const defaultValues: StoreReturnSchema = {
   id: "emptyid",
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
   address: "",
-  legalEntity: "",
+  legal_entity: "",
   price: 0,
   ip: "",
-  salesArea: 0,
-  totalArea: 0,
-  dateOfFirstSale: "",
-  workingHours: "",
+  sales_area: 0,
+  total_area: 0,
+  date_of_first_sale: "",
+  working_hours: "",
   claster: "",
   contacts: "",
-  assortmentMatrix: "",
-  serviceProvider: "",
+  assortment_matrix: "",
+  service_provider: "",
 };
 
 export function StoreForm({
@@ -46,26 +46,24 @@ export function StoreForm({
     onSubmit: async ({ value }) => {
       onSubmit({
         id: value.id,
-        createdAt: value.createdAt,
-        updatedAt: value.updatedAt,
+        created_at: value.created_at,
+        updated_at: value.updated_at,
         address: value.address,
-        legalEntity: value.legalEntity,
+        legal_entity: value.legal_entity,
         price: value.price,
         ip: value.ip,
-        salesArea: value.salesArea,
-        totalArea: value.totalArea,
-        dateOfFirstSale: value.dateOfFirstSale,
-        workingHours: value.workingHours,
+        sales_area: value.sales_area,
+        total_area: value.total_area,
+        date_of_first_sale: value.date_of_first_sale,
+        working_hours: value.working_hours,
         claster: value.claster,
         contacts: value.contacts,
-        assortmentMatrix: value.assortmentMatrix,
-        serviceProvider: value.serviceProvider,
+        assortment_matrix: value.assortment_matrix,
+        service_provider: value.service_provider,
       });
     },
     validators: {
-      onChange: storeSchema,
-      onMount: storeSchema,
-      onBlur: storeSchema,
+      onChange: storeSchema as FormValidateOrFn<StoreReturnSchema>,
     },
   });
 
@@ -98,7 +96,7 @@ export function StoreForm({
           )}
         />
         <form.Field
-          name="legalEntity"
+          name="legal_entity"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("stores.form.fields.legalEntity")}</Label>
@@ -151,7 +149,7 @@ export function StoreForm({
           )}
         />
         <form.Field
-          name="salesArea"
+          name="sales_area"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("stores.form.fields.salesArea")}</Label>
@@ -170,7 +168,7 @@ export function StoreForm({
           )}
         />
         <form.Field
-          name="totalArea"
+          name="total_area"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("stores.form.fields.totalArea")}</Label>
@@ -189,7 +187,7 @@ export function StoreForm({
           )}
         />
         <form.Field
-          name="dateOfFirstSale"
+          name="date_of_first_sale"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("stores.form.fields.dateOfFirstSale")}</Label>
@@ -206,7 +204,7 @@ export function StoreForm({
           )}
         />
         <form.Field
-          name="workingHours"
+          name="working_hours"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("stores.form.fields.workingHours")}</Label>
@@ -257,7 +255,7 @@ export function StoreForm({
           )}
         />
         <form.Field
-          name="assortmentMatrix"
+          name="assortment_matrix"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("stores.form.fields.assortmentMatrix")}</Label>
@@ -274,7 +272,7 @@ export function StoreForm({
           )}
         />
         <form.Field
-          name="serviceProvider"
+          name="service_provider"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("stores.form.fields.serviceProvider")}</Label>

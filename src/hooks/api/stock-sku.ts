@@ -1,5 +1,5 @@
 import type {
-  GetStockSkuApiStockSkuStockSkuGetRequest,
+  StockSKUApiGetStockSkuApiStockSkuStockSkuGetRequest,
   SKUReturnSchema,
 } from "@salut-mercado/octo-client";
 import {
@@ -13,21 +13,13 @@ import { api } from "~/lib/api";
 
 export const stockSKU = {
   useGetStockSku: (
-    args: GetStockSkuApiStockSkuStockSkuGetRequest | typeof skipToken
+    args: StockSKUApiGetStockSkuApiStockSkuStockSkuGetRequest | typeof skipToken
   ) =>
     useQuery({
       queryKey: ["stockSKU", "getStockSku", JSON.stringify(args)],
       queryFn:
         args !== skipToken
-          ? () =>
-              api.stockSKU
-                .getStockSkuApiStockSkuStockSkuGet(args)
-                .catch((err: AxiosError) => {
-                  if (err.response?.status === 404) {
-                    throw new Error("Not found");
-                  }
-                  throw err;
-                })
+          ? () => api.stockSKU.getStockSkuApiStockSkuStockSkuGet(args).then((res) => res.data)
           : skipToken,
       retry: (failureCount, error) => {
         if (error.message === "Not found") return false;
@@ -52,6 +44,7 @@ export const stockSKU = {
                         barcode: sku.barcode,
                         warehouseId,
                       })
+                      .then((res) => res.data)
                       .catch((err: AxiosError) => {
                         if (err.response?.status === 404) {
                           throw new Error("Not found");

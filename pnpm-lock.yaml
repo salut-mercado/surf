@@ -69,8 +69,8 @@ importers:
         specifier: ^1.2.8
         version: 1.2.8(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@salut-mercado/octo-client':
-        specifier: 0.4.1
-        version: 0.4.1
+        specifier: 0.5.0
+        version: 0.5.0
       '@tabler/icons-react':
         specifier: ^3.35.0
         version: 3.35.0(react@19.2.0)
@@ -84,8 +84,8 @@ importers:
         specifier: ^8.21.3
         version: 8.21.3(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       axios:
-        specifier: ^1.13.1
-        version: 1.13.1
+        specifier: ^1.13.2
+        version: 1.13.2
       barcode-detector:
         specifier: ^3.0.6
         version: 3.0.6(@types/emscripten@1.41.4)
@@ -1624,8 +1624,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@salut-mercado/octo-client@0.4.1':
-    resolution: {integrity: sha512-KkU1QIjP8MRiQnrjPWrTa6jHFqhrywkgfxSkLwww30D354JszL/NfKNmUXEDCUCy+QMDFeZ4kyGfPBOMHQK1Gw==, tarball: https://npm.pkg.github.com/download/@salut-mercado/octo-client/0.4.1/31d85ecb52c4661d850409de6195fdf6c30f1e30}
+  '@salut-mercado/octo-client@0.5.0':
+    resolution: {integrity: sha512-TQe5p7TpAbJs/SAmCyNjU1+nuJ10Xce4JC2gTqMHH+6oUOTBw3Aqhmw9uAjbC0MTzzRSXPxsaE/5mTqBdOGLsQ==, tarball: https://npm.pkg.github.com/download/@salut-mercado/octo-client/0.5.0/884b43c367e6adb579558388de3c748ab7e153a1}
 
   '@surma/rollup-plugin-off-main-thread@2.2.3':
     resolution: {integrity: sha512-lR8q/9W7hZpMWweNiAKU7NQerBnzQQLvi8qnTDU/fxItPhtZVMbPV3lbCwjhIlNBe9Bbr5V+KHshvWmVSG9cxQ==}
@@ -2024,8 +2024,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  axios@1.13.1:
-    resolution: {integrity: sha512-hU4EGxxt+j7TQijx1oYdAjw4xuIp1wRQSsbMFwSthCWeBQur1eF+qJ5iQ5sN3Tw8YRzQNKb8jszgBdMDVqwJcw==}
+  axios@1.13.2:
+    resolution: {integrity: sha512-VPk9ebNqPcy5lRGuSlKx752IlDatOjT9paPlm8A7yOuW2Fbvp4X3JznJtT4f0GzGLLiWE9W8onz51SqLYwzGaA==}
 
   babel-plugin-polyfill-corejs2@0.4.14:
     resolution: {integrity: sha512-Co2Y9wX854ts6U8gAAPXfn0GmAyctHuK8n0Yhfjd6t30g7yvKjspvvOo9yG+z52PZRgFErt7Ka2pYnXCjLKEpg==}
@@ -5155,7 +5155,11 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.52.5':
     optional: true
 
-  '@salut-mercado/octo-client@0.4.1': {}
+  '@salut-mercado/octo-client@0.5.0':
+    dependencies:
+      axios: 1.13.2
+    transitivePeerDependencies:
+      - debug
 
   '@surma/rollup-plugin-off-main-thread@2.2.3':
     dependencies:
@@ -5544,7 +5548,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  axios@1.13.1:
+  axios@1.13.2:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.4

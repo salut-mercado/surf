@@ -29,7 +29,7 @@ const InventoryViewPage = () => {
 
   const firstWarehouse = warehouses.data?.pages
     ?.flatMap((page) => page.items)
-    .find((wh) => wh.storeId === storeId);
+    .find((wh) => wh.store_id === storeId);
 
   // Fetch stock quantity
   const stockQuery = api.stockSKU.useGetStockSku(
@@ -129,7 +129,7 @@ const InventoryViewPage = () => {
               <div className="text-sm text-muted-foreground">{t("stores.inventory.view.labels.barcode")}</div>
               <div className="font-medium break-all">{sku.data.barcode}</div>
               <div className="text-sm text-muted-foreground">{t("stores.inventory.view.labels.unit")}</div>
-              <div className="font-medium">{sku.data.unitMeasurement}</div>
+              <div className="font-medium">{sku.data.unit_measurement}</div>
             </CardContent>
           </Card>
 
@@ -140,18 +140,18 @@ const InventoryViewPage = () => {
             <CardContent className="space-y-2">
               <div className="text-sm text-muted-foreground">{t("stores.inventory.view.labels.name")}</div>
               <div className="font-medium break-all">{sku.data.name}</div>
-              {sku.data.netWeight && (
+              {sku.data.net_weight && (
                 <>
                   <div className="text-sm text-muted-foreground">{t("stores.inventory.view.labels.netWeight")}</div>
-                  <div className="font-medium">{sku.data.netWeight}</div>
+                  <div className="font-medium">{sku.data.net_weight}</div>
                 </>
               )}
-              {sku.data.shelfLifetime && (
+              {sku.data.shelf_lifetime && (
                 <>
                   <div className="text-sm text-muted-foreground">
                     {t("stores.inventory.view.labels.shelfLifetime")}
                   </div>
-                  <div className="font-medium">{sku.data.shelfLifetime} {t("stores.inventory.view.days")}</div>
+                  <div className="font-medium">{sku.data.shelf_lifetime} {t("stores.inventory.view.days")}</div>
                 </>
               )}
             </CardContent>

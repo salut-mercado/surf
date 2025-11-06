@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -21,14 +22,15 @@ import {
 import { useAuth } from "~/hooks/use-auth";
 
 export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
+  const { t } = useTranslation();
   const { verifyOtp } = useAuth();
   const [code, setCode] = useState("");
 
   return (
     <Card {...props}>
       <CardHeader>
-        <CardTitle>Enter verification code</CardTitle>
-        <CardDescription>We sent a 6-digit code to your email.</CardDescription>
+        <CardTitle>{t("auth.otp.title")}</CardTitle>
+        <CardDescription>{t("auth.otp.description")}</CardDescription>
       </CardHeader>
       <CardContent>
         <form
@@ -39,7 +41,7 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
         >
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="otp">Verification code</FieldLabel>
+              <FieldLabel htmlFor="otp">{t("auth.otp.verificationCode")}</FieldLabel>
               <InputOTP
                 maxLength={6}
                 id="otp"
@@ -58,16 +60,16 @@ export function OTPForm({ ...props }: React.ComponentProps<typeof Card>) {
               </InputOTP>
               {verifyOtp.isError && (
                 <FieldDescription className="text-red-600">
-                  {verifyOtp.error?.message || "Verification failed"}
+                  {verifyOtp.error?.message || t("auth.otp.failed")}
                 </FieldDescription>
               )}
               <FieldDescription>
-                Enter the 6-digit code sent to your email.
+                {t("auth.otp.descriptionText")}
               </FieldDescription>
             </Field>
             <FieldGroup>
               <Button type="submit" disabled={verifyOtp.isPending}>
-                {verifyOtp.isPending ? "Verifying..." : "Verify"}
+                {verifyOtp.isPending ? t("auth.otp.verifying") : t("auth.otp.verify")}
               </Button>
             </FieldGroup>
           </FieldGroup>

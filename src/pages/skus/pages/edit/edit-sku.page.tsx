@@ -28,22 +28,22 @@ const EditSkuPage = () => {
             id: sku.data.id,
             sKUUpdateSchema: {
               name: data.name,
-              supplierId: data.supplierId,
-              producerId: data.producerId,
-              categoryId: data.categoryId,
-              unitMeasurement: data.unitMeasurement,
-              shelfLifetime: data.shelfLifetime,
-              netWeight: data.netWeight,
-              vatPercent: data.vatPercent,
-              alcoholPercent: data.alcoholPercent,
-              naturalLossPercent: data.naturalLossPercent,
-              maxOnCheckout: data.maxOnCheckout,
+              supplier_id: data.supplier_id,
+              producer_id: data.producer_id,
+              category_id: data.category_id,
+              unit_measurement: data.unit_measurement,
+              shelf_lifetime: data.shelf_lifetime,
+              net_weight: data.net_weight,
+              vat_percent: data.vat_percent,
+              alcohol_percent: data.alcohol_percent,
+              natural_loss_percent: data.natural_loss_percent,
+              max_on_checkout: data.max_on_checkout,
               specifications: data.specifications ?? "",
-              wholesalePrice: data.wholesalePrice,
+              wholesale_price: data.wholesale_price,
               barcode: data.barcode,
             },
           });
-          if (updated) setLocation(`/${updated.id}`, { replace: true });
+          if (updated) setLocation(`/${updated.data.id}`, { replace: true });
         }}
       />
     </DashboardPage>
@@ -51,5 +51,3 @@ const EditSkuPage = () => {
 };
 
 export default EditSkuPage;
-
-

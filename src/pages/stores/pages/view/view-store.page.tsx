@@ -47,7 +47,7 @@ const ViewStorePage = () => {
                 </Button>
                 <span className="text-xl font-semibold">{data.address}</span>
               </div>
-              <CardDescription>{data.legalEntity}</CardDescription>
+              <CardDescription>{data.legal_entity}</CardDescription>
             </div>
             <Button asChild size="sm">
               <Link href={`/${id}/edit`}>{t("stores.view.edit")}</Link>
@@ -66,7 +66,7 @@ const ViewStorePage = () => {
                 <div className="text-sm text-muted-foreground">
                   {t("stores.view.labels.legalEntity")}
                 </div>
-                <div className="font-medium break-all">{data.legalEntity}</div>
+                <div className="font-medium break-all">{data.legal_entity}</div>
               </CardContent>
             </Card>
 
@@ -78,9 +78,9 @@ const ViewStorePage = () => {
                 <div className="text-sm text-muted-foreground">{t("stores.view.labels.price")}</div>
                 <div className="font-medium">€{data.price.toFixed(2)}</div>
                 <div className="text-sm text-muted-foreground">{t("stores.view.labels.salesArea")}</div>
-                <div className="font-medium">{data.salesArea} m²</div>
+                <div className="font-medium">{data.sales_area} m²</div>
                 <div className="text-sm text-muted-foreground">{t("stores.view.labels.totalArea")}</div>
-                <div className="font-medium">{data.totalArea} m²</div>
+                <div className="font-medium">{data.total_area} m²</div>
               </CardContent>
             </Card>
 
@@ -90,11 +90,11 @@ const ViewStorePage = () => {
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="text-sm text-muted-foreground">{t("stores.view.labels.firstSale")}</div>
-                <div className="font-medium">{data.dateOfFirstSale}</div>
+                <div className="font-medium">{data.date_of_first_sale}</div>
                 <div className="text-sm text-muted-foreground">
                   {t("stores.view.labels.workingHours")}
                 </div>
-                <div className="font-medium">{data.workingHours}</div>
+                <div className="font-medium">{data.working_hours}</div>
               </CardContent>
             </Card>
 
@@ -139,12 +139,12 @@ const ViewStorePage = () => {
                   {t("stores.view.labels.assortmentMatrix")}
                 </div>
                 <div className="font-medium">
-                  {data.assortmentMatrix || "—"}
+                  {data.assortment_matrix || "—"}
                 </div>
                 <div className="text-sm text-muted-foreground">
                   {t("stores.view.labels.serviceProvider")}
                 </div>
-                <div className="font-medium">{data.serviceProvider || "—"}</div>
+                <div className="font-medium">{data.service_provider || "—"}</div>
               </CardContent>
             </Card>
 
@@ -158,7 +158,7 @@ const ViewStorePage = () => {
                 <div className="font-medium break-all text-xs">{data.id}</div>
                 <div className="text-sm text-muted-foreground">{t("stores.view.labels.updated")}</div>
                 <div className="font-medium">
-                  {new Date(data.updatedAt).toLocaleString()}
+                  {new Date(data.updated_at).toLocaleString()}
                 </div>
               </CardContent>
             </Card>

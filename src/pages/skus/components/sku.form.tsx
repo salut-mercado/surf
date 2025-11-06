@@ -61,21 +61,21 @@ export function SkuForm({
   const defaultValues: SkuFormValues = {
     // required  ids
     name: "",
-    supplierId: "",
-    producerId: "",
-    categoryId: "",
+      supplier_id: "",
+    producer_id: "",
+    category_id: "",
     // enums/numbers
-    unitMeasurement: UnitMeasurementEnum.unit,
-    shelfLifetime: 0,
-    netWeight: 0,
-    vatPercent: 0,
-    alcoholPercent: 0,
-    naturalLossPercent: 0,
-    maxOnCheckout: 0,
+    unit_measurement: UnitMeasurementEnum.unit,
+    shelf_lifetime: 0,
+    net_weight: 0,
+    vat_percent: 0,
+    alcohol_percent: 0,
+    natural_loss_percent: 0,
+    max_on_checkout: 0,
     // optionals
     specifications: "",
     barcode: "",
-    wholesalePrice: 0,
+    wholesale_price: 0,
   };
 
   const form = useForm({
@@ -124,7 +124,7 @@ export function SkuForm({
         />
 
         <form.Field
-          name="supplierId"
+          name="supplier_id"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("skus.form.fields.supplier")}*</Label>
@@ -162,7 +162,7 @@ export function SkuForm({
         />
 
         <form.Field
-          name="producerId"
+          name="producer_id"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("skus.form.fields.producer")}*</Label>
@@ -199,7 +199,7 @@ export function SkuForm({
         />
 
         <form.Field
-          name="categoryId"
+          name="category_id"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("skus.form.fields.category")}*</Label>
@@ -224,7 +224,7 @@ export function SkuForm({
                           display: "inline-block",
                         }}
                       >
-                        {c.categoryName}
+                        {c.category_name}
                       </span>
                     </SelectItem>
                   ))}
@@ -245,7 +245,7 @@ export function SkuForm({
         />
 
         <form.Field
-          name="unitMeasurement"
+          name="unit_measurement"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("skus.form.fields.unit")}*</Label>
@@ -284,7 +284,7 @@ export function SkuForm({
         />
 
         <form.Field
-          name="shelfLifetime"
+          name="shelf_lifetime"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("skus.form.fields.shelfLifetime")}</Label>
@@ -312,7 +312,7 @@ export function SkuForm({
         />
 
         <form.Field
-          name="netWeight"
+          name="net_weight"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("skus.form.fields.netWeight")}</Label>
@@ -339,7 +339,7 @@ export function SkuForm({
         />
 
         <form.Field
-          name="alcoholPercent"
+          name="alcohol_percent"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("skus.form.fields.alcoholPercent")}</Label>
@@ -367,7 +367,7 @@ export function SkuForm({
         />
 
         <form.Field
-          name="vatPercent"
+          name="vat_percent"
           children={(field) => (
             <div className="grid gap-2 md:col-span-2">
               <VatField field={field} />
@@ -376,7 +376,7 @@ export function SkuForm({
         />
 
         <form.Field
-          name="naturalLossPercent"
+          name="natural_loss_percent"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("skus.form.fields.naturalLossPercent")}</Label>
@@ -406,7 +406,7 @@ export function SkuForm({
         />
 
         <form.Field
-          name="maxOnCheckout"
+          name="max_on_checkout"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("skus.form.fields.maxOnCheckout")}</Label>
@@ -471,7 +471,7 @@ export function SkuForm({
                       }
                       if (product.product.product_quantity) {
                         form.setFieldValue(
-                          "netWeight",
+                          "net_weight",
                           parseFloat(product.product.product_quantity)
                         );
                       }
@@ -480,12 +480,12 @@ export function SkuForm({
                           product.product.product_quantity_unit;
                         if (product_quantity_unit === "g") {
                           form.setFieldValue(
-                            "unitMeasurement",
+                            "unit_measurement",
                             UnitMeasurementEnum.gramm
                           );
                         } else if (product_quantity_unit === "ml") {
                           form.setFieldValue(
-                            "unitMeasurement",
+                            "unit_measurement",
                             UnitMeasurementEnum.milliliter
                           );
                         }
@@ -511,7 +511,7 @@ export function SkuForm({
         />
 
         <form.Field
-          name="wholesalePrice"
+          name="wholesale_price"
           children={(field) => (
             <div className="grid gap-2">
               <Label htmlFor={field.name}>{t("skus.form.fields.wholesalePrice")}</Label>

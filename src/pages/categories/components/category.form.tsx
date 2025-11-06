@@ -16,7 +16,7 @@ type InternalFormValues = {
 
 export type CategoryOption = {
   id: string;
-  categoryName: string;
+  category_name: string;
   level: number;
 };
 
@@ -61,7 +61,7 @@ export function CategoryForm({
         <div className="space-y-2">
           <Label>{t("categories.form.parentCategory")}</Label>
           <div className="p-3 bg-muted rounded-md text-sm">
-            {byId.get(initial.parentCategoryId)?.categoryName || t("categories.form.unknownParent")}
+            {byId.get(initial.parentCategoryId)?.category_name || t("categories.form.unknownParent")}
           </div>
         </div>
       )}
