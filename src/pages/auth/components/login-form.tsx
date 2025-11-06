@@ -22,6 +22,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "~/components/ui/field";
+import { Spinner } from "~/components/ui/spinner";
 
 export function LoginForm({
   className,
@@ -77,7 +78,7 @@ export function LoginForm({
                   <InputGroupAddon align="inline-end">
                     <InputGroupButton
                       type="button"
-                      size="icon-sm"
+                      size="icon-xs"
                       variant="ghost"
                       aria-label={
                         showPassword ? "Hide password" : "Show password"
@@ -92,7 +93,7 @@ export function LoginForm({
               <Field>
                 <div className="flex gap-2">
                   <Button type="submit" disabled={loginWithPassword.isPending}>
-                    {loginWithPassword.isPending ? "Logging in..." : "Login"}
+                    {loginWithPassword.isPending ? <Spinner className="size-4" /> : "Login"}
                   </Button>
                 </div>
                 {loginWithPassword.isError && (
