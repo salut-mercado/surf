@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useAuth } from "~/hooks/use-auth";
 import { LoginForm } from "./components/login-form";
 import { OTPForm } from "./components/otp-form";
@@ -5,6 +6,7 @@ import { LanguageToggle } from "~/components/common/language-toggle";
 import { ThemeToggle } from "~/components/common/theme-toggle";
 
 const AuthPage = () => {
+  const { t } = useTranslation();
   const { step } = useAuth();
   return (
     <div className="container mx-auto max-w-md py-16">

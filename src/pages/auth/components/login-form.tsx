@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 import {
@@ -7,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { useState } from "react";
 import { useAuth } from "~/hooks/use-auth";
 import {
   InputGroup,
@@ -28,6 +29,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { t } = useTranslation();
   const { loginWithPassword } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,9 +39,9 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>{t("auth.login.title")}</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            {t("auth.login.description")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -51,7 +53,7 @@ export function LoginForm({
           >
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">{t("auth.login.email")}</FieldLabel>
                 <InputGroup>
                   <InputGroupInput
                     id="email"
@@ -65,7 +67,7 @@ export function LoginForm({
               </Field>
               <Field>
                 <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <FieldLabel htmlFor="password">{t("auth.login.password")}</FieldLabel>
                 </div>
                 <InputGroup>
                   <InputGroupInput
@@ -81,7 +83,7 @@ export function LoginForm({
                       size="icon-xs"
                       variant="ghost"
                       aria-label={
-                        showPassword ? "Hide password" : "Show password"
+                        showPassword ? t("auth.login.hidePassword") : t("auth.login.showPassword")
                       }
                       onClick={() => setShowPassword((v) => !v)}
                     >
@@ -93,12 +95,12 @@ export function LoginForm({
               <Field>
                 <div className="flex gap-2">
                   <Button type="submit" disabled={loginWithPassword.isPending}>
-                    {loginWithPassword.isPending ? <Spinner className="size-4" /> : "Login"}
+                    {loginWithPassword.isPending ? <Spinner className="size-4" /> : t("auth.login.submit")}
                   </Button>
                 </div>
                 {loginWithPassword.isError && (
                   <FieldDescription className="text-red-600">
-                    {loginWithPassword.error?.message || "Login failed"}
+                    {loginWithPassword.error?.message || t("auth.login.failed")}
                   </FieldDescription>
                 )}
               </Field>
