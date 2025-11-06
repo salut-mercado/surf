@@ -10,6 +10,7 @@ import {
 } from "react";
 import { useLocation, useSearchParams } from "wouter";
 import { api } from "~/lib/api";
+import { getTenantStore } from "~/store/tenant.store";
 
 export type AuthStep = "password" | "otp";
 
@@ -175,6 +176,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // ignore logout network errors
     } finally {
       localStorage.removeItem("token");
+      getTenantStore().markUnassigned(true);
+      getTenantStore().setTenantId(null);
       setIsAuthenticated(false);
       setLocation("/auth/login");
     }
