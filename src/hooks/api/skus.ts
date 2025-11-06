@@ -6,7 +6,12 @@ import type {
   SKUReturnSchema,
   SKUsApiUpdateSkuHandlerApiSkusIdPutRequest,
 } from "@salut-mercado/octo-client";
-import { skipToken, useMutation, useQuery } from "@tanstack/react-query";
+import {
+  skipToken,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { api } from "~/lib/api";
 
 export const skus = {
@@ -36,12 +41,19 @@ export const skus = {
     }),
 
   // Mutations
-  useCreate: () =>
-    useMutation({
+  useCreate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["skus", "create"],
       mutationFn: (args: SKUsApiAddSkuHandlerApiSkusPostRequest) =>
         api.sku.addSkuHandlerApiSkusPost(args),
-    }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["skus", "getAll"],
+        });
+      },
+    });
+  },
   useUpdate: () =>
     useMutation({
       mutationKey: ["skus", "update"],

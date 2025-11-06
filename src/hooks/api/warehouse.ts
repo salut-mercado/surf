@@ -10,6 +10,7 @@ import {
   useInfiniteQuery,
   useMutation,
   useQuery,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { api } from "~/lib/api";
 
@@ -48,12 +49,19 @@ export const warehouse = {
     }),
 
   // Mutations
-  useCreate: () =>
-    useMutation({
+  useCreate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["warehouse", "create"],
       mutationFn: (args: WarehouseApiAddWarehouseHandlerApiWarehousePostRequest) =>
         api.warehouse.addWarehouseHandlerApiWarehousePost(args),
-    }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["warehouse", "getAll"],
+        });
+      },
+    });
+  },
   useUpdate: () =>
     useMutation({
       mutationKey: ["warehouse", "update"],

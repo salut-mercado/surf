@@ -4,7 +4,12 @@ import type {
   FirmsProducerApiCreateFirmProducerHandlerApiFirmsProducerPostRequest,
   FirmsProducerApiUpdateFirmProducerHandlerApiFirmsProducerIdPutRequest,
 } from "@salut-mercado/octo-client";
-import { skipToken, useMutation, useQuery } from "@tanstack/react-query";
+import {
+  skipToken,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { api } from "~/lib/api";
 
 export const producers = {
@@ -36,13 +41,20 @@ export const producers = {
     }),
 
   // Mutations
-  useCreate: () =>
-    useMutation({
+  useCreate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["producers", "create"],
       mutationFn: (
         args: FirmsProducerApiCreateFirmProducerHandlerApiFirmsProducerPostRequest
       ) => api.producers.createFirmProducerHandlerApiFirmsProducerPost(args),
-    }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["producers", "getAll"],
+        });
+      },
+    });
+  },
   useUpdate: () =>
     useMutation({
       mutationKey: ["producers", "update"],

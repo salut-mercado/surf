@@ -4,7 +4,12 @@ import type {
   CategoriesApiGetCategoryHandlerApiCategoriesCategoriesIdGetRequest,
   CategoriesApiUpdateCategoryHandlerApiCategoriesCategoriesIdPutRequest,
 } from "@salut-mercado/octo-client";
-import { skipToken, useMutation, useQuery } from "@tanstack/react-query";
+import {
+  skipToken,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { api } from "~/lib/api";
 
 export const categories = {
@@ -38,13 +43,20 @@ export const categories = {
     }),
 
   // Mutations
-  useCreate: () =>
-    useMutation({
+  useCreate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["categories", "create"],
       mutationFn: (
         args: CategoriesApiCreateCategoryHandlerApiCategoriesPostRequest
       ) => api.categories.createCategoryHandlerApiCategoriesPost(args),
-    }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["categories", "getAll"],
+        });
+      },
+    });
+  },
   useUpdate: () =>
     useMutation({
       mutationKey: ["categories", "update"],

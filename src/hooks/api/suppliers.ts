@@ -91,13 +91,20 @@ export const suppliers = {
     }),
 
   // Mutations
-  useCreate: () =>
-    useMutation({
+  useCreate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["suppliers", "create"],
       mutationFn: (
         args: SuppliersApiAddSupplierHandlerApiSuppliersPostRequest
       ) => api.suppliers.addSupplierHandlerApiSuppliersPost(args),
-    }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["suppliers", "getAll"],
+        });
+      },
+    });
+  },
   useUpdate: () =>
     useMutation({
       mutationKey: ["suppliers", "update"],

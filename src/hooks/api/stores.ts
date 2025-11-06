@@ -10,6 +10,7 @@ import {
   useInfiniteQuery,
   useMutation,
   useQuery,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { api } from "~/lib/api";
 
@@ -52,12 +53,19 @@ export const stores = {
     }),
 
   // Mutations
-  useCreate: () =>
-    useMutation({
+  useCreate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["stores", "create"],
       mutationFn: (args: StoresApiAddStoreHandlerApiStoresPostRequest) =>
         api.stores.addStoreHandlerApiStoresPost(args),
-    }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["stores", "getAll"],
+        });
+      },
+    });
+  },
   useUpdate: () =>
     useMutation({
       mutationKey: ["stores", "update"],
