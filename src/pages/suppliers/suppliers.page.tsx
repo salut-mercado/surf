@@ -37,15 +37,19 @@ export default function SuppliersPage() {
       )}
       {suppliers.isSuccess && allSuppliers.length > 0 && (
         <>
-          <div className="mb-2 justify-end flex w-full">
-            <Button asChild>
-              <Link href="/create">
-                <Plus className="size-4" />
-                {t("suppliers.addSupplier")}
-              </Link>
-            </Button>
-          </div>
-          <DataTable table={table} />
+          <DataTable
+            table={table}
+            topExtra={
+              <div className="ml-auto flex">
+                <Button asChild>
+                  <Link href="/create">
+                    <Plus className="size-4" />
+                    {t("suppliers.addSupplier")}
+                  </Link>
+                </Button>
+              </div>
+            }
+          />
         </>
       )}
     </DashboardPage>

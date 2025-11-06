@@ -11,7 +11,12 @@ export const useColumns = (): ColumnDef<SKUReturnSchema>[] => {
 
   const columns = useMemo<ColumnDef<SKUReturnSchema>[]>(
     () => [
-      { accessorKey: "name", header: t("skus.columns.name") },
+      {
+        accessorKey: "name",
+        header: t("skus.columns.name"),
+        filterFn: "includesString",
+        enableColumnFilter: true,
+      },
       { accessorKey: "unitMeasurement", header: t("skus.columns.unit") },
       { accessorKey: "netWeight", header: t("skus.columns.netWeight") },
       {
@@ -28,17 +33,15 @@ export const useColumns = (): ColumnDef<SKUReturnSchema>[] => {
   return columns;
 };
 
-const ActionRow = memo(
-  ({ id, text }: { id: string; text: string }) => {
-    return (
-      <div className="flex justify-end">
-        <Button asChild variant="ghost">
-          <Link href={`/${id}`}>
-            {text} <ChevronRight className="size-4" />
-          </Link>
-        </Button>
-      </div>
-    );
-  }
-);
+const ActionRow = memo(({ id, text }: { id: string; text: string }) => {
+  return (
+    <div className="flex justify-end">
+      <Button asChild variant="ghost">
+        <Link href={`/${id}`}>
+          {text} <ChevronRight className="size-4" />
+        </Link>
+      </Button>
+    </div>
+  );
+});
 ActionRow.displayName = "ActionRow";

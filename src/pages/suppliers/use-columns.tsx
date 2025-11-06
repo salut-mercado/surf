@@ -10,22 +10,30 @@ export const useColumns = (): ColumnDef<SupplierReturnSchema>[] => {
   const { t } = useTranslation();
 
   return useMemo(
-    () => [
-      { accessorKey: "code", header: t("suppliers.columns.code") },
-      { accessorKey: "name", header: t("suppliers.columns.name") },
-      { accessorKey: "agent", header: t("suppliers.columns.agent") },
-      { accessorKey: "phone", header: t("suppliers.columns.phone") },
-      { accessorKey: "nif", header: t("suppliers.columns.taxId") },
-      { accessorKey: "delayDays", header: t("suppliers.columns.delayDays") },
-      { accessorKey: "blocked", header: t("suppliers.columns.blocked") },
-      {
-        id: "actions",
-        size: 40,
-        cell: ({ row }) => (
-          <ActionRow id={row.original.id} text={t("suppliers.columns.view")} />
-        ),
-      },
-    ],
+    () =>
+      [
+        { accessorKey: "code", header: t("suppliers.columns.code") },
+        { accessorKey: "name", header: t("suppliers.columns.name") },
+        { accessorKey: "agent", header: t("suppliers.columns.agent") },
+        { accessorKey: "phone", header: t("suppliers.columns.phone") },
+        { accessorKey: "nif", header: t("suppliers.columns.taxId") },
+        { accessorKey: "delayDays", header: t("suppliers.columns.delayDays") },
+        {
+          accessorKey: "blocked",
+          header: t("suppliers.columns.blocked"),
+          enableColumnFilter: false,
+        },
+        {
+          id: "actions",
+          size: 40,
+          cell: ({ row }) => (
+            <ActionRow
+              id={row.original.id}
+              text={t("suppliers.columns.view")}
+            />
+          ),
+        },
+      ] as ColumnDef<SupplierReturnSchema>[],
     [t]
   );
 };

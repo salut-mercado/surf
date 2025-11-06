@@ -30,15 +30,19 @@ export default function SkusPage() {
       {allSkus.length === 0 && !skus.isLoading && <SkusEmptyState />}
       {skus.isSuccess && allSkus.length > 0 && (
         <>
-          <div className="mb-2 justify-end flex w-full">
-            <Button asChild>
-              <Link href="/create">
-                <Plus className="size-4" />
-                {t("skus.addSku")}
-              </Link>
-            </Button>
-          </div>
-          <DataTable table={table} />
+          <DataTable
+            table={table}
+            topExtra={
+              <div className="ml-auto flex">
+                <Button asChild>
+                  <Link href="/create">
+                    <Plus className="size-4" />
+                    {t("skus.addSku")}
+                  </Link>
+                </Button>
+              </div>
+            }
+          />
         </>
       )}
     </DashboardPage>

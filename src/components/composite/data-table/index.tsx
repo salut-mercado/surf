@@ -12,16 +12,23 @@ import {
 } from "~/components/ui/table";
 import { DataTablePagination } from "./pagination";
 import type { UseDataTableResult } from "./use-data-table";
+import { DataTableFilter } from "./filter";
 
 interface DataTableProps<TData> {
   table: UseDataTableResult<TData>;
+  topExtra?: React.ReactNode;
 }
 
 export function DataTable<TData>({
   table: { table, pageSizes },
+  topExtra,
 }: DataTableProps<TData>) {
   return (
     <div>
+      <div className="flex items-center mb-2">
+        <DataTableFilter<TData> table={table} />
+        {topExtra}
+      </div>
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>
@@ -72,7 +79,9 @@ export function DataTable<TData>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination<TData> table={table} pageSizes={pageSizes} />
+      <div className="flex items-center justify-end mt-2">
+        <DataTablePagination<TData> table={table} pageSizes={pageSizes} />
+      </div>
     </div>
   );
 }

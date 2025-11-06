@@ -19,7 +19,7 @@ export default function ProducersPage() {
   const columns = useColumns();
 
   const table = useDataTable({
-    data: items ,
+    data: items,
     columns,
   });
 
@@ -32,15 +32,19 @@ export default function ProducersPage() {
       {items.length === 0 && !producers.isLoading && <ProducersEmptyState />}
       {producers.isSuccess && items.length > 0 && (
         <>
-          <div className="mb-2 justify-end flex w-full">
-            <Button asChild>
-              <Link href="/create">
-                <Plus className="size-4" />
-                {t("producers.addProducer")}
-              </Link>
-            </Button>
-          </div>
-          <DataTable table={table} />
+          <DataTable
+            table={table}
+            topExtra={
+              <div className="ml-auto flex">
+                <Button asChild>
+                  <Link href="/create">
+                    <Plus className="size-4" />
+                    {t("producers.addProducer")}
+                  </Link>
+                </Button>
+              </div>
+            }
+          />
         </>
       )}
     </DashboardPage>
