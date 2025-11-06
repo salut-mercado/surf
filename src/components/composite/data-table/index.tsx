@@ -1,6 +1,7 @@
 "use client";
 
 import { flexRender } from "@tanstack/react-table";
+import { useTranslation } from "react-i18next";
 
 import {
   Table,
@@ -23,6 +24,7 @@ export function DataTable<TData>({
   table: { table, pageSizes },
   topExtra,
 }: DataTableProps<TData>) {
+  const { t } = useTranslation();
   return (
     <div>
       <div className="flex items-center mb-2">
@@ -72,7 +74,7 @@ export function DataTable<TData>({
                   colSpan={table.getAllColumns().length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {t("dataTable.noResults")}
                 </TableCell>
               </TableRow>
             )}

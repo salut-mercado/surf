@@ -1,6 +1,7 @@
 import { IconCheck, IconFilter, IconSearch } from "@tabler/icons-react";
 import { flexRender } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +21,7 @@ export function DataTableFilter<TData>({
 }: {
   table: UseDataTableResult<TData>["table"];
 }) {
+  const { t } = useTranslation();
   const headers = table
     .getHeaderGroups()
     .map((headerGroup) =>
@@ -59,7 +61,7 @@ export function DataTableFilter<TData>({
         </InputGroupAddon>
         <InputGroupInput
           type="text"
-          placeholder="Filter"
+          placeholder={t("dataTable.filter.placeholder")}
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         />
@@ -68,7 +70,7 @@ export function DataTableFilter<TData>({
             <DropdownMenuTrigger asChild>
               <InputGroupButton
                 variant="ghost"
-                aria-label="More"
+                aria-label={t("dataTable.filter.moreOptions")}
                 size="icon-xs"
               >
                 <IconFilter className="size-4" />

@@ -28,6 +28,22 @@
     "selectTenant": "Select Tenant",
     "loading": "loading..."
   },
+  "dataTable": {
+    "noResults": "No results.",
+    "pagination": {
+      "rowsPerPage": "Rows per page",
+      "page": "Page",
+      "of": "of",
+      "goToFirstPage": "Go to first page",
+      "goToPreviousPage": "Go to previous page",
+      "goToNextPage": "Go to next page",
+      "goToLastPage": "Go to last page"
+    },
+    "filter": {
+      "placeholder": "Filter",
+      "moreOptions": "More"
+    }
+  },
   "suppliers": {
     "addSupplier": "Add Supplier",
     "createSupplier": "Create Supplier",
