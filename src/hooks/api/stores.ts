@@ -66,10 +66,20 @@ export const stores = {
       },
     });
   },
-  useUpdate: () =>
-    useMutation({
+  useUpdate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["stores", "update"],
       mutationFn: (args: StoresApiUpdateStoreHandlerApiStoresIdPutRequest) =>
         api.stores.updateStoreHandlerApiStoresIdPut(args),
-    }),
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: ["stores", "getAll"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["stores", "getById", data.data.id],
+        });
+      },
+    });
+  },
 };

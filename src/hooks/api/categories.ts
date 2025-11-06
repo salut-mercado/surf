@@ -57,12 +57,22 @@ export const categories = {
       },
     });
   },
-  useUpdate: () =>
-    useMutation({
+  useUpdate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["categories", "update"],
       mutationFn: (
         args: CategoriesApiUpdateCategoryHandlerApiCategoriesCategoriesIdPutRequest
       ) =>
         api.categories.updateCategoryHandlerApiCategoriesCategoriesIdPut(args),
-    }),
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: ["categories", "getAll"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["categories", "getById", data.data.id],
+        });
+      },
+    });
+  },
 };

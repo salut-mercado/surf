@@ -105,13 +105,23 @@ export const suppliers = {
       },
     });
   },
-  useUpdate: () =>
-    useMutation({
+  useUpdate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["suppliers", "update"],
       mutationFn: (
         args: SuppliersApiUpdateSupplierHandlerApiSuppliersIdPutRequest
       ) => api.suppliers.updateSupplierHandlerApiSuppliersIdPut(args),
-    }),
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: ["suppliers", "getAll"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["suppliers", "getById", data.data.id],
+        });
+      },
+    });
+  },
 
   useCreateBankInfo: () => {
     const queryClient = useQueryClient();

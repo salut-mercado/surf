@@ -62,10 +62,20 @@ export const warehouse = {
       },
     });
   },
-  useUpdate: () =>
-    useMutation({
+  useUpdate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["warehouse", "update"],
       mutationFn: (args: WarehouseApiUpdateWarehouseHandlerApiWarehouseIdPutRequest) =>
         api.warehouse.updateWarehouseHandlerApiWarehouseIdPut(args),
-    }),
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: ["warehouse", "getAll"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["warehouse", "getById", data.data.id],
+        });
+      },
+    });
+  },
 };

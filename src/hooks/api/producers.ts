@@ -55,11 +55,21 @@ export const producers = {
       },
     });
   },
-  useUpdate: () =>
-    useMutation({
+  useUpdate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["producers", "update"],
       mutationFn: (
         args: FirmsProducerApiUpdateFirmProducerHandlerApiFirmsProducerIdPutRequest
       ) => api.producers.updateFirmProducerHandlerApiFirmsProducerIdPut(args),
-    }),
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: ["producers", "getAll"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["producers", "getById", data.data.id],
+        });
+      },
+    });
+  },
 };

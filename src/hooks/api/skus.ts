@@ -54,10 +54,20 @@ export const skus = {
       },
     });
   },
-  useUpdate: () =>
-    useMutation({
+  useUpdate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
       mutationKey: ["skus", "update"],
       mutationFn: (args: SKUsApiUpdateSkuHandlerApiSkusIdPutRequest) =>
         api.sku.updateSkuHandlerApiSkusIdPut(args),
-    }),
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: ["skus", "getAll"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["skus", "getById", data.data.id],
+        });
+      },
+    });
+  },
 };
