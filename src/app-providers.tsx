@@ -18,6 +18,7 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       refetchIntervalInBackground: false,
+      refetchOnMount: true,
       retry(failureCount, error) {
         if (
           "response" in error &&

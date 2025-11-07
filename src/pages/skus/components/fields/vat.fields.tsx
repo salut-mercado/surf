@@ -19,7 +19,6 @@ export const VatField = <T extends AnyFieldApi>({ field }: { field: T }) => {
     !ALLOWED_VATS.includes(currentValue as (typeof ALLOWED_VATS)[number])
   );
   const [customValue, setCustomValue] = useState(currentValue);
-  console.log(currentValue);
 
   return (
     <>
