@@ -276,7 +276,8 @@
       "name": "Nombre",
       "unit": "Unidad",
       "netWeight": "Peso Neto",
-      "view": "Ver"
+      "view": "Ver",
+      "prices": "Precios"
     },
     "emptyState": {
       "title": "Aún No Hay SKUs",
@@ -296,6 +297,9 @@
       "wholesalePrice": "Precio Mayorista",
       "retailPrice1": "Precio de Venta",
       "retailPrice2": "Precio de Venta Especial",
+      "retailPrice1Short": "Base",
+      "retailPrice2Short": "Especial",
+      "wholesalePriceShort": "Mayorista",
       "skuId": "ID de SKU",
       "category": "Categoría",
       "supplier": "Proveedor",
