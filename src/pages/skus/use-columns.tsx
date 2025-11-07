@@ -21,8 +21,15 @@ export const useColumns = (): ColumnDef<SKUReturnSchema>[] => {
           filterFn: "includesString",
           enableColumnFilter: true,
         },
-        { accessorKey: "unit_measurement", header: t("skus.columns.unit") },
-        { accessorKey: "net_weight", header: t("skus.columns.netWeight") },
+        {
+          accessorKey: "barcode",
+          header: t("skus.columns.barcode", "Barcode"),
+          cell: ({ row }) => (
+            <span className="text-muted-foreground font-mono">
+              {row.original.barcode}
+            </span>
+          ),
+        },
         {
           id: "prices",
           enableColumnFilter: false,
