@@ -5,7 +5,7 @@ import { ThemeProvider } from "./components/common/theme-provider";
 import { useInjectNavigate } from "./hooks/use-inject-navigate";
 import "./lib/i18n";
 
-const ONE_MINUTE = 1000 * 5;
+const ONE_MINUTE = 1000 * 60;
 const CACHE_TIME = ONE_MINUTE * 60 * 24; // 24 hours
 
 const queryClient = new QueryClient({
