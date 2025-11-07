@@ -40,6 +40,8 @@ const EditSkuPage = () => {
               max_on_checkout: data.max_on_checkout,
               specifications: data.specifications ?? "",
               wholesale_price: data.wholesale_price,
+              retail_price_1: data.retail_price_1,
+              retail_price_2: data.retail_price_2,
               barcode: data.barcode,
             },
           });

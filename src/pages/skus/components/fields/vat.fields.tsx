@@ -1,135 +1,111 @@
-import { IconPencil } from "@tabler/icons-react";
 import type { AnyFieldApi } from "@tanstack/react-form";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "~/components/ui/button";
 import { FieldDescription, FieldError } from "~/components/ui/field";
-import { Input } from "~/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "~/components/ui/input-group";
 import { Label } from "~/components/ui/label";
-import { cn } from "~/lib/utils";
+import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 
 export const ALLOWED_VATS = [0, 4, 5, 10, 21] as const;
 
 export const VatField = <T extends AnyFieldApi>({ field }: { field: T }) => {
   const { t } = useTranslation();
-  const [custom, setCustom] = useState(
-    !ALLOWED_VATS.includes(field.state.value) || false
+  const currentValue = field.state.value ?? 0;
+  const [isCustom, setIsCustom] = useState(
+    !ALLOWED_VATS.includes(currentValue as (typeof ALLOWED_VATS)[number])
   );
+  const [customValue, setCustomValue] = useState(currentValue);
+  console.log(currentValue);
+
   return (
     <>
-      <Label htmlFor={field.name}>{t("skus.form.vat.title")}</Label>
-      <div
-        className={cn(
-          "w-full grid gap-2",
-          custom ? undefined : "md:grid-cols-2"
-        )}
-      >
-        {!custom && (
-          <>
-            <VatPreset
-              value={ALLOWED_VATS[0]}
-              field={field}
-              title={t("skus.form.vat.presets.0.title")}
-              description={t("skus.form.vat.presets.0.description")}
-            />
-            <VatPreset
-              value={ALLOWED_VATS[1]}
-              field={field}
-              title={t("skus.form.vat.presets.4.title")}
-              description={t("skus.form.vat.presets.4.description")}
-            />
-            <VatPreset
-              value={ALLOWED_VATS[2]}
-              field={field}
-              title={t("skus.form.vat.presets.5.title")}
-              description={t("skus.form.vat.presets.5.description")}
-            />
-            <VatPreset
-              value={ALLOWED_VATS[3]}
-              field={field}
-              title={t("skus.form.vat.presets.10.title")}
-              description={t("skus.form.vat.presets.10.description")}
-            />
-            <VatPreset
-              value={ALLOWED_VATS[4]}
-              field={field}
-              title={t("skus.form.vat.presets.21.title")}
-              description={t("skus.form.vat.presets.21.description")}
-            />
-          </>
-        )}
-        <VatPreset
-          field={field}
-          value={-1}
-          title={t("skus.form.vat.custom")}
-          description={t("skus.form.vat.customDescription")}
-          onClick={() =>
-            setCustom((c) => {
-              if (!c) {
-                return !c;
-              }
-              if (ALLOWED_VATS.includes(field.state.value)) {
-                return !c;
-              }
-              field.handleChange(0);
-              return !c;
-            })
+      <Label>{t("skus.form.vat.title")}*</Label>
+      <RadioGroup
+        value={String(currentValue)}
+        onValueChange={(v) => {
+          if (v === "custom") {
+            field.handleChange(customValue);
+            setIsCustom(true);
+            return;
           }
-          isSelected={custom}
-        />
-      </div>
-
-      <Input
-        id={field.name}
-        name={field.name}
-        type="number"
-        min={0}
-        max={100}
-        step="0.01"
-        value={field.state.value ?? 0}
-        onBlur={field.handleBlur}
-        onChange={(e) => field.handleChange(e.target.valueAsNumber)}
-        className={custom ? undefined : "hidden"}
-      />
-      <FieldError errors={field.state.meta.isTouched ? field.state.meta.errors : undefined} />
+          setIsCustom(false);
+          field.handleChange(Number.parseFloat(v));
+          setCustomValue(Number.parseFloat(v));
+        }}
+        className="grid gap-3"
+      >
+        {ALLOWED_VATS.map((option) => (
+          <div key={option} className="flex items-start gap-3">
+            <RadioGroupItem
+              value={String(option)}
+              id={`vat-${option}`}
+              className="mt-1"
+            />
+            <div className="grid gap-0.5 flex-1">
+              <Label
+                htmlFor={`vat-${option}`}
+                className="font-medium cursor-pointer"
+              >
+                {t(`skus.form.vat.presets.${option}.title`)}
+              </Label>
+              <p className="text-sm text-muted-foreground">
+                {t(`skus.form.vat.presets.${option}.description`)}
+              </p>
+            </div>
+          </div>
+        ))}
+        <div className="flex items-start gap-3">
+          <RadioGroupItem
+            value={String(isCustom ? (field.state.value ?? 0) : "custom")}
+            id="vat-custom"
+            className="mt-1"
+            onClick={() => setIsCustom(true)}
+          />
+          <div className="grid gap-2 flex-1">
+            <Label htmlFor="vat-custom" className="font-medium cursor-pointer">
+              {t("skus.form.vat.custom")}
+            </Label>
+            {isCustom && (
+              <>
+                <InputGroup className="max-w-24">
+                  <InputGroupInput
+                    id="vat-custom"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    value={customValue}
+                    onChange={(e) => {
+                      const value = e.target.valueAsNumber;
+                      field.handleChange(value);
+                      setCustomValue(value);
+                    }}
+                    placeholder={t("skus.form.vat.customDescription")}
+                  />
+                  <InputGroupAddon align="inline-end">%</InputGroupAddon>
+                </InputGroup>
+                <FieldError
+                  errors={
+                    field.state.meta.isTouched
+                      ? field.state.meta.errors
+                      : undefined
+                  }
+                />
+              </>
+            )}
+            {!isCustom && (
+              <p className="text-sm text-muted-foreground">
+                {t("skus.form.vat.customDescription")}
+              </p>
+            )}
+          </div>
+        </div>
+      </RadioGroup>
       <FieldDescription>{t("skus.form.descriptions.vat")}</FieldDescription>
     </>
-  );
-};
-
-const VatPreset = ({
-  title,
-  description,
-  value,
-  field,
-  onClick,
-  isSelected,
-}: {
-  value: number;
-  field: AnyFieldApi;
-  title: string;
-  description: string;
-  onClick?: () => void;
-  isSelected?: boolean;
-}) => {
-  const selected = isSelected ?? value === field.state.value;
-  return (
-    <Button
-      type="button"
-      className={cn("h-auto flex gap-2 justify-start", {
-        "border-transparent border": !selected,
-      })}
-      onClick={onClick ? onClick : () => field.handleChange(value)}
-      variant={selected ? "outline" : "ghost"}
-    >
-      <span className="text-lg font-medium size-10 bg-secondary rounded-full flex items-center justify-center">
-        {value === -1 ? <IconPencil className="size-4" /> : value}
-        {value !== -1 && <span className="text-sm">%</span>}
-      </span>
-      <div className="flex flex-col items-start">
-        <span className="text-sm font-medium">{title}</span>
-        <span className="text-xs text-muted-foreground">{description}</span>
-      </div>
-    </Button>
   );
 };

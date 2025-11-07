@@ -342,7 +342,8 @@
         "selectSupplier": "Select Supplier",
         "selectProducer": "Select Producer",
         "selectCategory": "Select Category",
-        "selectUnit": "Select Unit"
+        "selectUnit": "Select Unit",
+        "specifications": "Enter any additional specifications or notes..."
       },
       "descriptions": {
         "name": "Product name displayed across the app.",
@@ -357,8 +358,24 @@
         "naturalLossPercent": "Expected natural loss percent.",
         "maxOnCheckout": "Maximum quantity allowed per order.",
         "barcode": "Barcode (EAN/UPC).",
-        "wholesalePrice": "Base wholesale unit price."
+        "wholesalePrice": "Base wholesale unit price.",
+        "retailPrice1": "Standard retail price.",
+        "retailPrice2": "Optional special pricing."
       },
+      "sections": {
+        "basicInformation": "Basic Information",
+        "basicInformationDescription": "Essential product details and identifiers",
+        "measurementsAndSpecifications": "Measurements & Specifications",
+        "measurementsAndSpecificationsDescription": "Physical measurements and product constraints",
+        "pricing": "Pricing",
+        "pricingDescription": "Set wholesale and retail prices",
+        "taxAndPercentages": "Tax & Percentages",
+        "taxAndPercentagesDescription": "Value-added tax and product percentages",
+        "specifications": "Specifications",
+        "specificationsDescription": "Additional product information and notes"
+      },
+      "cancel": "Cancel",
+      "saving": "Saving...",
       "unitMeasurement": {
         "unit": "Unit",
         "gramm": "Gramm",
