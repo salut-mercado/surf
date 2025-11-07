@@ -1,4 +1,5 @@
 import type { SKUReturnSchema } from "@salut-mercado/octo-client";
+import { skipToken } from "@tanstack/react-query";
 import {
   Building2Icon,
   FactoryIcon,
@@ -9,12 +10,24 @@ import type { ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Separator } from "~/components/ui/separator";
+import { api } from "~/hooks/api";
 
 export const ProductInfo = ({
   sku,
   ...props
 }: { sku: SKUReturnSchema } & ComponentProps<typeof Card>) => {
   const { t } = useTranslation();
+
+  const { data: category } = api.categories.useGetById(
+    sku.category_id ? { categoriesId: sku.category_id } : skipToken
+  );
+  const { data: supplier } = api.suppliers.useGetById(
+    sku.supplier_id ? { id: sku.supplier_id } : skipToken
+  );
+  const { data: producer } = api.producers.useGetById(
+    sku.producer_id ? { id: sku.producer_id } : skipToken
+  );
+
   return (
     <Card {...props}>
       <CardHeader>
@@ -27,19 +40,19 @@ export const ProductInfo = ({
         <DetailItem
           icon={FolderTreeIcon}
           label={t("skus.view.category")}
-          value={sku.category_id}
+          value={category?.category_name ?? sku.category_id}
         />
         <Separator />
         <DetailItem
           icon={Building2Icon}
           label={t("skus.view.supplier")}
-          value={sku.supplier_id}
+          value={supplier?.name ?? sku.supplier_id}
         />
         <Separator />
         <DetailItem
           icon={FactoryIcon}
           label={t("skus.view.producer")}
-          value={sku.producer_id}
+          value={producer?.name ?? sku.producer_id}
         />
       </CardContent>
     </Card>

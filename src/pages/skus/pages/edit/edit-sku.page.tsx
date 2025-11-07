@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { DashboardPage } from "~/components/dashboard-page";
 import { SkuForm } from "../../components/sku.form";
+import { SkuFormSkeleton } from "../../components/sku-form.skeleton";
 import { api } from "~/hooks/api";
 import { skipToken } from "@tanstack/react-query";
-import { Skeleton } from "~/components/ui/skeleton";
 import { useLocation, useParams } from "wouter";
 
 const EditSkuPage = () => {
@@ -13,7 +13,12 @@ const EditSkuPage = () => {
   const sku = api.skus.useGetById(id ? { id } : skipToken);
   const updateSku = api.skus.useUpdate();
 
-  if (sku.isLoading) return <Skeleton className="h-10 w-full" />;
+  if (sku.isLoading)
+    return (
+      <DashboardPage>
+        <SkuFormSkeleton />
+      </DashboardPage>
+    );
   if (sku.isError) return <div>{t("skus.view.error")}</div>;
   if (!sku.data) return <div>{t("skus.view.notFound.title")}</div>;
 
@@ -40,6 +45,8 @@ const EditSkuPage = () => {
               max_on_checkout: data.max_on_checkout,
               specifications: data.specifications ?? "",
               wholesale_price: data.wholesale_price,
+              retail_price_1: data.retail_price_1,
+              retail_price_2: data.retail_price_2,
               barcode: data.barcode,
             },
           });

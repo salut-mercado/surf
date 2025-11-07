@@ -24,15 +24,20 @@ export const FinancialInfo = ({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="text-center py-4">
-          <label className="text-sm font-medium text-muted-foreground">
-            {t("skus.view.wholesalePrice")}
-          </label>
-          <p className="text-4xl font-bold mt-2 text-primary">
-            {sku.wholesale_price != null
-              ? `€${sku.wholesale_price}`
-              : t("common.n/a")}
-          </p>
+        <div className="grid grid-cols-2 gap-2">
+          <PriceItem
+            label="skus.view.wholesalePrice"
+            value={sku.wholesale_price}
+            className="col-span-2"
+          />
+          <PriceItem
+            label="skus.view.retailPrice1"
+            value={sku.retail_price_1}
+          />
+          <PriceItem
+            label="skus.view.retailPrice2"
+            value={sku.retail_price_2}
+          />
         </div>
         <Separator />
         <div className="space-y-4">
@@ -59,6 +64,31 @@ function PercentageItem({ label, value }: { label: string; value: number }) {
       <span className="text-sm font-semibold">
         {value != null ? `${value}%` : t("common.n/a")}
       </span>
+    </div>
+  );
+}
+
+function PriceItem({
+  label,
+  value,
+  className,
+  ...props
+}: { label: string; value?: number | null } & ComponentProps<"div">) {
+  const { t } = useTranslation();
+  return (
+    <div
+      className={cn(
+        "px-2 py-4 border rounded flex flex-col items-center justify-center text-center",
+        className
+      )}
+      {...props}
+    >
+      <label className="text-sm font-medium text-muted-foreground">
+        {t(label)}
+      </label>
+      <p className="text-4xl font-bold mt-2 text-primary">
+        {value != null ? `€${value}` : t("common.n/a")}
+      </p>
     </div>
   );
 }

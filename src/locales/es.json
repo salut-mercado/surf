@@ -294,6 +294,8 @@
       "productInformation": "Información del Producto",
       "additionalDetails": "Detalles Adicionales",
       "wholesalePrice": "Precio Mayorista",
+      "retailPrice1": "Precio de Venta",
+      "retailPrice2": "Precio de Venta Especial",
       "skuId": "ID de SKU",
       "category": "Categoría",
       "supplier": "Proveedor",
@@ -339,7 +341,8 @@
         "selectSupplier": "Seleccionar Proveedor",
         "selectProducer": "Seleccionar Productor",
         "selectCategory": "Seleccionar Categoría",
-        "selectUnit": "Seleccionar Unidad"
+        "selectUnit": "Seleccionar Unidad",
+        "specifications": "Ingrese especificaciones adicionales o notas..."
       },
       "descriptions": {
         "name": "Nombre del producto mostrado en toda la aplicación.",
@@ -354,8 +357,24 @@
         "naturalLossPercent": "Porcentaje de pérdida natural esperada.",
         "maxOnCheckout": "Cantidad máxima permitida por pedido.",
         "barcode": "Código de barras (EAN/UPC).",
-        "wholesalePrice": "Precio unitario mayorista base."
+        "wholesalePrice": "Precio unitario mayorista base.",
+        "retailPrice1": "Precio de venta estándar.",
+        "retailPrice2": "Precio especial opcional."
       },
+      "sections": {
+        "basicInformation": "Información Básica",
+        "basicInformationDescription": "Detalles esenciales del producto e identificadores",
+        "measurementsAndSpecifications": "Medidas y Especificaciones",
+        "measurementsAndSpecificationsDescription": "Medidas físicas y restricciones del producto",
+        "pricing": "Precios",
+        "pricingDescription": "Establecer precios mayoristas y minoristas",
+        "taxAndPercentages": "Impuestos y Porcentajes",
+        "taxAndPercentagesDescription": "Impuesto sobre el valor añadido y porcentajes del producto",
+        "specifications": "Especificaciones",
+        "specificationsDescription": "Información adicional del producto y notas"
+      },
+      "cancel": "Cancelar",
+      "saving": "Guardando...",
       "unitMeasurement": {
         "unit": "Unidad",
         "gramm": "Gramo",

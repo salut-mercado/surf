@@ -19,4 +19,6 @@ export const skuSchema = z.object({
   specifications: z.string(),
   barcode: z.string(),
   wholesale_price: z.number().min(0).multipleOf(0.00001),
+  retail_price_1: z.number().min(0).multipleOf(0.001),
+  retail_price_2: z.number().min(0).multipleOf(0.001).optional(),
 });

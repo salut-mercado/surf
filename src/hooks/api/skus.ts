@@ -1,9 +1,9 @@
 import type {
-  SKUsApiGetSkusHandlerApiSkusGetRequest,
-  SKUsApiGetSkuHandlerApiSkusIdGetRequest,
-  SKUsApiAddSkuHandlerApiSkusPostRequest,
   SKUPaginatedResponseSchema,
   SKUReturnSchema,
+  SKUsApiAddSkuHandlerApiSkusPostRequest,
+  SKUsApiGetSkuHandlerApiSkusIdGetRequest,
+  SKUsApiGetSkusHandlerApiSkusGetRequest,
   SKUsApiUpdateSkuHandlerApiSkusIdPutRequest,
 } from "@salut-mercado/octo-client";
 import {
@@ -65,7 +65,7 @@ export const skus = {
           queryKey: ["skus", "getAll"],
         });
         queryClient.invalidateQueries({
-          queryKey: ["skus", "getById", data.data.id],
+          queryKey: ["skus", "getById", JSON.stringify({ id: data.data.id })],
         });
       },
     });
