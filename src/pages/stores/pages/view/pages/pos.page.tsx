@@ -26,6 +26,7 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
+import { Numpad } from "~/components/ui/numpad";
 import { Separator } from "~/components/ui/separator";
 import {
   Sheet,
@@ -295,7 +296,7 @@ const PosPage = () => {
               </Button>
             </CardFooter>
           </Card>
-          <div>
+          <div className="flex flex-col gap-4">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -331,6 +332,13 @@ const PosPage = () => {
                   )}
                 </div>
               </CardContent>
+            </Card>
+            <Card>
+              <Numpad
+                onNumberClick={(num) => setBarcodeInput(barcodeInput + num)}
+                onBackspace={() => setBarcodeInput(barcodeInput.slice(0, -1))}
+                onEnter={() => handleAddBarcode(barcodeInput)}
+              />
             </Card>
           </div>
         </div>
