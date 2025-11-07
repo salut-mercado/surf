@@ -110,7 +110,6 @@ const InventoryCreateInflowPage = () => {
       // After creating order, add SKU items
       if (result && items.length > 0) {
         try {
-          console.log("warehouseId", warehouseId);
           await addSkuItems.mutateAsync({
             orderInflowId: result.data.id,
             items: items.map((item) => ({

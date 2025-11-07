@@ -294,6 +294,8 @@
       "productInformation": "Información del Producto",
       "additionalDetails": "Detalles Adicionales",
       "wholesalePrice": "Precio Mayorista",
+      "retailPrice1": "Precio de Venta",
+      "retailPrice2": "Precio de Venta Especial",
       "skuId": "ID de SKU",
       "category": "Categoría",
       "supplier": "Proveedor",
