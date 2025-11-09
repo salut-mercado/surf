@@ -2,7 +2,6 @@ import type { SKUReturnSchema } from "@salut-mercado/octo-client";
 import { IconHistory } from "@tabler/icons-react";
 import {
   ArchiveIcon,
-  ArrowLeftIcon,
   BarcodeIcon,
   EditIcon,
   MoreHorizontalIcon,
@@ -19,17 +18,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { useIsMobile } from "~/hooks/common/use-mobile";
 
 export const ActionRow = ({ sku }: { sku: SKUReturnSchema }) => {
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
   return (
     <div className="flex items-start justify-between gap-4">
       <div className="flex items-start gap-4 flex-1 min-w-0">
-        <Link href="~/skus">
-          <Button variant="ghost" size="icon-sm">
-            <ArrowLeftIcon className="size-4" />
-          </Button>
-        </Link>
         <div className="flex-1 min-w-0">
           <h1 className="text-2xl font-semibold mb-1 text-balance">
             {sku.name}
@@ -39,7 +35,7 @@ export const ActionRow = ({ sku }: { sku: SKUReturnSchema }) => {
               <BarcodeIcon className="size-3.5" />
               <span className="font-mono">{sku.barcode}</span>
             </div>
-            <Badge variant="secondary">ID: {sku.id}</Badge>
+            {!isMobile && <Badge variant="secondary">ID: {sku.id}</Badge>}
           </div>
         </div>
       </div>
