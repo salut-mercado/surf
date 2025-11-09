@@ -5,6 +5,7 @@ import { Button } from "~/components/ui/button";
 import { FieldDescription } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { NumberInput } from "~/components/ui/number-input";
 import { Spinner } from "~/components/ui/spinner";
 import { storeSchema } from "./store.validator";
 
@@ -82,7 +83,9 @@ export function StoreForm({
           name="address"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("stores.form.fields.address")}</Label>
+              <Label htmlFor={field.name}>
+                {t("stores.form.fields.address")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -91,7 +94,9 @@ export function StoreForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>{t("stores.form.descriptions.address")}</FieldDescription>
+              <FieldDescription>
+                {t("stores.form.descriptions.address")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -99,7 +104,9 @@ export function StoreForm({
           name="legal_entity"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("stores.form.fields.legalEntity")}</Label>
+              <Label htmlFor={field.name}>
+                {t("stores.form.fields.legalEntity")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -108,7 +115,9 @@ export function StoreForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>{t("stores.form.descriptions.legalEntity")}</FieldDescription>
+              <FieldDescription>
+                {t("stores.form.descriptions.legalEntity")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -116,18 +125,21 @@ export function StoreForm({
           name="price"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("stores.form.fields.price")}</Label>
-              <Input
+              <Label htmlFor={field.name}>
+                {t("stores.form.fields.price")}
+              </Label>
+              <NumberInput
                 id={field.name}
                 name={field.name}
-                type="number"
                 step="0.01"
                 placeholder={t("stores.form.placeholders.price")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                onValueChange={field.handleChange}
               />
-              <FieldDescription>{t("stores.form.descriptions.price")}</FieldDescription>
+              <FieldDescription>
+                {t("stores.form.descriptions.price")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -144,7 +156,9 @@ export function StoreForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>{t("stores.form.descriptions.ip")}</FieldDescription>
+              <FieldDescription>
+                {t("stores.form.descriptions.ip")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -152,18 +166,21 @@ export function StoreForm({
           name="sales_area"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("stores.form.fields.salesArea")}</Label>
-              <Input
+              <Label htmlFor={field.name}>
+                {t("stores.form.fields.salesArea")}
+              </Label>
+              <NumberInput
                 id={field.name}
                 name={field.name}
-                type="number"
                 step="0.01"
                 placeholder={t("stores.form.placeholders.salesArea")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                onValueChange={field.handleChange}
               />
-              <FieldDescription>{t("stores.form.descriptions.salesArea")}</FieldDescription>
+              <FieldDescription>
+                {t("stores.form.descriptions.salesArea")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -171,18 +188,21 @@ export function StoreForm({
           name="total_area"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("stores.form.fields.totalArea")}</Label>
-              <Input
+              <Label htmlFor={field.name}>
+                {t("stores.form.fields.totalArea")}
+              </Label>
+              <NumberInput
                 id={field.name}
                 name={field.name}
-                type="number"
                 step="0.01"
                 placeholder={t("stores.form.placeholders.totalArea")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                onValueChange={field.handleChange}
               />
-              <FieldDescription>{t("stores.form.descriptions.totalArea")}</FieldDescription>
+              <FieldDescription>
+                {t("stores.form.descriptions.totalArea")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -190,7 +210,9 @@ export function StoreForm({
           name="date_of_first_sale"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("stores.form.fields.dateOfFirstSale")}</Label>
+              <Label htmlFor={field.name}>
+                {t("stores.form.fields.dateOfFirstSale")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -199,7 +221,9 @@ export function StoreForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>{t("stores.form.descriptions.dateOfFirstSale")}</FieldDescription>
+              <FieldDescription>
+                {t("stores.form.descriptions.dateOfFirstSale")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -207,7 +231,9 @@ export function StoreForm({
           name="working_hours"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("stores.form.fields.workingHours")}</Label>
+              <Label htmlFor={field.name}>
+                {t("stores.form.fields.workingHours")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -216,7 +242,9 @@ export function StoreForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>{t("stores.form.descriptions.workingHours")}</FieldDescription>
+              <FieldDescription>
+                {t("stores.form.descriptions.workingHours")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -224,7 +252,9 @@ export function StoreForm({
           name="claster"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("stores.form.fields.claster")}</Label>
+              <Label htmlFor={field.name}>
+                {t("stores.form.fields.claster")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -233,7 +263,9 @@ export function StoreForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>{t("stores.form.descriptions.claster")}</FieldDescription>
+              <FieldDescription>
+                {t("stores.form.descriptions.claster")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -241,7 +273,9 @@ export function StoreForm({
           name="contacts"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("stores.form.fields.contacts")}</Label>
+              <Label htmlFor={field.name}>
+                {t("stores.form.fields.contacts")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -250,7 +284,9 @@ export function StoreForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>{t("stores.form.descriptions.contacts")}</FieldDescription>
+              <FieldDescription>
+                {t("stores.form.descriptions.contacts")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -258,7 +294,9 @@ export function StoreForm({
           name="assortment_matrix"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("stores.form.fields.assortmentMatrix")}</Label>
+              <Label htmlFor={field.name}>
+                {t("stores.form.fields.assortmentMatrix")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -267,7 +305,9 @@ export function StoreForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>{t("stores.form.descriptions.assortmentMatrix")}</FieldDescription>
+              <FieldDescription>
+                {t("stores.form.descriptions.assortmentMatrix")}
+              </FieldDescription>
             </div>
           )}
         />
@@ -275,7 +315,9 @@ export function StoreForm({
           name="service_provider"
           children={(field) => (
             <div className="grid gap-2">
-              <Label htmlFor={field.name}>{t("stores.form.fields.serviceProvider")}</Label>
+              <Label htmlFor={field.name}>
+                {t("stores.form.fields.serviceProvider")}
+              </Label>
               <Input
                 id={field.name}
                 name={field.name}
@@ -284,7 +326,9 @@ export function StoreForm({
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              <FieldDescription>{t("stores.form.descriptions.serviceProvider")}</FieldDescription>
+              <FieldDescription>
+                {t("stores.form.descriptions.serviceProvider")}
+              </FieldDescription>
             </div>
           )}
         />

@@ -5,7 +5,7 @@ import { FieldDescription, FieldError } from "~/components/ui/field";
 import {
   InputGroup,
   InputGroupAddon,
-  InputGroupInput,
+  InputGroupNumberInput,
 } from "~/components/ui/input-group";
 import { Label } from "~/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
@@ -71,18 +71,13 @@ export const VatField = <T extends AnyFieldApi>({ field }: { field: T }) => {
             {isCustom && (
               <>
                 <InputGroup className="max-w-24">
-                  <InputGroupInput
+                  <InputGroupNumberInput
                     id="vat-custom"
-                    type="number"
                     min="0"
                     max="100"
                     step="0.1"
                     value={customValue}
-                    onChange={(e) => {
-                      const value = e.target.valueAsNumber;
-                      field.handleChange(value);
-                      setCustomValue(value);
-                    }}
+                    onValueChange={field.handleChange}
                     placeholder={t("skus.form.vat.customDescription")}
                   />
                   <InputGroupAddon align="inline-end">%</InputGroupAddon>

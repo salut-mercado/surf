@@ -6,6 +6,7 @@ import { Input } from "~/components/ui/input";
 import { SelectTrigger } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
 import { cn } from "~/lib/utils";
+import { NumberInput } from "./number-input";
 
 function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -143,6 +144,19 @@ function InputGroupInput({
   );
 }
 
+function InputGroupNumberInput({
+  className,
+  ...props
+}: React.ComponentProps<typeof NumberInput>) {
+  return (
+    <NumberInput
+      data-slot="input-group-control"
+      className={cn(className)}
+      {...props}
+    />
+  );
+}
+
 function InputGroupTextarea({
   className,
   ...props
@@ -180,6 +194,7 @@ export {
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
+  InputGroupNumberInput,
   InputGroupSelectTrigger,
   InputGroupText,
   InputGroupTextarea,

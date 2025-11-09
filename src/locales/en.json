@@ -2,6 +2,8 @@
   "overviewPage": "Overview page",
   "common": {
     "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
     "edit": "Edit",
     "archive": "Archive",
     "history": "History",
@@ -412,6 +414,19 @@
         }
       },
       "scanBarcode": "Scan Barcode"
+    },
+    "priceDialog": {
+      "editPrice": "Edit prices",
+      "editPriceDescription": "Update wholesale and retail prices for this SKU.",
+      "wholesalePrice": "Wholesale Price",
+      "retailPrice1": "Retail Price Base",
+      "retailPrice2": "Retail Price Special",
+      "retailPrice1Short": "Base",
+      "retailPrice2Short": "Special",
+      "wholesalePriceShort": "Wholesale",
+      "save": "Save",
+      "saving": "Saving...",
+      "cancel": "Cancel"
     }
   },
   "stores": {

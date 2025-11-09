@@ -7,6 +7,7 @@ import { Button } from "~/components/ui/button";
 import { FieldDescription } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { NumberInput } from "~/components/ui/number-input";
 import { Spinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
 import { supplierSchema } from "./supplier.validator";
@@ -185,14 +186,13 @@ export function SupplierForm({
               <Label htmlFor={field.name}>
                 {t("suppliers.form.fields.delayDays")}
               </Label>
-              <Input
+              <NumberInput
                 id={field.name}
                 name={field.name}
-                type="number"
                 placeholder={t("suppliers.form.placeholders.delayDays")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                onValueChange={field.handleChange}
               />
               <FieldDescription>
                 {t("suppliers.form.descriptions.delayDays")}
