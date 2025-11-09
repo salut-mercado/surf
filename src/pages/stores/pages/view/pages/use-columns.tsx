@@ -13,6 +13,13 @@ export const useColumns = (): ColumnDef<StoreInventoryItemSchema>[] => {
         header: t("stores.inventory.columns.name"),
       },
       {
+        accessorKey: "barcode",
+        header: t("stores.inventory.columns.barcode"),
+        cell({ row }) {
+          return <div className="text-muted-foreground font-mono">{row.original.barcode}</div>;
+        },
+      },
+      {
         accessorKey: "quantity",
         header: t("stores.inventory.columns.quantity"),
       },
