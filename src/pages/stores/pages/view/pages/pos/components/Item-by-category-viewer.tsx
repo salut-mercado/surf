@@ -87,9 +87,9 @@ export const ItemByCategoryViewer = () => {
             categories={filteredCategories}
           />
         </ScrollArea>
-        <div className="flex min-h-0 min-w-0 flex-col">
+        <div className="flex min-h-0 min-w-0 flex-col h-full">
           <SearchInput search={search} setSearch={setSearch} />
-          <div className="flex flex-col gap-2 p-2 pr-3">
+          <div className="flex flex-col gap-2 py-2">
             <ScrollArea>
               <SubcategoryView
                 subcategories={subcategories}
@@ -99,9 +99,8 @@ export const ItemByCategoryViewer = () => {
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
           </div>
-          <ScrollArea>
+          <ScrollArea className="flex-1 min-h-0">
             <ItemView items={items} />
-            <ScrollBar orientation="vertical" />
           </ScrollArea>
         </div>
       </div>
@@ -210,7 +209,7 @@ const SubcategoryView = ({
 
 const ItemView = ({ items }: { items: StoreInventoryItemSchema[] }) => {
   return (
-    <div className="grid grid-cols-3 gap-1 h-full overflow-y-auto">
+    <div className="grid grid-cols-3 gap-1 pb-2">
       {items.map((item) => (
         <Button
           className="p-1 whitespace-normal flex-wrap h-auto"
