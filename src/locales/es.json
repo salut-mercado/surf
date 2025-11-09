@@ -414,6 +414,19 @@
         }
       },
       "scanBarcode": "Escanear Código de Barras"
+    },
+    "priceDialog": {
+      "editPrice": "Editar precios",
+      "editPriceDescription": "Actualiza los precios de este SKU.",
+      "wholesalePrice": "Precio Mayorista",
+      "retailPrice1": "Precio Base",
+      "retailPrice2": "Precio Especial",
+      "retailPrice1Short": "Base",
+      "retailPrice2Short": "Especial",
+      "wholesalePriceShort": "Mayorista",
+      "save": "Guardar",
+      "saving": "Guardando...",
+      "cancel": "Cancelar"
     }
   },
   "stores": {
