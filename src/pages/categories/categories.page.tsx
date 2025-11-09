@@ -3,12 +3,12 @@ import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Button } from "~/components/ui/button";
+import { Card, CardContent } from "~/components/ui/card";
 import { api } from "~/hooks/api";
 import { CategoriesEmptyState } from "./categories.empty-state";
 import { CategoriesErrorState } from "./categories.error-state";
 import { CategoriesSkeleton } from "./categories.skeleton";
 import { CategoryTree } from "./components/category-tree";
-import { Card, CardContent } from "~/components/ui/card";
 
 export default function CategoriesPage() {
   const { t } = useTranslation();
@@ -22,7 +22,9 @@ export default function CategoriesPage() {
       {categories.isError && (
         <CategoriesErrorState message={categories.error.message} />
       )}
-      {categories.isSuccess && list.length === 0 && !categories.isLoading && <CategoriesEmptyState />}
+      {categories.isSuccess && list.length === 0 && !categories.isLoading && (
+        <CategoriesEmptyState />
+      )}
       {categories.isSuccess && list.length > 0 && (
         <>
           <div className="mb-2 justify-end flex w-full">
