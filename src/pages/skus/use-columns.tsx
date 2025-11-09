@@ -39,6 +39,7 @@ export const useColumns = (): ColumnDef<SKUReturnSchema>[] => {
                 retail_price_1={row.original.retail_price_1}
                 retail_price_2={row.original.retail_price_2 ?? null}
                 wholesale_price={row.original.wholesale_price ?? null}
+                editableId={row.original.id}
               />
             );
           },

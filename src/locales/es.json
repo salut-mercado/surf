@@ -2,6 +2,8 @@
   "overviewPage": "Página de resumen",
   "common": {
     "cancel": "Cancelar",
+    "save": "Guardar",
+    "saving": "Guardando...",
     "edit": "Editar",
     "archive": "Archivar",
     "history": "Historial",
