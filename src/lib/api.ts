@@ -1,15 +1,18 @@
 import {
+  AnalyticsApi,
   AuthApi,
   CategoriesApi,
   Configuration,
   DiscountsApi,
   FirmsProducerApi,
+  InventoryApi,
   OrderInflowApi,
   OutflowsApi,
   SKUsApi,
   StockSKUApi,
   StoresApi,
   SuppliersApi,
+  UsersApi,
   WarehouseApi,
 } from "@salut-mercado/octo-client";
 import { instance } from "./axios-config";
@@ -33,4 +36,7 @@ export const api = {
   warehouse: new WarehouseApi(config, undefined, instance),
   inflows: new OrderInflowApi(config, undefined, instance),
   stockSKU: new StockSKUApi(config, undefined, instance),
+  analytics: new AnalyticsApi(config, undefined, instance),
+  inventory: new InventoryApi(config, undefined, instance),
+  users: new UsersApi(config, undefined, instance),
 };
