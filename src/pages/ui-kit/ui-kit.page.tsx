@@ -6,11 +6,13 @@ import { DashboardPage } from "~/components/dashboard-page";
 import { Badge } from "~/components/ui/badge";
 import { api } from "~/hooks/api";
 import { Table } from "./data-table";
+import { Numpad } from "../../components/ui/numpad";
 
 const UiKitPage = () => {
   const suppliers = api.suppliers.useGetAll({ limit: 1000 });
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [detectedBarcode, setDetectedBarcode] = useState<string>("");
+  const [numpadValue, setNumpadValue] = useState<string>("");
   return (
     <DashboardPage title="UI Kit playground">
       <AsyncSelect
@@ -47,6 +49,13 @@ const UiKitPage = () => {
       <pre>{JSON.stringify({ detectedBarcode }, null, 2)}</pre>
 
       <Table />
+
+      <Numpad
+        onNumberClick={(num) => setNumpadValue(numpadValue + num)}
+        onBackspace={() => setNumpadValue(numpadValue.slice(0, -1))}
+        onEnter={() => console.log(numpadValue)}
+      />
+      <pre>{JSON.stringify({ numpadValue }, null, 2)}</pre>
     </DashboardPage>
   );
 };

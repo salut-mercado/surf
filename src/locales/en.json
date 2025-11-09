@@ -511,8 +511,10 @@
       "columns": {
         "name": "Name",
         "barcode": "Barcode",
+        "prices": "Prices",
         "quantity": "Quantity",
-        "view": "View"
+        "view": "View",
+        "closestExpirationDate": "Closest Expiration Date"
       },
       "createInflow": {
         "title": "Create Order Inflow",

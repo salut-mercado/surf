@@ -20,10 +20,8 @@ import ViewSkuPage from "./pages/skus/pages/view/view-sku.page";
 import SkusPage from "./pages/skus/skus.page";
 import CreateStorePage from "./pages/stores/pages/create/create-store.page";
 import EditStorePage from "./pages/stores/pages/edit/edit-store.page";
-import InventoryPage from "./pages/stores/pages/view/pages/inventory.page";
-import InventoryCreateInflowPage from "./pages/stores/pages/view/pages/pages/create/inventory.create-inflow.page";
-import InventoryViewPage from "./pages/stores/pages/view/pages/pages/view/inventory.view.page";
-import PosPage from "./pages/stores/pages/view/pages/pos.page";
+import InventoryPage from "./pages/stores/pages/view/pages/inventory/inventory.page";
+import PosPage from "./pages/stores/pages/view/pages/pos/pos.page";
 import ViewStorePage from "./pages/stores/pages/view/view-store.page";
 import CreateSupplierPage from "./pages/suppliers/pages/create/create-supplier.page";
 import EditSupplierPage from "./pages/suppliers/pages/edit/edit-supplier.page";
@@ -118,17 +116,14 @@ export const AppRoutes = () => {
               <Route path="/:id/pos">
                 <PosPage />
               </Route>
-              <Route path="/:id/inventory/create">
-                <InventoryCreateInflowPage />
-              </Route>
-              <Route path="/:id/inventory/:skuId">
-                <InventoryViewPage />
-              </Route>
               <Route path="/:id/inventory">
                 <InventoryPage />
               </Route>
               <Route path="/:id">
                 <ViewStorePage />
+              </Route>
+              <Route path="/">
+                <Redirect to="~/" />
               </Route>
             </Switch>
           </Route>

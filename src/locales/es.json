@@ -511,8 +511,10 @@
       "columns": {
         "name": "Nombre",
         "barcode": "Código de Barras",
+        "prices": "Precios",
         "quantity": "Cantidad",
-        "view": "Ver"
+        "view": "Ver",
+        "closestExpirationDate": "Fecha de Caducidad Más Cercana"
       },
       "createInflow": {
         "title": "Crear Entrada de Pedido",

@@ -8,6 +8,7 @@ import { stores } from "./stores";
 import { warehouse } from "./warehouse";
 import { stockSKU } from "./stock-sku";
 import { inflows } from "./inflows";
+import { inventory } from "./inventory";
 
 export const api = {
   suppliers,
@@ -20,4 +21,5 @@ export const api = {
   warehouse,
   stockSKU,
   inflows,
+  inventory,
 };
