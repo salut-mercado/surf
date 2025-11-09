@@ -5,6 +5,7 @@ import { Button } from "~/components/ui/button";
 import { FieldDescription } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { NumberInput } from "~/components/ui/number-input";
 import { Spinner } from "~/components/ui/spinner";
 import { producerSchema } from "./producer.validator";
 
@@ -103,14 +104,12 @@ export function ProducerForm({
               <Label htmlFor={field.name}>
                 {t("producers.form.fields.minimumStock")}
               </Label>
-              <Input
+              <NumberInput
                 id={field.name}
                 name={field.name}
-                type="number"
-                placeholder={t("producers.form.placeholders.minimumStock")}
                 value={field.state.value}
                 onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                onValueChange={field.handleChange}
               />
               <FieldDescription>
                 {t("producers.form.descriptions.minimumStock")}

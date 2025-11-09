@@ -1,28 +1,30 @@
 import type { SKUReturnSchema, SKUSchema } from "@salut-mercado/octo-client";
 import { UnitMeasurementEnum } from "@salut-mercado/octo-client";
 import { useForm } from "@tanstack/react-form";
-import { useTranslation } from "react-i18next";
 import {
-  Package,
-  Ruler,
-  DollarSign,
-  Percent,
-  FileText,
   BarcodeIcon,
+  DollarSign,
+  FileText,
+  Package,
+  Percent,
+  Ruler,
   Save,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
+import { CameraButton } from "~/components/composite/camera-button";
 import { Button } from "~/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "~/components/ui/card";
 import { FieldDescription, FieldError } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { NumberInput } from "~/components/ui/number-input";
 import {
   Select,
   SelectContent,
@@ -33,10 +35,9 @@ import {
 import { Spinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/hooks/api";
-import { skuSchema } from "./sku.validator";
-import { CameraButton } from "~/components/composite/camera-button";
 import { orderCategories } from "~/lib/utils/order-categories";
 import { VatField } from "./fields/vat.fields";
+import { skuSchema } from "./sku.validator";
 
 type SkuFormValues = SKUReturnSchema | (SKUSchema & { id?: string });
 
@@ -458,14 +459,13 @@ export function SkuForm({
                   <Label htmlFor={field.name}>
                     {t("skus.form.fields.shelfLifetime")}
                   </Label>
-                  <Input
+                  <NumberInput
                     id={field.name}
                     name={field.name}
-                    type="number"
                     min={0}
                     value={field.state.value ?? 0}
                     onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                    onValueChange={field.handleChange}
                   />
 
                   <FieldDescription>
@@ -489,15 +489,14 @@ export function SkuForm({
                   <Label htmlFor={field.name}>
                     {t("skus.form.fields.netWeight")}
                   </Label>
-                  <Input
+                  <NumberInput
                     id={field.name}
                     name={field.name}
-                    type="number"
                     min={0}
                     step="0.01"
                     value={field.state.value ?? 0}
                     onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                    onValueChange={field.handleChange}
                   />
                   <FieldDescription>
                     {t("skus.form.descriptions.netWeight")}
@@ -520,16 +519,14 @@ export function SkuForm({
                   <Label htmlFor={field.name}>
                     {t("skus.form.fields.maxOnCheckout")}
                   </Label>
-                  <Input
+                  <NumberInput
                     id={field.name}
                     name={field.name}
-                    type="number"
                     min={0}
                     value={field.state.value ?? 0}
                     onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                    onValueChange={field.handleChange}
                   />
-
                   <FieldDescription>
                     {t("skus.form.descriptions.maxOnCheckout")}
                   </FieldDescription>
@@ -567,15 +564,14 @@ export function SkuForm({
                   <Label htmlFor={field.name}>
                     {t("skus.form.fields.wholesalePrice")}
                   </Label>
-                  <Input
+                  <NumberInput
                     id={field.name}
                     name={field.name}
-                    type="number"
                     min={0}
                     step="0.00001"
                     value={field.state.value ?? 0}
                     onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                    onValueChange={field.handleChange}
                   />
                   <FieldDescription>
                     {t("skus.form.descriptions.wholesalePrice")}
@@ -598,15 +594,14 @@ export function SkuForm({
                   <Label htmlFor={field.name}>
                     {t("skus.view.retailPrice1")}
                   </Label>
-                  <Input
+                  <NumberInput
                     id={field.name}
                     name={field.name}
-                    type="number"
                     min={0}
                     step="0.001"
                     value={field.state.value ?? 0}
                     onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                    onValueChange={field.handleChange}
                   />
 
                   <FieldDescription>
@@ -630,19 +625,15 @@ export function SkuForm({
                   <Label htmlFor={field.name}>
                     {t("skus.view.retailPrice2")}
                   </Label>
-                  <Input
+                  <NumberInput
                     id={field.name}
                     name={field.name}
-                    type="number"
                     min={0}
                     step="0.001"
                     value={field.state.value ?? ""}
                     onBlur={field.handleBlur}
-                    onChange={(e) =>
-                      field.handleChange(e.target.valueAsNumber || undefined)
-                    }
+                    onValueChange={field.handleChange}
                   />
-
                   <FieldDescription>
                     {t("skus.form.descriptions.retailPrice2")}
                   </FieldDescription>
@@ -689,16 +680,15 @@ export function SkuForm({
                   <Label htmlFor={field.name}>
                     {t("skus.form.fields.alcoholPercent")}
                   </Label>
-                  <Input
+                  <NumberInput
                     id={field.name}
                     name={field.name}
-                    type="number"
                     min={0}
                     max={100}
                     step="0.1"
                     value={field.state.value ?? 0}
                     onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                    onValueChange={field.handleChange}
                   />
 
                   <FieldDescription>
@@ -722,16 +712,15 @@ export function SkuForm({
                   <Label htmlFor={field.name}>
                     {t("skus.form.fields.naturalLossPercent")}
                   </Label>
-                  <Input
+                  <NumberInput
                     id={field.name}
                     name={field.name}
-                    type="number"
                     min={0}
                     max={100}
                     step="0.1"
                     value={field.state.value ?? 0}
                     onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                    onValueChange={field.handleChange}
                   />
 
                   <FieldDescription>
