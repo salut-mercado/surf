@@ -14,6 +14,7 @@ import {
 import { DataTablePagination } from "./pagination";
 import type { UseDataTableResult } from "./use-data-table";
 import { DataTableFilter } from "./filter";
+import { Skeleton } from "~/components/ui/skeleton";
 
 interface DataTableProps<TData> {
   table: UseDataTableResult<TData>;
@@ -87,3 +88,18 @@ export function DataTable<TData>({
     </div>
   );
 }
+
+DataTable.Skeleton = function DataTableSkeleton() {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between">
+        <Skeleton className="h-9 w-36" />
+        <Skeleton className="h-9 w-32" />
+      </div>
+      <Skeleton className="h-64 w-full" />
+      <div className="flex justify-end">
+        <Skeleton className="h-9 w-32" />
+      </div>
+    </div>
+  );
+};

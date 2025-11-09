@@ -1,13 +1,12 @@
 import { skipToken } from "@tanstack/react-query";
+import { AlertCircleIcon } from "lucide-react";
 import { useParams } from "wouter";
 import { DataTable } from "~/components/composite/data-table";
 import { useDataTable } from "~/components/composite/data-table/use-data-table";
 import { DashboardPage } from "~/components/dashboard-page";
 import { Alert, AlertTitle } from "~/components/ui/alert";
-import { Skeleton } from "~/components/ui/skeleton";
 import { api } from "~/hooks/api";
-import { useColumns } from "./use-columns";
-import { AlertCircleIcon } from "lucide-react";
+import { useColumns } from "../use-columns";
 
 const InventoryPage = () => {
   const { id: storeId } = useParams<{ id: string }>();
@@ -15,7 +14,9 @@ const InventoryPage = () => {
   const inventory = api.inventory.useGetInventory(
     storeId ? { storeId } : skipToken
   );
+
   const columns = useColumns();
+
   const table = useDataTable({
     columns,
     data: inventory.data?.items ?? [],
@@ -24,7 +25,7 @@ const InventoryPage = () => {
   if (inventory.isLoading) {
     return (
       <DashboardPage>
-        <Skeleton className="h-full w-full" />
+        <DataTable.Skeleton />
       </DashboardPage>
     );
   }

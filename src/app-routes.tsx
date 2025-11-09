@@ -20,8 +20,8 @@ import ViewSkuPage from "./pages/skus/pages/view/view-sku.page";
 import SkusPage from "./pages/skus/skus.page";
 import CreateStorePage from "./pages/stores/pages/create/create-store.page";
 import EditStorePage from "./pages/stores/pages/edit/edit-store.page";
-import InventoryPage from "./pages/stores/pages/view/pages/inventory.page";
-import PosPage from "./pages/stores/pages/view/pages/pos.page";
+import InventoryPage from "./pages/stores/pages/view/pages/inventory/inventory.page";
+import PosPage from "./pages/stores/pages/view/pages/pos/pos.page";
 import ViewStorePage from "./pages/stores/pages/view/view-store.page";
 import CreateSupplierPage from "./pages/suppliers/pages/create/create-supplier.page";
 import EditSupplierPage from "./pages/suppliers/pages/edit/edit-supplier.page";
@@ -121,6 +121,9 @@ export const AppRoutes = () => {
               </Route>
               <Route path="/:id">
                 <ViewStorePage />
+              </Route>
+              <Route path="/">
+                <Redirect to="~/" />
               </Route>
             </Switch>
           </Route>
