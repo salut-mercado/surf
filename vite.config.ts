@@ -3,14 +3,16 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig, type PluginOption } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+import svgr from "vite-plugin-svgr";
 
 const apiUrl = process.env.VITE_API_URL || "http://localhost:8000";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    react(),
-    tailwindcss(),
+    react({}),
+    svgr({}),
+    tailwindcss({}),
     VitePWA({
       registerType: "autoUpdate",
       manifest: {
@@ -43,7 +45,8 @@ export default defineConfig({
           //   },
           // },
           {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|ico|woff|woff2|ttf|otf|eot)$/i,
+            urlPattern:
+              /\.(?:png|jpg|jpeg|svg|gif|webp|ico|woff|woff2|ttf|otf|eot)$/i,
             handler: "CacheFirst",
             options: {
               cacheName: "static-assets-cache",

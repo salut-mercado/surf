@@ -7,6 +7,7 @@ import { Badge } from "~/components/ui/badge";
 import { api } from "~/hooks/api";
 import { Table } from "./data-table";
 import { Numpad } from "../../components/ui/numpad";
+import { Logo } from "~/components/common/logo";
 
 const UiKitPage = () => {
   const suppliers = api.suppliers.useGetAll({ limit: 1000 });
@@ -56,6 +57,13 @@ const UiKitPage = () => {
         onEnter={() => console.log(numpadValue)}
       />
       <pre>{JSON.stringify({ numpadValue }, null, 2)}</pre>
+
+      <div className="flex gap-2">
+        <h2>Logos</h2>
+        <Logo variant="icon" />
+        <Logo variant="full" />
+        <Logo variant="text" />
+      </div>
     </DashboardPage>
   );
 };
