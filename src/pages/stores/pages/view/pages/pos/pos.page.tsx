@@ -23,7 +23,7 @@ const PosPage = () => {
         {inventory.isLoading || categories.isLoading ? (
           <Skeleton className="w-full h-full col-span-2" />
         ) : (
-          <Card className="col-span-2 h-full overflow-hidden p-2">
+          <Card className="col-span-2 h-full overflow-hidden pl-2 py-4 pr-4">
             <ItemByCategoryViewer
               inventory={inventoryItems}
               categories={categories.data ?? []}
@@ -33,7 +33,7 @@ const PosPage = () => {
         {inventory.isLoading ? (
           <Skeleton className="h-full w-full" />
         ) : (
-          <Card className="p-2 h-full">
+          <Card className="p-4 h-full">
             <Cart inventory={inventoryItems} />
           </Card>
         )}

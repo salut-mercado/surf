@@ -36,12 +36,17 @@ const PosContextProvider = ({ children }: PropsWithChildren) => {
           return { cart };
         }),
       removeFromCart: (id: string) =>
-        set((s) => ({
-          cart: new Map(s.cart).set(id, {
-            count: Math.max(0, (s.cart.get(id)?.count ?? 0) - 1),
-            order: s.cart.get(id)?.order ?? 0,
-          }),
-        })),
+        set((s) => {
+          const cart = new Map(s.cart);
+          cart.set(id, {
+            count: Math.max(0, (cart.get(id)?.count ?? 0) - 1),
+            order: cart.get(id)?.order ?? 0,
+          });
+          if (cart.get(id)?.count === 0) {
+            cart.delete(id);
+          }
+          return { cart };
+        }),
       clearCart: () => set({ cart: new Map() }),
     }));
   }

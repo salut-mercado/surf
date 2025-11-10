@@ -15,6 +15,7 @@ import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { useDebounce } from "~/hooks/use-debounce";
 import { getDescendantCategoryIds } from "~/lib/utils/get-descendant-category-ids";
 import { usePos } from "./pos.context";
+import { Spinner } from "~/components/ui/spinner";
 
 export const ItemByCategoryViewer = ({
   inventory,
@@ -96,7 +97,11 @@ export const ItemByCategoryViewer = ({
             </ScrollArea>
           </div>
           <ScrollArea className="flex-1 min-h-0">
-            <ItemView items={items} />
+            {search !== debouncedSearch ? (
+              <Spinner className="mx-auto" />
+            ) : (
+              <ItemView items={items} />
+            )}
           </ScrollArea>
         </div>
       </div>
@@ -207,6 +212,11 @@ const ItemView = ({ items }: { items: StoreInventoryItemSchema[] }) => {
   const addToCart = usePos((s) => s.addToCart);
   return (
     <div className="grid grid-cols-3 gap-1 pb-2">
+      {items.length === 0 && (
+        <div className="col-span-3 text-center text-muted-foreground">
+          No items found
+        </div>
+      )}
       {items.map((item) => (
         <Button
           className="p-1 whitespace-normal flex-wrap h-auto"
