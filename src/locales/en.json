@@ -417,7 +417,7 @@
     },
     "priceDialog": {
       "editPrice": "Edit prices",
-      "editPriceDescription": "Update wholesale and retail prices for this SKU.",
+      "editPriceDescription": "Update prices for this SKU.",
       "wholesalePrice": "Wholesale Price",
       "retailPrice1": "Retail Price Base",
       "retailPrice2": "Retail Price Special",

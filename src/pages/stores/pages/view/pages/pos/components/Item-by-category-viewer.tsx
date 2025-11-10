@@ -3,65 +3,62 @@ import type {
   StoreInventoryItemSchema,
 } from "@salut-mercado/octo-client";
 import { IconX } from "@tabler/icons-react";
-import { skipToken } from "@tanstack/react-query";
 import { Check } from "lucide-react";
 import { useMemo, useState } from "react";
-import { useParams } from "wouter";
 import { Button } from "~/components/ui/button";
 import {
   InputGroup,
   InputGroupAddon,
-  InputGroupInput
+  InputGroupInput,
 } from "~/components/ui/input-group";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
-import { api } from "~/hooks/api";
 import { useDebounce } from "~/hooks/use-debounce";
 import { getDescendantCategoryIds } from "~/lib/utils/get-descendant-category-ids";
+import { usePos } from "./pos.context";
+import { Spinner } from "~/components/ui/spinner";
 
-export const ItemByCategoryViewer = () => {
-  const { id: storeId } = useParams<{ id: string }>();
+export const ItemByCategoryViewer = ({
+  inventory,
+  categories,
+}: {
+  inventory: StoreInventoryItemSchema[];
+  categories: CategoryReturnSchema[];
+}) => {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 500);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(
     null
   );
-  const categories = api.categories.useGetAll({
-    limit: 1000,
-  });
-  const inventory = api.inventory.useGetInventory(
-    storeId ? { storeId } : skipToken
-  );
   const filteredCategories = useMemo(() => {
     return (
-      categories.data?.filter(
-        (category) => category.parent_category_id === null
-      ) ?? []
+      categories.filter((category) => category.parent_category_id === null) ??
+      []
     );
-  }, [categories.data]);
+  }, [categories]);
 
   const subcategories = useMemo(() => {
     if (!selectedCategory) return [];
     return (
-      categories.data?.filter(
+      categories?.filter(
         (category) => category.parent_category_id === selectedCategory
       ) ?? []
     );
-  }, [categories.data, selectedCategory]);
+  }, [categories, selectedCategory]);
 
   const validItemCategoryIds = useMemo(() => {
     if (!selectedSubcategory && !selectedCategory) {
-      return categories.data?.map((c) => c.id) ?? [];
+      return categories?.map((c) => c.id) ?? [];
     }
     return getDescendantCategoryIds(
-      categories.data ?? [],
+      categories ?? [],
       (selectedSubcategory || selectedCategory)!
     );
-  }, [categories.data, selectedCategory, selectedSubcategory]);
+  }, [categories, selectedCategory, selectedSubcategory]);
 
   const items = useMemo(() => {
-    if (!inventory.data) return [];
-    const categoryPass = inventory.data.items.filter((item) =>
+    if (!inventory) return [];
+    const categoryPass = inventory.filter((item) =>
       validItemCategoryIds.includes(item.category_id)
     );
     const transformedSearch = debouncedSearch.trim().toLocaleLowerCase();
@@ -74,12 +71,12 @@ export const ItemByCategoryViewer = () => {
               x.sku_name.toLocaleLowerCase().trim().includes(transformedSearch)
           );
     return searchPass;
-  }, [inventory.data, validItemCategoryIds, debouncedSearch]);
+  }, [inventory, validItemCategoryIds, debouncedSearch]);
 
   return (
-    <div className="flex h-full min-h-0 flex-1">
+    <div className="flex h-full min-h-0 w-full flex-1 overflow-hidden">
       <div className="grid h-full min-h-0 w-full gap-3 lg:grid-cols-[220px_minmax(0,1fr)]">
-        <ScrollArea className="h-full min-h-0 min-w-0">
+        <ScrollArea className="h-full min-h-0 min-w-0 max-h-full">
           <MainCategoryView
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
@@ -87,9 +84,9 @@ export const ItemByCategoryViewer = () => {
             categories={filteredCategories}
           />
         </ScrollArea>
-        <div className="flex min-h-0 min-w-0 flex-col h-full">
+        <div className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden">
           <SearchInput search={search} setSearch={setSearch} />
-          <div className="flex flex-col gap-2 py-2">
+          <div className="flex flex-col gap-2 py-2 shrink-0">
             <ScrollArea>
               <SubcategoryView
                 subcategories={subcategories}
@@ -100,7 +97,11 @@ export const ItemByCategoryViewer = () => {
             </ScrollArea>
           </div>
           <ScrollArea className="flex-1 min-h-0">
-            <ItemView items={items} />
+            {search !== debouncedSearch ? (
+              <Spinner className="mx-auto" />
+            ) : (
+              <ItemView items={items} />
+            )}
           </ScrollArea>
         </div>
       </div>
@@ -208,13 +209,20 @@ const SubcategoryView = ({
 };
 
 const ItemView = ({ items }: { items: StoreInventoryItemSchema[] }) => {
+  const addToCart = usePos((s) => s.addToCart);
   return (
     <div className="grid grid-cols-3 gap-1 pb-2">
+      {items.length === 0 && (
+        <div className="col-span-3 text-center text-muted-foreground">
+          No items found
+        </div>
+      )}
       {items.map((item) => (
         <Button
           className="p-1 whitespace-normal flex-wrap h-auto"
           variant="outline"
           key={item.sku_id}
+          onClick={() => addToCart(item.sku_id)}
         >
           <div className="text-sm font-medium">{item.sku_name}</div>
           <div className="text-xs text-muted-foreground font-mono">

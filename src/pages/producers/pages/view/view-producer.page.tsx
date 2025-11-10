@@ -1,9 +1,7 @@
 import { skipToken } from "@tanstack/react-query";
-import { ChevronLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "wouter";
 import { DashboardPage } from "~/components/dashboard-page";
-import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -30,15 +28,7 @@ const ViewProducerPage = () => {
         <div className="space-y-4">
           <div className="flex items-start justify-between">
             <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <Button asChild size="icon-sm" variant="outline">
-                  <Link href="~/producers">
-                    <ChevronLeft className="size-4" />
-                  </Link>
-                </Button>
-                <span className="text-xl font-semibold">{data.name}</span>
-                <Badge variant="secondary">{t("producers.view.producer")}</Badge>
-              </div>
+              <span className="text-xl font-semibold">{data.name}</span>
               <CardDescription>
                 {t("producers.view.taxId")}: {data.nif}
               </CardDescription>

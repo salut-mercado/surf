@@ -14,7 +14,6 @@ import {
 import { api } from "~/hooks/api";
 import { SuppliersErrorState } from "../../suppliers.error-state";
 import { SupplierViewSkeleton } from "./view-supplier.skeleton";
-import { ChevronLeft } from "lucide-react";
 
 const ViewSupplierPage = () => {
   const { t } = useTranslation();
@@ -34,12 +33,7 @@ const ViewSupplierPage = () => {
         <div className="space-y-4">
           <div className="flex items-start justify-between">
             <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <Button asChild size="icon-sm" variant="outline">
-                  <Link href="~/suppliers">
-                    <ChevronLeft className="size-4" />
-                  </Link>
-                </Button>
+              <div className="flex gap-2 items-center">
                 <span className="text-xl font-semibold">{data.name}</span>
                 {data.blocked ? (
                   <Badge variant="destructive">
