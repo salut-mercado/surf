@@ -128,7 +128,8 @@ const CartSummary = ({
     (acc, { cart, item }) =>
       acc +
       (Number(item.retail_price_1 ?? "0") -
-        Number(item.vat_percent ?? "0") / 100) *
+        (Number(item.retail_price_1 ?? "0") * Number(item.vat_percent ?? "0")) /
+          100) *
         cart.count,
     0
   );
