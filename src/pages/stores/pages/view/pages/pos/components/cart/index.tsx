@@ -96,6 +96,7 @@ const CartHeader = ({
     };
   }[];
 }) => {
+  const clearCart = usePos((s) => s.clearCart);
   return (
     <div className="flex flex-col gap-2">
       <span className="inline-flex justify-between w-full items-center">
@@ -103,7 +104,9 @@ const CartHeader = ({
           Cart
           <Badge className="ml-2">{items.length} items</Badge>
         </span>
-        <Button variant="link">Clear</Button>
+        <Button variant="link" onClick={clearCart}>
+          Clear
+        </Button>
       </span>
     </div>
   );

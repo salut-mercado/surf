@@ -20,16 +20,25 @@ const PosPage = () => {
   return (
     <PosContextProvider>
       <DashboardPage className="grid h-[calc(100vh-var(--header-height))] min-h-0 overflow-hidden lg:grid-cols-3 gap-2">
-        {inventory.isLoading || categories.isLoading ? (
-          <Skeleton className="w-full h-full col-span-2" />
-        ) : (
-          <Card className="col-span-2 h-full overflow-hidden pl-2 py-4 pr-4">
-            <ItemByCategoryViewer
-              inventory={inventoryItems}
-              categories={categories.data ?? []}
-            />
-          </Card>
-        )}
+        <div className="h-full min-h-0 col-span-2 grid grid-rows-3 gap-2">
+          <div className="row-span-2 h-full min-h-0">
+            {inventory.isLoading || categories.isLoading ? (
+              <Skeleton className="w-full h-full" />
+            ) : (
+              <Card className="flex h-full min-h-0 flex-col overflow-hidden pl-2 py-4 pr-4">
+                <div className="flex-1 overflow-auto">
+                  <ItemByCategoryViewer
+                    inventory={inventoryItems}
+                    categories={categories.data ?? []}
+                  />
+                </div>
+              </Card>
+            )}
+          </div>
+          <Skeleton className="w-full h-full min-h-0 row-span-1">
+            Shortcuts
+          </Skeleton>
+        </div>
         {inventory.isLoading ? (
           <Skeleton className="h-full w-full" />
         ) : (

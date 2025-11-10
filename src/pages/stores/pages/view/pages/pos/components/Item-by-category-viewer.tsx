@@ -74,9 +74,9 @@ export const ItemByCategoryViewer = ({
   }, [inventory, validItemCategoryIds, debouncedSearch]);
 
   return (
-    <div className="flex h-full min-h-0 flex-1">
+    <div className="flex h-full min-h-0 w-full flex-1 overflow-hidden">
       <div className="grid h-full min-h-0 w-full gap-3 lg:grid-cols-[220px_minmax(0,1fr)]">
-        <ScrollArea className="h-full min-h-0 min-w-0">
+        <ScrollArea className="h-full min-h-0 min-w-0 max-h-full">
           <MainCategoryView
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
@@ -84,9 +84,9 @@ export const ItemByCategoryViewer = ({
             categories={filteredCategories}
           />
         </ScrollArea>
-        <div className="flex min-h-0 min-w-0 flex-col h-full">
+        <div className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden">
           <SearchInput search={search} setSearch={setSearch} />
-          <div className="flex flex-col gap-2 py-2">
+          <div className="flex flex-col gap-2 py-2 shrink-0">
             <ScrollArea>
               <SubcategoryView
                 subcategories={subcategories}
