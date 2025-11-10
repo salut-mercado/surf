@@ -7,7 +7,11 @@
     "edit": "Edit",
     "archive": "Archive",
     "history": "History",
-    "n/a": "N/A"
+    "n/a": "N/A",
+    "feedback": {
+      "message": "Hello, I have a problem with the app",
+      "title": "Feedback"
+    }
   },
   "navigation": {
     "dashboard": "Dashboard",

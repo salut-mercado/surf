@@ -5,6 +5,7 @@ import {
 } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
 
+import { Link } from "wouter";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   DropdownMenu,
@@ -21,11 +22,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "~/components/ui/sidebar";
+import { APP_VERSION } from "~/consts";
 import { api } from "~/hooks/api";
 import { useAuth } from "~/hooks/use-auth";
 import { Badge } from "./ui/badge";
-import { APP_VERSION } from "~/lib/utils/get-app-version";
-import { Link } from "wouter";
 
 export function NavUser() {
   const { t } = useTranslation();

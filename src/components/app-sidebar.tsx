@@ -18,6 +18,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarMenuButton,
   SidebarRail,
   useSidebar,
 } from "~/components/ui/sidebar";
@@ -25,8 +26,11 @@ import { api } from "~/hooks/api";
 import { useSelectedTenant } from "~/store/tenant.store";
 import { TenantSwitcher } from "./tenant-switcher";
 import { UserRoleEnum } from "@salut-mercado/octo-client";
+import { FeedbackButton } from "./common/feedback-button";
 
-const getNavData = (t: (key: string) => string): { navMain: NavMainItem[] } => ({
+const getNavData = (
+  t: (key: string) => string
+): { navMain: NavMainItem[] } => ({
   navMain: [
     {
       title: t("navigation.dashboard"),
@@ -60,7 +64,12 @@ const getNavData = (t: (key: string) => string): { navMain: NavMainItem[] } => (
         },
       ],
     },
-    { title: t("navigation.stores"), url: "/stores", icon: IconBuildingStore, loading: true },
+    {
+      title: t("navigation.stores"),
+      url: "/stores",
+      icon: IconBuildingStore,
+      loading: true,
+    },
   ],
 });
 
@@ -93,14 +102,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       url: "/stores/create",
       icon: IconMapPinPlus,
       roles: [UserRoleEnum.manager],
-    })
-    if (selectedTenant.role !== UserRoleEnum.manager && allStores.length === 0) {
+    });
+    if (
+      selectedTenant.role !== UserRoleEnum.manager &&
+      allStores.length === 0
+    ) {
       storesItem.items.push({
         title: t("navigation.noStoresAssigned"),
         url: "#",
         icon: IconAlertCircle,
         disabled: true,
-      })
+      });
     }
     return data.navMain;
   }, [stores, selectedTenant, t]);
@@ -111,9 +123,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TenantSwitcher state={state} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navMain} role={selectedTenant?.role ?? UserRoleEnum.seller} />
+        <NavMain
+          items={navMain}
+          role={selectedTenant?.role ?? UserRoleEnum.seller}
+        />
       </SidebarContent>
       <SidebarFooter>
+        <SidebarMenuButton asChild>
+          <FeedbackButton variant="ghost" />
+        </SidebarMenuButton>
         <NavUser />
       </SidebarFooter>
       <SidebarRail />
