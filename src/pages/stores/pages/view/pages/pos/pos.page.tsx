@@ -42,7 +42,7 @@ const PosPage = () => {
         {inventory.isLoading ? (
           <Skeleton className="h-full w-full" />
         ) : (
-          <Card className="p-4 h-full">
+          <Card className="h-full min-h-0 p-4">
             <Cart inventory={inventoryItems} />
           </Card>
         )}

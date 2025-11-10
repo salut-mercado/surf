@@ -3,7 +3,7 @@ import { DotIcon, MinusIcon, PlusIcon } from "lucide-react";
 import { formatPrice } from "~/lib/utils/format-price";
 import { usePos } from "../pos.context";
 import { Button } from "~/components/ui/button";
-import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
+import { ScrollArea } from "~/components/ui/scroll-area";
 import { Separator } from "~/components/ui/separator";
 import { Badge } from "~/components/ui/badge";
 
@@ -21,15 +21,14 @@ export const Cart = ({
     }))
     .sort((a, b) => a.cart.order - b.cart.order);
   return (
-    <div className="flex flex-col gap-2 h-full">
+    <div className="flex h-full min-h-0 flex-col gap-2">
       <CartHeader items={items} />
-      <ScrollArea>
-        <div className="flex flex-col gap-2">
+      <ScrollArea className="flex-1 min-h-0 overflow-hidden">
+        <div className="flex flex-col gap-2 pr-2">
           {items.map(({ cart, item }) => (
             <CartItem key={item.sku_id} item={item} cart={cart} />
           ))}
         </div>
-        <ScrollBar orientation="vertical" />
       </ScrollArea>
       <div className="mt-auto">
         <Separator className="w-full" />
