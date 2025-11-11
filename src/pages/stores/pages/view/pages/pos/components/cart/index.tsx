@@ -1,11 +1,12 @@
 import type { StoreInventoryItemSchema } from "@salut-mercado/octo-client";
 import { DotIcon, MinusIcon, PlusIcon } from "lucide-react";
-import { formatPrice } from "~/lib/utils/format-price";
-import { usePos } from "../pos.context";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Separator } from "~/components/ui/separator";
-import { Badge } from "~/components/ui/badge";
+import { formatPrice } from "~/lib/utils/format-price";
+import { getPrice } from "~/lib/utils/get-price";
+import { usePos } from "../pos.context";
 
 export const Cart = ({
   inventory,
@@ -13,6 +14,8 @@ export const Cart = ({
   inventory: StoreInventoryItemSchema[];
 }) => {
   const cart = usePos((s) => s.cart);
+  const pricingMode = usePos((s) => s.pricingMode);
+
   const items = inventory
     .filter((item) => cart.has(item.sku_id))
     .map((i) => ({
@@ -20,19 +23,32 @@ export const Cart = ({
       cart: cart.get(i.sku_id)!,
     }))
     .sort((a, b) => a.cart.order - b.cart.order);
+
+  const itemsWithPriceAndVatNormalized = items.map(({ item, cart }) => ({
+    item,
+    cart,
+    price: getPrice({
+      pricingMode,
+      retail_price_1: item.retail_price_1,
+      retail_price_2: item.retail_price_2,
+    }),
+    vat: Number(item.vat_percent ?? "0") / 100,
+    count: cart.count,
+  }));
+
   return (
     <div className="flex h-full min-h-0 flex-col gap-2">
       <CartHeader items={items} />
       <ScrollArea className="flex-1 min-h-0 overflow-hidden">
         <div className="flex flex-col gap-2 pr-2">
-          {items.map(({ cart, item }) => (
-            <CartItem key={item.sku_id} item={item} cart={cart} />
+          {itemsWithPriceAndVatNormalized.map(({ item, cart, price }) => (
+            <CartItem key={item.sku_id} item={item} cart={cart} price={price} />
           ))}
         </div>
       </ScrollArea>
       <div className="mt-auto">
         <Separator className="w-full" />
-        <CartSummary items={items} />
+        <CartSummary items={itemsWithPriceAndVatNormalized} />
         <Button className="w-full mt-2">Pay</Button>
       </div>
     </div>
@@ -42,9 +58,11 @@ export const Cart = ({
 const CartItem = ({
   item,
   cart,
+  price,
 }: {
   item: StoreInventoryItemSchema;
   cart: { count: number; order: number };
+  price: number;
 }) => {
   const removeFromCart = usePos((s) => s.removeFromCart);
   const addToCart = usePos((s) => s.addToCart);
@@ -57,7 +75,7 @@ const CartItem = ({
         <span>{item.sku_name}</span>
         <div className="inline-flex items-center gap-0.5">
           <span className="text-muted-foreground text-sm">
-            {formatPrice(Number(item.retail_price_1 ?? "0") * cart.count)}
+            {formatPrice(price * cart.count)}
           </span>
           <DotIcon className="size-3" />
           <span className="text-muted-foreground text-sm">{cart.count}x</span>
@@ -114,37 +132,20 @@ const CartHeader = ({
 const CartSummary = ({
   items,
 }: {
-  items: {
-    item: StoreInventoryItemSchema;
-    cart: {
-      count: number;
-      priceOverride?: number;
-      order: number;
-    };
-  }[];
+  items: { price: number; vat: number; count: number }[];
 }) => {
   const subtotal = items.reduce(
-    (acc, { cart, item }) =>
-      acc +
-      (Number(item.retail_price_1 ?? "0") -
-        (Number(item.retail_price_1 ?? "0") * Number(item.vat_percent ?? "0")) /
-          100) *
-        cart.count,
+    (acc, { price, vat, count }) => acc + (price - price * vat) * count,
     0
   );
+
   const tax = items.reduce(
-    (acc, { cart, item }) =>
-      acc +
-      Number(item.retail_price_1 ?? "0") *
-        (Number(item.vat_percent ?? "0") / 100) *
-        cart.count,
+    (acc, { price, vat, count }) => acc + price * vat * count,
     0
   );
-  const total = items.reduce(
-    (acc, { cart, item }) =>
-      acc + Number(item.retail_price_1 ?? "0") * cart.count,
-    0
-  );
+
+  const total = items.reduce((acc, { price, count }) => acc + price * count, 0);
+
   return (
     <div className="flex flex-col gap-2 pt-2">
       <span className="inline-flex justify-between w-full text-muted-foreground text-sm">

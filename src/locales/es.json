@@ -7,7 +7,11 @@
     "edit": "Editar",
     "archive": "Archivar",
     "history": "Historial",
-    "n/a": "N/D"
+    "n/a": "N/D",
+    "feedback": {
+      "message": "Hola, tengo un problema con la aplicación",
+      "title": "Soporte"
+    }
   },
   "navigation": {
     "dashboard": "Panel",
