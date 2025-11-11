@@ -7,6 +7,7 @@ import { api } from "~/hooks/api";
 import { useParams } from "wouter";
 import { skipToken } from "@tanstack/react-query";
 import { Skeleton } from "~/components/ui/skeleton";
+import { PosShortcuts } from "./components/pos-shortcuts";
 
 const PosPage = () => {
   const { id: storeId = "" } = useParams<{ id?: string }>();
@@ -35,9 +36,9 @@ const PosPage = () => {
               </Card>
             )}
           </div>
-          <Skeleton className="w-full h-full min-h-0 row-span-1">
+          <PosShortcuts className="w-full h-full min-h-0 row-span-1">
             Shortcuts
-          </Skeleton>
+          </PosShortcuts>
         </div>
         {inventory.isLoading ? (
           <Skeleton className="h-full w-full" />

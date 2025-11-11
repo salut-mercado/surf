@@ -9,7 +9,9 @@ import { createStore, useStore, type StoreApi } from "zustand";
 
 interface PosContextType {
   storeId: string;
+  pricingMode: "normal" | "special";
   cart: Map<string, { count: number; priceOverride?: number; order: number }>;
+  setPricingMode: (mode: "normal" | "special") => void;
   addToCart: (id: string) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
@@ -25,7 +27,10 @@ const PosContextProvider = ({ children }: PropsWithChildren) => {
   if (storeRef.current === null) {
     storeRef.current = createStore<PosContextType>((set) => ({
       storeId,
+      pricingMode: "normal",
       cart: new Map(),
+      setPricingMode: (mode: "normal" | "special") =>
+        set({ pricingMode: mode }),
       addToCart: (id: string) =>
         set((state) => {
           const cart = new Map(state.cart);
