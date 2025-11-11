@@ -16,6 +16,7 @@ import { useDebounce } from "~/hooks/use-debounce";
 import { getDescendantCategoryIds } from "~/lib/utils/get-descendant-category-ids";
 import { usePos } from "./pos.context";
 import { Spinner } from "~/components/ui/spinner";
+import { useDetectBarcodeInput } from "~/hooks/use-detect-barcode-input";
 
 export const ItemByCategoryViewer = ({
   inventory,
@@ -72,6 +73,18 @@ export const ItemByCategoryViewer = ({
           );
     return searchPass;
   }, [inventory, validItemCategoryIds, debouncedSearch]);
+
+  const addToCart = usePos((s) => s.addToCart);
+
+  useDetectBarcodeInput({
+    onBarcodeDetected(barcode) {
+      console.log("barcode detected", barcode);
+      const item = inventory.find((item) => item.barcode === barcode);
+      if (item) {
+        addToCart(item.sku_id);
+      }
+    },
+  });
 
   return (
     <div className="flex h-full min-h-0 w-full flex-1 overflow-hidden">

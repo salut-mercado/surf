@@ -18,6 +18,7 @@ const PosPage = () => {
     limit: 1000,
   });
   const inventoryItems = inventory.data?.items ?? [];
+
   return (
     <PosContextProvider>
       <DashboardPage className="grid h-[calc(100vh-var(--header-height))] min-h-0 overflow-hidden lg:grid-cols-3 gap-2">
