@@ -74,7 +74,7 @@ function DetailItem({
   return (
     <div className="flex items-start gap-3">
       <div className="size-9 rounded-md bg-muted flex items-center justify-center shrink-0">
-        <Icon className="h-4 w-4 text-muted-foreground" />
+        <Icon className="size-4 text-muted-foreground" />
       </div>
       <div className="flex-1 min-w-0 pt-0.5">
         <label className="text-xs font-medium text-muted-foreground">

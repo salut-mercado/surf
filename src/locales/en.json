@@ -485,6 +485,31 @@
       "edit": "Edit",
       "error": "Error",
       "errorLoading": "Unable to load store.",
+      "overview": {
+        "title": "Store Overview",
+        "salesToday": "Sales Today",
+        "salesThisWeek": "Sales This Week",
+        "salesThisMonth": "Sales This Month"
+      },
+      "info": {
+        "title": "Store Information",
+        "cards": {
+          "location": "Location",
+          "legalEntity": "Legal Entity",
+          "operations": "Operations",
+          "workingHours": "Working Hours",
+          "firstSale": "First Sale",
+          "businessMetrics": "Business Metrics & Classification",
+          "priceGroup": "Price Group",
+          "salesArea": "Sales Area",
+          "totalArea": "Total Area",
+          "cluster": "Cluster",
+          "assortment": "Assortment",
+          "network": "Network",
+          "service": "Service",
+          "contacts": "Contact"
+        }
+      },
       "notFound": {
         "title": "Store not found",
         "description": "The store may have been removed."
@@ -616,6 +641,7 @@
       "posDescription": "Point of Sale",
       "inventory": "Inventory",
       "inventoryDescription": "Stock Management",
+    "quickActions": "Quick actions",
       "reports": "Reports",
       "reportsDescription": "Sales & Analytics",
       "staff": "Staff",

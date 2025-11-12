@@ -143,7 +143,7 @@ export function SkuFormSkeleton() {
             <div className="grid gap-3">
               {[0, 1, 2, 3, 4, 5].map((i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <Skeleton className="h-4 w-4 rounded-full mt-1" />
+                  <Skeleton className="size-4 rounded-full mt-1" />
                   <div className="grid gap-0.5 flex-1">
                     <Skeleton className="h-4 w-32" />
                     <Skeleton className="h-3 w-full" />
