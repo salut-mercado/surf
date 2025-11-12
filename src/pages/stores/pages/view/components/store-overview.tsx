@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import type { StoreReturnSchema } from "@salut-mercado/octo-client";
 import { Card } from "~/components/ui/card";
 
+type ChangeType = "positive" | "negative" | "neutral";
+
 export function StoreOverview({ id }: StoreReturnSchema) {
   const { t } = useTranslation();
   const stats = {
@@ -18,21 +20,21 @@ export function StoreOverview({ id }: StoreReturnSchema) {
       value: `€${stats.today.toFixed(2)}`,
       icon: DollarSignIcon,
       change: "0%",
-      changeType: "neutral" as const,
+      changeType: "neutral" as ChangeType,
     },
     {
       label: t("stores.view.overview.salesThisWeek"),
       value: `€${stats.thisWeek.toFixed(2)}`,
       icon: TrendingUpIcon,
       change: "0%",
-      changeType: "neutral" as const,
+      changeType: "neutral" as ChangeType,
     },
     {
       label: t("stores.view.overview.salesThisMonth"),
       value: `€${stats.thisMonth.toFixed(2)}`,
       icon: CalendarIcon,
       change: "0%",
-      changeType: "neutral" as const,
+      changeType: "neutral" as ChangeType,
     },
   ];
 
