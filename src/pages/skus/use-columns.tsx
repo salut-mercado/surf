@@ -5,7 +5,13 @@ import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 import { SKUPriceDisplay } from "~/components/common/sku-price-display";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "~/components/ui/hover-card";
 import { Button } from "~/components/ui/button";
+import { SKUImage } from "~/components/common/sku-image";
 
 export const useColumns = (): ColumnDef<SKUReturnSchema>[] => {
   const { t } = useTranslation();
@@ -16,8 +22,19 @@ export const useColumns = (): ColumnDef<SKUReturnSchema>[] => {
         {
           accessorKey: "name",
           header: t("skus.columns.name"),
+          accessorFn: (row) => row.name,
           filterFn: "includesString",
           enableColumnFilter: true,
+          cell: ({ row }) => (
+            <HoverCard>
+              <HoverCardTrigger>
+                <span>{row.original.name}</span>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <SKUImage barcode={row.original.barcode} />
+              </HoverCardContent>
+            </HoverCard>
+          ),
         },
         {
           accessorKey: "barcode",
