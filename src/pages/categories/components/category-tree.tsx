@@ -313,7 +313,7 @@ export function CategoryTree({ categories }: CategoryTreeProps) {
                 onClick={handleMoveCancel}
                 className="text-xs"
               >
-                <X className="h-3 w-3 mr-1" />
+                <X className="size-3 mr-1" />
                 {t("categories.tree.cancel")}
               </Button>
               <ButtonGroup>
@@ -337,7 +337,7 @@ export function CategoryTree({ categories }: CategoryTreeProps) {
                   }
                   className="text-xs"
                 >
-                  <Check className="h-3 w-3 mr-1" />
+                  <Check className="size-3 mr-1" />
                   {isMoving ? t("categories.tree.movingInProgress") : t("categories.tree.moveHere")}
                 </Button>
               </ButtonGroup>

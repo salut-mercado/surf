@@ -485,6 +485,31 @@
       "edit": "Editar",
       "error": "Error",
       "errorLoading": "No se puede cargar la tienda.",
+      "overview": {
+        "title": "Resumen de la tienda",
+        "salesToday": "Ventas de hoy",
+        "salesThisWeek": "Ventas de esta semana",
+        "salesThisMonth": "Ventas de este mes"
+      },
+      "info": {
+        "title": "Información de la tienda",
+        "cards": {
+          "location": "Ubicación",
+          "legalEntity": "Entidad Legal",
+          "operations": "Operaciones",
+          "workingHours": "Horario de Trabajo",
+          "firstSale": "Primera Venta",
+          "businessMetrics": "Métricas de negocio y clasificación",
+          "priceGroup": "Grupo de precios",
+          "salesArea": "Área de Ventas",
+          "totalArea": "Área Total",
+          "cluster": "Cluster",
+          "assortment": "Surtido",
+          "network": "Red",
+          "service": "Servicio",
+          "contacts": "Contacto"
+        }
+      },
       "notFound": {
         "title": "Tienda no encontrada",
         "description": "La tienda puede haber sido eliminada."
@@ -616,6 +641,7 @@
       "posDescription": "Punto de Venta",
       "inventory": "Inventario",
       "inventoryDescription": "Gestión de Stock",
+    "quickActions": "Acciones rápidas",
       "reports": "Informes",
       "reportsDescription": "Ventas y Análisis",
       "staff": "Personal",
