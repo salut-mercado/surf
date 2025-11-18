@@ -18,6 +18,7 @@ import { usePos } from "./pos.context";
 import { Spinner } from "~/components/ui/spinner";
 import { useDetectBarcodeInput } from "~/hooks/use-detect-barcode-input";
 import { InventoryCard } from "./item-cart";
+import { useTranslation } from "react-i18next";
 
 export const ItemByCategoryViewer = ({
   inventory,
@@ -130,12 +131,13 @@ const SearchInput = ({
   search: string;
   setSearch: (search: string) => void;
 }) => {
+  const { t } = useTranslation();
   return (
     <InputGroup>
       <InputGroupInput
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        placeholder="Search items"
+        placeholder={t("stores.pos.searchItems")}
       />
       {search.trim() !== "" && (
         <InputGroupAddon align="inline-end">
@@ -223,11 +225,12 @@ const SubcategoryView = ({
 };
 
 const ItemView = ({ items }: { items: StoreInventoryItemSchema[] }) => {
+  const { t } = useTranslation();
   return (
     <div className="grid grid-cols-3 gap-1 pb-2">
       {items.length === 0 && (
         <div className="col-span-3 text-center text-muted-foreground">
-          No items found
+          {t("stores.pos.noItemsFound")}
         </div>
       )}
       {items.map((item) => (

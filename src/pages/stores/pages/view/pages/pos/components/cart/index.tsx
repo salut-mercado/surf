@@ -8,6 +8,7 @@ import { formatPrice } from "~/lib/utils/format-price";
 import { getPrice } from "~/lib/utils/get-price";
 import { usePos } from "../pos.context";
 import { PayButton } from "./pay-button";
+import { useTranslation } from "react-i18next";
 
 export const Cart = ({
   inventory,
@@ -129,16 +130,17 @@ const CartHeader = ({
     };
   }[];
 }) => {
+  const { t } = useTranslation();
   const clearCart = usePos((s) => s.clearCart);
   return (
     <div className="flex flex-col gap-2">
       <span className="inline-flex justify-between w-full items-center">
         <span className="inline-flex items-center">
-          Cart
-          <Badge className="ml-2">{items.length} items</Badge>
+          {t("stores.pos.cart")}
+          <Badge className="ml-2">{items.length} {t("stores.pos.items")}</Badge>
         </span>
         <Button variant="link" onClick={clearCart}>
-          Clear
+          {t("stores.pos.clear")}
         </Button>
       </span>
     </div>
@@ -154,18 +156,19 @@ const CartSummary = ({
   tax: number;
   total: number;
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-2 pt-2">
       <span className="inline-flex justify-between w-full text-muted-foreground text-sm">
-        <span>Subtotal</span>
+        <span>{t("stores.pos.subtotal")}</span>
         <span>{formatPrice(subtotal)}</span>
       </span>
       <span className="inline-flex justify-between w-full text-muted-foreground text-sm">
-        <span>Tax</span>
+        <span>{t("stores.pos.tax")}</span>
         <span>{formatPrice(tax)}</span>
       </span>
       <span className="inline-flex justify-between w-full text-lg mt-1">
-        <span>Total</span>
+        <span>{t("stores.pos.total")}</span>
         <span className="font-bold">{formatPrice(total)}</span>
       </span>
     </div>

@@ -8,8 +8,10 @@ import { useParams } from "wouter";
 import { skipToken } from "@tanstack/react-query";
 import { Skeleton } from "~/components/ui/skeleton";
 import { PosShortcuts } from "./components/pos-shortcuts";
+import { useTranslation } from "react-i18next";
 
 const PosPage = () => {
+  const { t } = useTranslation();
   const { id: storeId = "" } = useParams<{ id?: string }>();
   const inventory = api.inventory.useGetInventory(
     storeId ? { storeId } : skipToken
@@ -38,7 +40,7 @@ const PosPage = () => {
             )}
           </div>
           <PosShortcuts className="w-full h-full min-h-0 row-span-1">
-            Shortcuts
+            {t("stores.pos.shortcuts")}
           </PosShortcuts>
         </div>
         {inventory.isLoading ? (

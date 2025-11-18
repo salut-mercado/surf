@@ -18,6 +18,7 @@ import { api } from "~/hooks/api";
 import { usePos } from "../pos.context";
 import { useState } from "react";
 import { formatPrice } from "~/lib/utils/format-price";
+import { useTranslation } from "react-i18next";
 
 type Item = {
   item: StoreInventoryItemSchema;
@@ -34,6 +35,7 @@ export const PayButton = ({
   items: Item[];
   total: number;
 }) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const storeId = usePos((state) => state.storeId);
   const clearCart = usePos((state) => state.clearCart);
@@ -81,7 +83,7 @@ export const PayButton = ({
           disabled={isCartEmpty}
           onClick={() => setOpen(true)}
         >
-          Pay
+          {t("stores.pos.pay")}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -95,7 +97,7 @@ export const PayButton = ({
             disabled={createOutflow.isPending}
             onClick={handlePay(PaymentType.card)}
           >
-            <IconCreditCard className="size-8" stroke={1} /> Credit Card
+            <IconCreditCard className="size-8" stroke={1} /> {t("stores.pos.creditCard")}
           </Button>
           <Button
             variant="outline"
@@ -103,12 +105,12 @@ export const PayButton = ({
             disabled={createOutflow.isPending}
             onClick={handlePay(PaymentType.cash)}
           >
-            <IconCashBanknote className="size-8" stroke={1} /> Cash
+            <IconCashBanknote className="size-8" stroke={1} /> {t("stores.pos.cash")}
           </Button>
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setOpen(false)}>
-            Cancel
+            {t("common.cancel")}
           </AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>

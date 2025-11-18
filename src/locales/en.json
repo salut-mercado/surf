@@ -634,7 +634,22 @@
       "createFailed": "Failed to create store sale",
       "removeItem": "Remove item?",
       "removeItemDescription": "Are you sure you want to remove this item from the check?",
-      "remove": "Remove"
+      "remove": "Remove",
+      "shortcuts": "Shortcuts",
+      "pay": "Pay",
+      "creditCard": "Credit Card",
+      "cash": "Cash",
+      "cart": "Cart",
+      "items": "items",
+      "clear": "Clear",
+      "subtotal": "Subtotal",
+      "tax": "Tax",
+      "total": "Total",
+      "searchItems": "Search items",
+      "noItemsFound": "No items found",
+      "shoppingMode": "Shopping mode",
+      "enterBarcode": "Enter barcode",
+      "customItem": "Custom item"
     },
     "actions": {
       "pos": "POS",
