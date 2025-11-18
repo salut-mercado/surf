@@ -26,19 +26,30 @@ type Item = {
   price: number;
   vat: number;
   count: number;
+  isCustom: false;
+};
+
+type CustomItem = {
+  customItem: { id: string; name: string; barcode: string; price: number };
+  cart: { count: number; order: number };
+  price: number;
+  vat: number;
+  count: number;
+  isCustom: true;
 };
 
 export const PayButton = ({
   items,
   total,
 }: {
-  items: Item[];
+  items: (Item | CustomItem)[];
   total: number;
 }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const storeId = usePos((state) => state.storeId);
   const clearCart = usePos((state) => state.clearCart);
+  const customItems = usePos((state) => state.customItems);
   const createOutflow = api.outflows.useCreateStoreSale();
   const cart = usePos((state) => state.cart);
   const isCartEmpty = cart.size === 0;
@@ -47,16 +58,25 @@ export const PayButton = ({
     const outflows: SKUOutflowSchema[] = [];
 
     for (const [id, item] of cart.entries()) {
-      const sku = items.find((i) => i.item.sku_id === id);
-      if (!sku) {
-        // TODO: Handle free sale items
-        continue;
+      if (id.startsWith("custom-")) {
+        const customItem = customItems.get(id);
+        if (customItem) {
+          outflows.push({
+            barcode: customItem.barcode,
+            quantity: item.count,
+            price: customItem.price,
+            name: customItem.name,
+          });
+        }
       } else {
-        outflows.push({
-          barcode: sku.item.barcode,
-          quantity: item.count,
-          price: sku.price,
-        });
+        const sku = items.find((i) => !i.isCustom && i.item.sku_id === id);
+        if (sku) {
+          outflows.push({
+            barcode: sku.item.barcode,
+            quantity: item.count,
+            price: sku.price,
+          });
+        }
       }
     }
 

@@ -649,7 +649,12 @@
       "noItemsFound": "No items found",
       "shoppingMode": "Shopping mode",
       "enterBarcode": "Enter barcode",
-      "customItem": "Custom item"
+      "unrecognizedItem": "Unrecognized item",
+      "customItem": {
+        "title": "Custom item",
+        "description": "Add an unrecognized item to the cart",
+        "barcodeDescription": "Leave empty to generate a random barcode"
+      }
     },
     "actions": {
       "pos": "POS",

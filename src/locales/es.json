@@ -649,7 +649,12 @@
       "noItemsFound": "No se encontraron artículos",
       "shoppingMode": "Modo de compra",
       "enterBarcode": "Introducir código de barras",
-      "customItem": "Artículo personalizado"
+      "unrecognizedItem": "Artículo no reconocido",
+      "customItem": {
+        "title": "Artículo personalizado",
+        "description": "Añadir un artículo no reconocido al carrito",
+        "barcodeDescription": "Dejar vacío para generar un código de barras aleatorio"
+      }
     },
     "actions": {
       "pos": "TPV",
