@@ -7,6 +7,7 @@ import { Separator } from "~/components/ui/separator";
 import { formatPrice } from "~/lib/utils/format-price";
 import { getPrice } from "~/lib/utils/get-price";
 import { usePos } from "../pos.context";
+import { PayButton } from "./pay-button";
 
 export const Cart = ({
   inventory,
@@ -36,6 +37,21 @@ export const Cart = ({
     count: cart.count,
   }));
 
+  const subtotal = itemsWithPriceAndVatNormalized.reduce(
+    (acc, { price, vat, count }) => acc + (price - price * vat) * count,
+    0
+  );
+
+  const tax = itemsWithPriceAndVatNormalized.reduce(
+    (acc, { price, vat, count }) => acc + price * vat * count,
+    0
+  );
+
+  const total = itemsWithPriceAndVatNormalized.reduce(
+    (acc, { price, count }) => acc + price * count,
+    0
+  );
+
   return (
     <div className="flex h-full min-h-0 flex-col gap-2">
       <CartHeader items={items} />
@@ -48,8 +64,8 @@ export const Cart = ({
       </ScrollArea>
       <div className="mt-auto">
         <Separator className="w-full" />
-        <CartSummary items={itemsWithPriceAndVatNormalized} />
-        <Button className="w-full mt-2">Pay</Button>
+        <CartSummary subtotal={subtotal} tax={tax} total={total} />
+        <PayButton items={itemsWithPriceAndVatNormalized} total={total} />
       </div>
     </div>
   );
@@ -130,22 +146,14 @@ const CartHeader = ({
 };
 
 const CartSummary = ({
-  items,
+  subtotal,
+  tax,
+  total,
 }: {
-  items: { price: number; vat: number; count: number }[];
+  subtotal: number;
+  tax: number;
+  total: number;
 }) => {
-  const subtotal = items.reduce(
-    (acc, { price, vat, count }) => acc + (price - price * vat) * count,
-    0
-  );
-
-  const tax = items.reduce(
-    (acc, { price, vat, count }) => acc + price * vat * count,
-    0
-  );
-
-  const total = items.reduce((acc, { price, count }) => acc + price * count, 0);
-
   return (
     <div className="flex flex-col gap-2 pt-2">
       <span className="inline-flex justify-between w-full text-muted-foreground text-sm">

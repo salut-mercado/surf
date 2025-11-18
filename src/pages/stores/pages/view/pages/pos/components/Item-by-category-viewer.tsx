@@ -17,6 +17,7 @@ import { getDescendantCategoryIds } from "~/lib/utils/get-descendant-category-id
 import { usePos } from "./pos.context";
 import { Spinner } from "~/components/ui/spinner";
 import { useDetectBarcodeInput } from "~/hooks/use-detect-barcode-input";
+import { InventoryCard } from "./item-cart";
 
 export const ItemByCategoryViewer = ({
   inventory,
@@ -222,7 +223,6 @@ const SubcategoryView = ({
 };
 
 const ItemView = ({ items }: { items: StoreInventoryItemSchema[] }) => {
-  const addToCart = usePos((s) => s.addToCart);
   return (
     <div className="grid grid-cols-3 gap-1 pb-2">
       {items.length === 0 && (
@@ -231,20 +231,7 @@ const ItemView = ({ items }: { items: StoreInventoryItemSchema[] }) => {
         </div>
       )}
       {items.map((item) => (
-        <Button
-          className="p-1 whitespace-normal flex-wrap h-auto"
-          variant="outline"
-          key={item.sku_id}
-          onClick={() => addToCart(item.sku_id)}
-        >
-          <div className="text-sm font-medium">{item.sku_name}</div>
-          <div className="text-xs text-muted-foreground font-mono">
-            {item.barcode}
-          </div>
-          <div className="text-xs text-muted-foreground font-mono">
-            {item.quantity}
-          </div>
-        </Button>
+        <InventoryCard item={item} key={item.sku_id} />
       ))}
     </div>
   );
