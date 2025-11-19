@@ -25,7 +25,7 @@ const ViewStorePage = () => {
     id ? { id } : skipToken
   );
   return (
-    <DashboardPage>
+    <DashboardPage key={id}>
       {isLoading && <StoreViewSkeleton />}
       {isError && (
         <Alert variant="destructive">
