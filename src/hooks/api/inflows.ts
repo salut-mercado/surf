@@ -103,4 +103,29 @@ export const inflows = {
       },
     });
   },
+  useDeleteSkuItem: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationKey: ["inflows", "deleteSkuItem"],
+      mutationFn: ({
+        orderInflowId,
+        skuId,
+      }: {
+        orderInflowId: string;
+        skuId: string;
+      }) => {
+        // Note: Method name may need adjustment after OpenAPI client regeneration
+        // Expected: deleteSkuOrderInflowHandlerApiOrderInflowOrderInflowIdSkuIdDelete
+        return (api.inflows as any).deleteSkuOrderInflowHandlerApiOrderInflowOrderInflowIdSkuIdDelete({
+          orderInflowId,
+          skuId,
+        });
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["inflows"],
+        });
+      },
+    });
+  },
 };

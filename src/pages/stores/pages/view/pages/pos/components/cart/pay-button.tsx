@@ -70,7 +70,7 @@ export const PayButton = ({
         }
       } else {
         const sku = items.find((i) => !i.isCustom && i.item.sku_id === id);
-        if (sku) {
+        if (sku && "item" in sku) {
           outflows.push({
             barcode: sku.item.barcode,
             quantity: item.count,

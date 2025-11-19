@@ -19,6 +19,7 @@ export const EditInflowPage = () => {
   );
   const suppliers = api.suppliers.useGetAll({ limit: 1000 });
   const updateInflow = api.inflows.useUpdate();
+  const addSkuItems = api.inflows.useAddSkuItems();
 
   if (!storeId || !inflowId) {
     return <DashboardPage>Missing parameters</DashboardPage>;
@@ -47,14 +48,91 @@ export const EditInflowPage = () => {
       .find((s) => s.id === inflowData.supplier_id)?.name ||
     inflowData.supplier_id;
 
-  const handleSubmit = async () => {
+  const isCreated = inflowData.order_status === OrderStatusEnum.created;
+
+  const handleSubmit = async (data?: {
+    items: Array<{ sku_id: string; quantity: number; warehouse_id?: string }>;
+    approve?: boolean;
+  }) => {
     try {
-      await updateInflow.mutateAsync({
-        id: inflowId,
-        orderInflowUpdateScheme: {
-          status: OrderStatusEnum.approved,
-        },
-      });
+      if (isCreated && data?.items) {
+        // Handle item updates for CREATED status
+        const originalItems = inflowData.sku_order_inflow || [];
+        const newItems = data.items;
+
+        // // Find items to delete (in original but not in new)
+        // const itemsToDelete = originalItems.filter(
+        //   (original) => !newItems.some((newItem) => newItem.sku_id === original.sku_id)
+        // );
+
+        // // Delete removed items
+        // for (const item of itemsToDelete) {
+        //   await deleteSkuItem.mutateAsync({
+        //     orderInflowId: inflowId,
+        //     skuId: item.sku_id,
+        //   });
+        // }
+
+        // For items that exist in both, calculate quantity difference
+        const itemsToAdd: Array<{
+          sku_id: string;
+          quantity: number;
+          warehouse_id?: string;
+        }> = [];
+
+        for (const newItem of newItems) {
+          const originalItem = originalItems.find(
+            (orig) => orig.sku_id === newItem.sku_id
+          );
+
+          if (originalItem) {
+            // // Item exists - check if quantity changed
+            // const quantityDiff = newItem.quantity - (originalItem.quantity || 0);
+            // if (quantityDiff !== 0) {
+            //   // If quantity changed significantly, delete and re-add
+            //   // Otherwise, we could use add/subtract APIs, but for simplicity, delete and re-add
+            //   await deleteSkuItem.mutateAsync({
+            //     orderInflowId: inflowId,
+            //     skuId: originalItem.sku_id,
+            //   });
+            //   itemsToAdd.push({
+            //     sku_id: newItem.sku_id,
+            //     quantity: newItem.quantity,
+            //     warehouse_id: newItem.warehouse_id,
+            //   });
+            // }
+          } else {
+            // New item
+            itemsToAdd.push({
+              sku_id: newItem.sku_id,
+              quantity: newItem.quantity,
+              warehouse_id: newItem.warehouse_id,
+            });
+          }
+        }
+
+        // Add new/updated items
+        if (itemsToAdd.length > 0) {
+          await addSkuItems.mutateAsync({
+            orderInflowId: inflowId,
+            items: itemsToAdd.map((item) => ({
+              sku_id: item.sku_id,
+              quantity: item.quantity,
+              warehouse_id: item.warehouse_id || null,
+            })),
+          });
+        }
+      }
+      if (data?.approve) {
+        // Just update status to approved
+        await updateInflow.mutateAsync({
+          id: inflowId,
+          orderInflowUpdateScheme: {
+            status: OrderStatusEnum.approved,
+          },
+        });
+      }
+
       setLocation(`~/stores/${storeId}/inflows/${inflowId}`, {
         replace: true,
       });
@@ -62,6 +140,8 @@ export const EditInflowPage = () => {
       console.error("Failed to update inflow:", error);
     }
   };
+
+  const isSubmitting = updateInflow.isPending || addSkuItems.isPending;
 
   return (
     <DashboardPage>
@@ -81,10 +161,9 @@ export const EditInflowPage = () => {
           inflow={inflowData}
           supplierName={supplierName}
           onSubmit={handleSubmit}
-          isSubmitting={updateInflow.isPending}
+          isSubmitting={isSubmitting}
         />
       </div>
     </DashboardPage>
   );
 };
-
