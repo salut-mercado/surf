@@ -6,6 +6,7 @@ interface NumpadProps {
   onNumberClick?: (num: string) => void;
   onBackspace?: () => void;
   onEnter?: () => void;
+  onDecimalPoint?: () => void;
 }
 
 const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
@@ -13,6 +14,7 @@ export function Numpad({
   onNumberClick,
   onBackspace,
   onEnter,
+  onDecimalPoint,
   className,
 }: NumpadProps & ComponentProps<"div">) {
   return (
@@ -31,7 +33,7 @@ export function Numpad({
           </Button>
         ))}
 
-        {/* Bottom row: Backspace, 0, Enter */}
+        {/* Bottom row: Backspace, 0, Decimal */}
         <Button
           variant="outline"
           size="lg"
@@ -52,9 +54,20 @@ export function Numpad({
         </Button>
 
         <Button
+          variant="outline"
+          size="lg"
+          className="h-16 text-xl font-semibold bg-transparent"
+          onClick={onDecimalPoint}
+          aria-label="Decimal point"
+        >
+          .
+        </Button>
+
+        {/* Enter button row */}
+        <Button
           variant="default"
           size="lg"
-          className="h-16"
+          className="h-16 col-span-3"
           onClick={onEnter}
           aria-label="Enter"
         >

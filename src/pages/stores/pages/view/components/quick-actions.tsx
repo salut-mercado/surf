@@ -1,4 +1,5 @@
 import type { StoreReturnSchema } from "@salut-mercado/octo-client";
+import { IconFile } from "@tabler/icons-react";
 import {
   BarChart3Icon,
   CreditCardIcon,
@@ -26,6 +27,13 @@ const actions = [
     disabled: false,
   },
   {
+    title: "stores.actions.inflows",
+    description: "stores.actions.inflowsDescription",
+    icon: IconFile,
+    href: "/inflows",
+    disabled: false,
+  },
+  {
     title: "stores.actions.reports",
     description: "stores.actions.reportsDescription",
     icon: BarChart3Icon,
@@ -48,10 +56,10 @@ export function QuickActions({ id: storeId }: StoreReturnSchema) {
       <h2 className="text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider">
         {t("stores.actions.quickActions")}
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {actions.map((action) => (
           <Card
-            key={`~/stores/${storeId}${action.href}`}
+            key={action.title}
             className={`group relative overflow-hidden border border-border/60 bg-card transition-all duration-300 ${
               action.disabled ? "opacity-60 cursor-not-allowed" : ""
             }`}

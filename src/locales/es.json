@@ -634,7 +634,27 @@
       "createFailed": "Error al crear la venta de tienda",
       "removeItem": "¿Eliminar artículo?",
       "removeItemDescription": "¿Está seguro de que desea eliminar este artículo de la venta?",
-      "remove": "Eliminar"
+      "remove": "Eliminar",
+      "shortcuts": "Atajos",
+      "pay": "Pagar",
+      "creditCard": "Tarjeta de Crédito",
+      "cash": "Efectivo",
+      "cart": "Carrito",
+      "items": "artículos",
+      "clear": "Limpiar",
+      "subtotal": "Subtotal",
+      "tax": "Impuesto",
+      "total": "Total",
+      "searchItems": "Buscar artículos",
+      "noItemsFound": "No se encontraron artículos",
+      "shoppingMode": "Modo de compra",
+      "enterBarcode": "Introducir código de barras",
+      "unrecognizedItem": "Artículo no reconocido",
+      "customItem": {
+        "title": "Artículo personalizado",
+        "description": "Añadir un artículo no reconocido al carrito",
+        "barcodeDescription": "Dejar vacío para generar un código de barras aleatorio"
+      }
     },
     "actions": {
       "pos": "TPV",
