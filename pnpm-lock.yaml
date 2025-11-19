@@ -78,8 +78,8 @@ importers:
         specifier: ^1.2.8
         version: 1.2.8(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@salut-mercado/octo-client':
-        specifier: 0.5.8
-        version: 0.5.8
+        specifier: 0.5.9
+        version: 0.5.9
       '@tabler/icons-react':
         specifier: ^3.35.0
         version: 3.35.0(react@19.2.0)
@@ -1675,8 +1675,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@salut-mercado/octo-client@0.5.8':
-    resolution: {integrity: sha512-75k8wTO1viIt1FQsH8CqbBiuAtXFkWEpm9YHVB5IO+zK3M6+eoMOLKJa+iv/J+V7zEJRooJwHLc4SfMmjeEDgA==, tarball: https://npm.pkg.github.com/download/@salut-mercado/octo-client/0.5.8/57c30a32b3035d81730890f2e1aea52754fdfe99}
+  '@salut-mercado/octo-client@0.5.9':
+    resolution: {integrity: sha512-goJAtgRdAmT/IfCA0NkcWRbPnHN/hKQQVxel482MeiSnOeuXAv3eeaVQW/kvRWYYJxZ6MjfS8WDx4iMQx3xzAg==, tarball: https://npm.pkg.github.com/download/@salut-mercado/octo-client/0.5.9/35420dd71427d3d775443b58dbe4db282faea386}
 
   '@surma/rollup-plugin-off-main-thread@2.2.3':
     resolution: {integrity: sha512-lR8q/9W7hZpMWweNiAKU7NQerBnzQQLvi8qnTDU/fxItPhtZVMbPV3lbCwjhIlNBe9Bbr5V+KHshvWmVSG9cxQ==}
@@ -5383,7 +5383,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.52.5':
     optional: true
 
-  '@salut-mercado/octo-client@0.5.8':
+  '@salut-mercado/octo-client@0.5.9':
     dependencies:
       axios: 1.13.2
     transitivePeerDependencies:

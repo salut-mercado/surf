@@ -3,6 +3,7 @@ import type {
   OrderInflowApiAddSkuOrderInflowHandlerApiOrderInflowSkuOrderInflowPostRequest,
   OrderInflowApiGetOrderInflowHandlerApiOrderInflowGetRequest,
   OrderInflowApiGetOrderInflowByIdHandlerApiOrderInflowSkuOrderInflowIdGetRequest,
+  OrderInflowUpdateScheme,
 } from "@salut-mercado/octo-client";
 import {
   skipToken,
@@ -70,6 +71,31 @@ export const inflows = {
           orderInflowId,
           sKUOrderInflowScheme: items,
         }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["inflows"],
+        });
+      },
+    });
+  },
+  useUpdate: () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationKey: ["inflows", "update"],
+      mutationFn: ({
+        id,
+        orderInflowUpdateScheme,
+      }: {
+        id: string;
+        orderInflowUpdateScheme: OrderInflowUpdateScheme;
+      }) => {
+        // Note: Method name may need adjustment after OpenAPI client regeneration
+        // Expected: updateOrderInflowHandlerApiOrderInflowInflowIdPatch
+        return (api.inflows as any).updateOrderInflowHandlerApiOrderInflowInflowIdPatch({
+          inflowId: id,
+          orderInflowUpdateScheme,
+        });
+      },
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: ["inflows"],

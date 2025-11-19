@@ -30,6 +30,7 @@ import SuppliersPage from "./pages/suppliers/suppliers.page";
 import { InflowsPage } from "./pages/stores/pages/view/pages/inflows/inflows.page";
 import { CreateInflowPage } from "./pages/stores/pages/view/pages/inflows/pages/create/create-inflow.page";
 import { ViewInflowPage } from "./pages/stores/pages/view/pages/inflows/pages/view/view-inflow.page";
+import { EditInflowPage } from "./pages/stores/pages/view/pages/inflows/pages/edit/edit-inflow.page";
 const UiKitPage = lazy(() => import("./pages/ui-kit/ui-kit.page"));
 
 export const AppRoutes = () => {
@@ -126,7 +127,7 @@ export const AppRoutes = () => {
                 <CreateInflowPage />
               </Route>
               <Route path="/:id/inflows/:inflowId/edit">
-                <ViewInflowPage /> // TODO: Create edit inflow page
+                <EditInflowPage />
               </Route>
               <Route path="/:id/inflows/:inflowId">
                 <ViewInflowPage />
