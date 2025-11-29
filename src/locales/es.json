@@ -639,6 +639,8 @@
       "pay": "Pagar",
       "creditCard": "Tarjeta de Crédito",
       "cash": "Efectivo",
+      "cashPayment": "Pago en Efectivo",
+      "openDrawer": "Abrir Cajón",
       "cart": "Carrito",
       "items": "artículos",
       "clear": "Limpiar",

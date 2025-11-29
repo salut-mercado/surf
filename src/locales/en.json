@@ -639,6 +639,8 @@
       "pay": "Pay",
       "creditCard": "Credit Card",
       "cash": "Cash",
+      "cashPayment": "Cash Payment",
+      "openDrawer": "Open Drawer",
       "cart": "Cart",
       "items": "items",
       "clear": "Clear",
