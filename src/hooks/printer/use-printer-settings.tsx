@@ -15,6 +15,9 @@ export const usePrinterSettings = (): [
       fetch("http://localhost:8001/settings").then((res) => res.json()),
     refetchInterval: 1000,
     staleTime: 0,
+    enabled(query) {
+      return  query.state.data == null;
+    },
   });
   const updater = (settings: PrinterSettings) => {
     fetch("http://localhost:8001/settings", {
