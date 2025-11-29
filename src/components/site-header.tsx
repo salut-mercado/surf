@@ -7,6 +7,7 @@ import { OnlineIndicator } from "~/components/common/online-indicator";
 import { ThemeToggle } from "~/components/common/theme-toggle";
 import { Button } from "~/components/ui/button";
 import { Logo } from "~/components/common/logo";
+import { PrinterStatus } from "./common/printer-status";
 
 export function SiteHeader() {
   const [isPos] = useIsPos();
@@ -39,6 +40,7 @@ export function SiteHeader() {
           </>
         )}
         <div className="ml-auto flex items-center gap-2">
+          <PrinterStatus className="size-7" />
           <OnlineIndicator className="size-7" />
           <LanguageToggle variant="ghost" className="size-7" />
           <ThemeToggle variant="ghost" className="size-7" />
