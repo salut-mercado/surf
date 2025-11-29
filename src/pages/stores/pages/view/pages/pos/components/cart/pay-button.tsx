@@ -3,7 +3,7 @@ import {
   type SKUOutflowSchema,
   type StoreInventoryItemSchema,
 } from "@salut-mercado/octo-client";
-import { IconCashBanknote, IconCreditCard } from "@tabler/icons-react";
+import { IconCreditCard } from "@tabler/icons-react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -19,6 +19,7 @@ import { usePos } from "../pos.context";
 import { useState } from "react";
 import { formatPrice } from "~/lib/utils/format-price";
 import { useTranslation } from "react-i18next";
+import { CashCalculator } from "./cash-calculator";
 
 type Item = {
   item: StoreInventoryItemSchema;
@@ -117,16 +118,14 @@ export const PayButton = ({
             disabled={createOutflow.isPending}
             onClick={handlePay(PaymentType.card)}
           >
-            <IconCreditCard className="size-8" stroke={1} /> {t("stores.pos.creditCard")}
+            <IconCreditCard className="size-8" stroke={1} />{" "}
+            {t("stores.pos.creditCard")}
           </Button>
-          <Button
-            variant="outline"
-            className="flex-1 h-32 flex-col text-lg"
-            disabled={createOutflow.isPending}
-            onClick={handlePay(PaymentType.cash)}
-          >
-            <IconCashBanknote className="size-8" stroke={1} /> {t("stores.pos.cash")}
-          </Button>
+          <CashCalculator
+            handlePay={handlePay}
+            isPending={createOutflow.isPending}
+            total={total}
+          />
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setOpen(false)}>
