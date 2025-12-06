@@ -1,3 +1,4 @@
+import { UserRoleEnum } from "@salut-mercado/octo-client";
 import {
   IconAlertCircle,
   IconBarcode,
@@ -8,6 +9,7 @@ import {
   IconMapPin,
   IconMapPinPlus,
   IconTruckDelivery,
+  IconWorldUpload,
 } from "@tabler/icons-react";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -23,10 +25,11 @@ import {
   useSidebar,
 } from "~/components/ui/sidebar";
 import { api } from "~/hooks/api";
+import { useIsUpdatePresent } from "~/hooks/use-is-update-present";
 import { useSelectedTenant } from "~/store/tenant.store";
-import { TenantSwitcher } from "./tenant-switcher";
-import { UserRoleEnum } from "@salut-mercado/octo-client";
 import { FeedbackButton } from "./common/feedback-button";
+import { TenantSwitcher } from "./tenant-switcher";
+import { Button } from "./ui/button";
 
 const getNavData = (
   t: (key: string) => string
@@ -76,6 +79,7 @@ const getNavData = (
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar();
   const { t } = useTranslation();
+  const { hasUpdate, update } = useIsUpdatePresent();
 
   const stores = api.stores.useGetAll({ limit: 1000 });
   const selectedTenant = useSelectedTenant();
@@ -129,6 +133,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         />
       </SidebarContent>
       <SidebarFooter>
+        {hasUpdate && (
+          <SidebarMenuButton asChild>
+            <Button onClick={update}>
+              <IconWorldUpload className="size-4" />
+              {t("common.updateAvailable")}
+            </Button>
+          </SidebarMenuButton>
+        )}
         <SidebarMenuButton asChild>
           <FeedbackButton variant="ghost" />
         </SidebarMenuButton>
