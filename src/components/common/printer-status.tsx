@@ -1,67 +1,47 @@
 import {
   IconCash,
-  IconDotsVertical,
+  IconCut,
   IconPrinter,
   IconPrinterOff,
 } from "@tabler/icons-react";
 import { PrinterCheckIcon } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
-import { usePrinterSettings } from "~/hooks/printer/use-printer-settings";
-import { Button } from "../ui/button";
-import { FieldGroup, FieldLabel } from "../ui/field";
-import { Input } from "../ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { useEffect, useRef, useState } from "react";
-import { usePrinter } from "~/hooks/printer/use-printer";
+import { Button } from "~/components/ui/button";
+import { FieldGroup, FieldLabel } from "~/components/ui/field";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Receipt } from "~/lib/receipt";
-
-const EXAMPLE_RECEIPT = `{image:iVBORw0KGgoAAAANSUhEUgAAAQAAAAA8AgMAAAD004yXAAAACVBMVEVwAJsAAAD///+esS7BAAAAAXRSTlMAQObYZgAAAZtJREFUSMftlkGOwyAMRW0J76kE97GlZu9KcP+rzCekKak6bWdGmrZS6KIG/7yAbQhEe+tN6qUpDZ1KPHT8SnhpeaP6FlA2wicBsgOeBpTF6gDfZHgj9Jt1sAMeAYYE/RFQngYMuX49gD8fMObjkwB+++h+DeB3x/qdvfD/AP4QwPXX+ceAUdV6Y7K/3Vr7rWhv73ZN9XVHzOUdlm6v9ay3pM1eLT+Ppv63BWjz8jJU0vpUWgGs5yfihrN451G+lq7i2bkF8Bagw3Qv0hEQKGTPPjnGxJtZrSIcJy5ciJ3JStbarjrgwOtVK7Z1iLFOOgOSR3WstTqMqCcVFlITDnhhNhMKzJNIA3iEBr1uaAfArA7bSWdAkRrIsJSMrwXbJBowEhogwe9F+NilC8D1oIyg43fA+1WwKpoktXUmsiOCjxFMR+gEBfwcaJ7qDBBWNTVSxKsZZhwkUgkppEiJ1VOIQdCFtAmNBQg9QWj9POQWFW4Bh0HVipRIHlpEUVzUAmslpgQpVcS0SklcrBqf03u/UvVhLd8H5Hffil/ia4Io3warBgAAAABJRU5ErkJggg==}
-
-          Ichigaya Terminal
-       1-Y-X Kudan, Chiyoda-ku
--------------------------------------
-03-18-2024 12:34
-{border:line}
-^RECEIPT
-{border:space}
-{width:*,2,10}
-HAMBURGER              | 2|     24.00
-COFFEE                 | 2|     12.00
--------------------------------------
-{width:*,20}
-^TOTAL             |           ^36.00
-CASH               |            40.00
-CHANGE             |             4.00
-{code:20240318123456;option:code128,48}`;
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import { usePrinter } from "~/hooks/printer/use-printer";
+import { usePrinterSettings } from "~/hooks/printer/use-printer-settings";
+import { useUsbDevices } from "~/hooks/use-usb-devices";
+import { testReceipt } from "~/receipts/test-receipt";
+import { useGlobalStore } from "~/store/global.store";
+import { ButtonGroup } from "../ui/button-group";
+import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
+import { cn } from "~/lib/utils";
 
 export const PrinterStatus = ({
   ...props
 }: React.ComponentProps<typeof Badge>) => {
   const [settings, updater] = usePrinterSettings();
-  const [vendorId, setVendorId] = useState(settings?.vendor_id || 0);
-  const [productId, setProductId] = useState(settings?.product_id || 0);
-  const hasSetSettings = useRef(false);
+  const usbDevices = useUsbDevices({ enabled: settings != null });
   const { cut, print, cashdraw } = usePrinter();
+  const receiptWidth = useGlobalStore((state) => state.receiptWidth);
+  const setReceiptWidth = useGlobalStore((state) => state.setReceiptWidth);
 
-  useEffect(() => {
-    if (
-      hasSetSettings.current ||
-      settings == null ||
-      settings.vendor_id === 0 ||
-      settings.product_id === 0
-    ) {
-      return;
-    }
-    setVendorId(settings.vendor_id);
-    setProductId(settings.product_id);
-    hasSetSettings.current = true;
-  }, [settings]);
+  const id =
+    settings?.vendor_id && settings.product_id
+      ? `${settings?.vendor_id}-${settings?.product_id}`
+      : undefined;
 
   const hasSettings =
     settings != null && settings.vendor_id !== 0 && settings.product_id !== 0;
@@ -78,69 +58,98 @@ export const PrinterStatus = ({
         </Badge>
       </PopoverTrigger>
       <PopoverContent className="bg-background">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (vendorId == null || productId == null) {
-              return;
-            }
-            updater({ vendor_id: vendorId, product_id: productId });
-          }}
-          className="flex flex-col gap-2"
-        >
+        <div className="flex flex-col gap-2">
           <FieldGroup className="flex flex-col gap-2">
-            <FieldLabel htmlFor="vendor-id">Vendor ID</FieldLabel>
-            <Input
-              type="number"
-              id="vendor-id"
-              value={vendorId}
-              onChange={(e) => setVendorId(Number(e.target.value))}
-            />
-          </FieldGroup>
-          <FieldGroup className="flex flex-col gap-2">
-            <FieldLabel htmlFor="product-id">Product ID</FieldLabel>
-            <Input
-              type="number"
-              id="product-id"
-              value={productId}
-              onChange={(e) => setProductId(Number(e.target.value))}
-            />
-          </FieldGroup>
-          <div className="flex gap-2 flex-nowrap">
-            <Button type="submit" className="flex-1">
-              Save
-            </Button>
-            {hasSettings && (
-              <DropdownMenu modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <Button type="button" variant="ghost" size="icon">
-                    <IconDotsVertical className="size-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem
-                    onClick={async () => {
-                      const example = Receipt.from(
-                        EXAMPLE_RECEIPT,
-                        "-c 42 -p escpos -n"
-                      );
-                      const instructions = await example.toCommand();
-                      print(Receipt.prepareCommand(instructions)).then(() => cut());
-                    }}
+            <FieldLabel htmlFor="printer-select">Printer</FieldLabel>
+            <Select
+              value={id}
+              onValueChange={(v) => {
+                const [vendorId, productId] = v.split("-");
+                updater({
+                  vendor_id: Number(vendorId),
+                  product_id: Number(productId),
+                });
+              }}
+            >
+              <SelectTrigger
+                className="w-full"
+                id="printer-select"
+                disabled={
+                  usbDevices.isLoading ||
+                  usbDevices.isError ||
+                  usbDevices.data == null ||
+                  usbDevices.data.length === 0
+                }
+              >
+                <SelectValue placeholder="Select printer" />
+              </SelectTrigger>
+              <SelectContent>
+                {usbDevices.data?.map((device) => (
+                  <SelectItem
+                    key={device.name}
+                    value={`${device.vendor_id}-${device.product_id}`}
                   >
-                    <IconPrinter className="size-4" />
-                    Test Print
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={cashdraw}>
-                    <IconCash className="size-4" />
-                    Test cashdraw
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-          </div>
-        </form>
+                    {device.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </FieldGroup>
+          <FieldGroup className="flex flex-col gap-2">
+            <FieldLabel htmlFor="receipt-width-select">
+              Receipt Width
+            </FieldLabel>
+            <ToggleGroup
+              id="receipt-width-select"
+              type="single"
+              variant="outline"
+              size="sm"
+              value={receiptWidth.toString()}
+              onValueChange={(v) => setReceiptWidth(Number(v) as 80 | 58)}
+            >
+              <ToggleGroupItem
+                value="58"
+                aria-label="Select 58mm receipt width"
+              >
+                58mm
+              </ToggleGroupItem>
+              <ToggleGroupItem
+                value="80"
+                aria-label="Select 80mm receipt width"
+              >
+                80mm
+              </ToggleGroupItem>
+            </ToggleGroup>
+          </FieldGroup>
+          <FieldGroup className={cn("flex flex-col gap-2", !id ? "hidden" : "")}>
+            <FieldLabel htmlFor="print-button-group">Print</FieldLabel>
+            <ButtonGroup id="print-button-group">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={async () => {
+                  const instructions = await testReceipt({
+                    cash: 100,
+                    items: [{ name: "Test Item", quantity: 3, price: 10 }],
+                  });
+                  await print(instructions);
+                  await cut();
+                }}
+              >
+                <IconPrinter className="size-4" />
+                Print
+              </Button>
+              <Button size="sm" onClick={cashdraw} variant="outline">
+                <IconCash className="size-4" />
+                Cashdraw
+              </Button>
+              <Button size="sm" onClick={cut} variant="outline">
+                <IconCut className="size-4" />
+                Cut
+              </Button>
+            </ButtonGroup>
+          </FieldGroup>
+        </div>
       </PopoverContent>
     </Popover>
   );
