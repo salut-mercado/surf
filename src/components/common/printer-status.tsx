@@ -33,7 +33,14 @@ export const PrinterStatus = ({
   ...props
 }: React.ComponentProps<typeof Badge>) => {
   const [settings, updater] = usePrinterSettings();
-  const usbDevices = useUsbDevices({ enabled: settings != null });
+  const usbDevices = useUsbDevices({
+    staleTime: 0,
+    refetchInterval(query) {
+      const hasData =
+        Array.isArray(query.state.data) && query.state.data.length > 0;
+      return hasData ? 60_000 : 2_000; // 1 minute or 2 seconds
+    },
+  });
   const { cut, print, cashdraw } = usePrinter();
   const receiptWidth = useGlobalStore((state) => state.receiptWidth);
   const setReceiptWidth = useGlobalStore((state) => state.setReceiptWidth);
@@ -121,7 +128,9 @@ export const PrinterStatus = ({
               </ToggleGroupItem>
             </ToggleGroup>
           </FieldGroup>
-          <FieldGroup className={cn("flex flex-col gap-2", !id ? "hidden" : "")}>
+          <FieldGroup
+            className={cn("flex flex-col gap-2", !id ? "hidden" : "")}
+          >
             <FieldLabel htmlFor="print-button-group">Print</FieldLabel>
             <ButtonGroup id="print-button-group">
               <Button
