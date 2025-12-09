@@ -11,7 +11,8 @@
     "feedback": {
       "message": "Hola, tengo un problema con la aplicación",
       "title": "Soporte"
-    }
+    },
+    "updateAvailable": "Actualización disponible"
   },
   "navigation": {
     "dashboard": "Panel",

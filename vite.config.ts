@@ -14,14 +14,14 @@ export default defineConfig({
     svgr({}),
     tailwindcss({}),
     VitePWA({
-      registerType: "autoUpdate",
+      registerType: "prompt",
       manifest: {
         name: "Salut ERP",
         short_name: "Salut",
-        theme_color: "#ffffff",
+        theme_color: "#7fd161",
         icons: [
           {
-            src: "/vite.svg",
+            src: "/logo-icon.svg",
             sizes: "any",
             type: "image/svg+xml",
           },

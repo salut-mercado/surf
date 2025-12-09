@@ -11,7 +11,8 @@
     "feedback": {
       "message": "Hello, I have a problem with the app",
       "title": "Feedback"
-    }
+    },
+    "updateAvailable": "Update available"
   },
   "navigation": {
     "dashboard": "Dashboard",
