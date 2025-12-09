@@ -3,6 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 type PrinterSettings = {
   vendor_id: number;
   product_id: number;
+  interface?: number;
+  in_ep?: number;
+  out_ep?: number;
 };
 
 export const usePrinterSettings = (): [
