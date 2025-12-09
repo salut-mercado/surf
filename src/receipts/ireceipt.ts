@@ -51,12 +51,11 @@ export function createReceipt<T>(fn: IReceipt<T>): IReceipt<T> {
   return async (data: T, options: IReceiptOptions = {}) => {
     const printWidth = useGlobalStore.getState().receiptWidth;
     const receipt = await fn(data);
-    console.log({ printWidth, charactersPerLine: printWidth === 80 ? 48 : 32 });
     const example = Receipt.from(
       receipt,
       constructOptions({
-        ...options,
         charactersPerLine: printWidth === 80 ? 48 : 32,
+        ...options,
       })
     );
     const instructions: string = await example.toCommand();

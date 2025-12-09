@@ -9,6 +9,10 @@ import { Table } from "./data-table";
 import { Numpad } from "../../components/ui/numpad";
 import { Logo } from "~/components/common/logo";
 import { useUsbDevices } from "~/hooks/use-usb-devices";
+import { usePrinter } from "~/hooks/printer/use-printer";
+import { Textarea } from "~/components/ui/textarea";
+import { Button } from "~/components/ui/button";
+import { createReceipt } from "~/receipts/ireceipt";
 
 const UiKitPage = () => {
   const suppliers = api.suppliers.useGetAll({ limit: 1000 });
@@ -16,6 +20,28 @@ const UiKitPage = () => {
   const [detectedBarcode, setDetectedBarcode] = useState<string>("");
   const [numpadValue, setNumpadValue] = useState<string>("");
   const usbDevices = useUsbDevices();
+  const [printAnything, setPrintAnything] = useState<string>("");
+  const [optionsJson, setOptionsJson] = useState<string>(
+    JSON.stringify(
+      {
+        printer: "escpos",
+        charactersPerLine: 48,
+        language: "en",
+        reduceLineSpacing: false,
+        printMargins: [0, 0],
+        upsideDown: false,
+        printAsImage: false,
+        withPaperCut: true,
+        imageThresholding: 128,
+        imageGammaCorrection: 1.0,
+        landscape: false,
+        printResolution: 203,
+      },
+      null,
+      2
+    )
+  );
+  const { print } = usePrinter();
   return (
     <DashboardPage title="UI Kit playground">
       <AsyncSelect
@@ -68,7 +94,36 @@ const UiKitPage = () => {
       </div>
 
       <div className="mt-4">
-        <pre>{JSON.stringify({ usbDevices: usbDevices.data, error: usbDevices.error }, null, 2)}</pre>
+        <pre>
+          {JSON.stringify(
+            { usbDevices: usbDevices.data, error: usbDevices.error },
+            null,
+            2
+          )}
+        </pre>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <span>Print anything</span>
+        <Textarea
+          value={printAnything}
+          onChange={(e) => setPrintAnything(e.target.value)}
+        />
+        <Textarea
+          value={optionsJson}
+          onChange={(e) => setOptionsJson(e.target.value)}
+        />
+        <Button
+          onClick={async () => {
+            const r = createReceipt(() => {
+              return Promise.resolve(printAnything);
+            });
+            const instructions = await r({}, JSON.parse(optionsJson));
+            await print(instructions);
+          }}
+        >
+          Print
+        </Button>
       </div>
     </DashboardPage>
   );
